@@ -2,8 +2,8 @@ object FormMain: TFormMain
   Left = 0
   Top = 0
   Caption = #1057#1090#1072#1090#1080#1089#1090
-  ClientHeight = 750
-  ClientWidth = 1147
+  ClientHeight = 663
+  ClientWidth = 972
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -19,8 +19,8 @@ object FormMain: TFormMain
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 1141
-    Height = 744
+    Width = 966
+    Height = 657
     ActivePage = TabSheet1
     Align = alClient
     MultiLine = True
@@ -29,16 +29,18 @@ object FormMain: TFormMain
     TabOrder = 0
     TabWidth = 170
     StyleName = 'Glossy'
-    ExplicitWidth = 1102
+    ExplicitWidth = 964
+    ExplicitHeight = 649
     object TabSheet1: TTabSheet
       Caption = #1057#1074#1077#1076#1077#1085#1080#1103' '#1087#1086' '#1092#1086#1088#1084#1072#1084
       object PanelForms: TPanel
         Left = 0
         Top = 0
         Width = 393
-        Height = 704
+        Height = 617
         Align = alLeft
         TabOrder = 0
+        ExplicitHeight = 609
         object EditFormsFind: TEdit
           Left = 1
           Top = 1
@@ -52,7 +54,7 @@ object FormMain: TFormMain
           Left = 1
           Top = 27
           Width = 391
-          Height = 659
+          Height = 493
           Align = alClient
           Ctl3D = False
           DoubleBuffered = True
@@ -61,269 +63,64 @@ object FormMain: TFormMain
           ParentDoubleBuffered = False
           Sorted = True
           TabOrder = 1
+          ExplicitHeight = 474
         end
-        object CheckBoxFormsFullName: TCheckBox
+        object PanelFormControl: TPanel
           Left = 1
-          Top = 686
+          Top = 520
           Width = 391
-          Height = 17
+          Height = 96
           Align = alBottom
-          Caption = #1055#1086#1083#1085#1086#1077' '#1085#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1092#1086#1088#1084
+          Padding.Left = 5
+          Padding.Top = 5
+          Padding.Right = 5
+          Padding.Bottom = 5
           TabOrder = 2
+          object CheckBoxFormsFullName: TCheckBox
+            Left = 6
+            Top = 6
+            Width = 379
+            Height = 17
+            Align = alTop
+            Caption = #1055#1086#1083#1085#1086#1077' '#1085#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1092#1086#1088#1084
+            TabOrder = 0
+            ExplicitLeft = 1
+            ExplicitTop = 599
+            ExplicitWidth = 391
+          end
+          object ButtonUpdateForms: TButton
+            Left = 6
+            Top = 23
+            Width = 379
+            Height = 42
+            Align = alTop
+            Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1092#1086#1088#1084#1099
+            TabOrder = 1
+            OnClick = ButtonUpdateFormsClick
+          end
         end
       end
       object ScrollBoxForms: TScrollBox
         Left = 393
         Top = 0
-        Width = 740
-        Height = 704
+        Width = 565
+        Height = 617
         VertScrollBar.Smooth = True
         Align = alClient
-        Padding.Left = 5
-        Padding.Top = 5
-        Padding.Right = 5
-        Padding.Bottom = 5
         TabOrder = 1
         StyleName = 'Glossy'
-        ExplicitWidth = 701
-        DesignSize = (
-          736
-          700)
-        object LabelFormName: TLabel
-          Left = 5
-          Top = 5
-          Width = 726
-          Height = 25
-          Align = alTop
-          AutoSize = False
-          Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1092#1086#1088#1084#1099
-          Font.Charset = RUSSIAN_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Montserrat'
-          Font.Style = [fsBold]
-          ParentFont = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 697
-        end
-        object LabelFormFullName: TLabel
-          AlignWithMargins = True
-          Left = 3
-          Top = 51
-          Width = 208
-          Height = 25
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = #1055#1086#1083#1085#1086#1077' '#1085#1072#1079#1074#1072#1085#1080#1077' '#1092#1086#1088#1084#1099
-        end
-        object LabelFormPeriod: TLabel
-          AlignWithMargins = True
-          Left = 3
-          Top = 141
-          Width = 208
-          Height = 25
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = #1055#1077#1088#1080#1086#1076#1080#1095#1085#1086#1089#1090#1100
-        end
-        object LabelFormOKUD: TLabel
-          AlignWithMargins = True
-          Left = 3
-          Top = 184
-          Width = 208
-          Height = 25
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = #1054#1050#1059#1044
-        end
-        object LabelFormSrok: TLabel
-          AlignWithMargins = True
-          Left = 3
-          Top = 227
-          Width = 208
-          Height = 25
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = #1057#1088#1086#1082' '#1089#1076#1072#1095#1080' '#1092#1086#1088#1084#1099
-        end
-        object EditFormFullName: TEdit
-          AlignWithMargins = True
-          Left = 217
-          Top = 329
-          Width = 504
-          Height = 25
-          Anchors = [akLeft, akTop, akRight]
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          Color = 1973790
-          ReadOnly = True
-          TabOrder = 0
-          StyleName = 'Glossy'
-          ExplicitWidth = 465
-        end
-        object MemoFormFullName: TMemo
-          Left = 217
-          Top = 51
-          Width = 504
-          Height = 70
-          Anchors = [akLeft, akTop, akRight]
-          BevelInner = bvLowered
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          ReadOnly = True
-          TabOrder = 1
-          ExplicitWidth = 465
-        end
-        object EditFormPeriod: TEdit
-          AlignWithMargins = True
-          Left = 217
-          Top = 141
-          Width = 504
-          Height = 25
-          Anchors = [akLeft, akTop, akRight]
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          Color = 1973790
-          ReadOnly = True
-          TabOrder = 2
-          StyleName = 'Glossy'
-          ExplicitWidth = 465
-        end
-        object EditFormOKUD: TEdit
-          AlignWithMargins = True
-          Left = 217
-          Top = 184
-          Width = 504
-          Height = 25
-          Anchors = [akLeft, akTop, akRight]
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          Color = 1973790
-          ReadOnly = True
-          TabOrder = 3
-          StyleName = 'Glossy'
-          ExplicitWidth = 465
-        end
-        object MemoFormSrok: TMemo
-          Left = 217
-          Top = 227
-          Width = 504
-          Height = 70
-          Anchors = [akLeft, akTop, akRight]
-          BevelInner = bvLowered
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          ReadOnly = True
-          TabOrder = 4
-          ExplicitWidth = 465
-        end
-        object EditFormFill: TEdit
-          AlignWithMargins = True
-          Left = 217
-          Top = 371
-          Width = 504
-          Height = 25
-          Anchors = [akLeft, akTop, akRight]
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          Color = 1973790
-          ReadOnly = True
-          TabOrder = 5
-          StyleName = 'Glossy'
-          ExplicitWidth = 465
-        end
-        object LinkLabelFormVersion: TLinkLabel
-          Left = 3
-          Top = 329
-          Width = 208
-          Height = 22
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = '<a href="http://www.somelink.com">'#1042#1077#1088#1089#1080#1103' '#1096#1072#1073#1083#1086#1085#1072' .xml</a>'
-          Color = clBtnFace
-          Font.Charset = RUSSIAN_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -19
-          Font.Name = 'Montserrat'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-          TabOrder = 6
-          UseVisualStyle = True
-        end
-        object LinkLabelFormFill: TLinkLabel
-          Left = 3
-          Top = 371
-          Width = 208
-          Height = 22
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 
-            '<a href="http://www.somelink.com">'#1059#1082#1072#1079#1072#1085#1080#1103' '#1087#1086' '#1079#1072#1087#1086#1083#1085#1077#1085#1080#1102' '#1092#1086#1088#1084#1099'</' +
-            'a>'
-          Color = clBtnFace
-          Font.Charset = RUSSIAN_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -19
-          Font.Name = 'Montserrat'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-          TabOrder = 7
-          UseVisualStyle = True
-        end
-        object EditFormYtv: TEdit
-          AlignWithMargins = True
-          Left = 217
-          Top = 411
-          Width = 504
-          Height = 25
-          Anchors = [akLeft, akTop, akRight]
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          Color = 1973790
-          ReadOnly = True
-          TabOrder = 8
-          StyleName = 'Glossy'
-          ExplicitWidth = 465
-        end
-        object LinkLabelFormYtv: TLinkLabel
-          Left = 3
-          Top = 411
-          Width = 208
-          Height = 22
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 
-            '<a href="http://www.somelink.com">'#1055#1088#1080#1082#1072#1079' '#1086#1073' '#1091#1090#1074#1077#1088#1078#1076#1077#1085#1080#1080' '#1092#1086#1088#1084#1099'</a' +
-            '>'
-          Color = clBtnFace
-          Font.Charset = RUSSIAN_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -19
-          Font.Name = 'Montserrat'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-          TabOrder = 9
-          UseVisualStyle = True
-        end
+        ExplicitWidth = 563
+        ExplicitHeight = 609
         object PanelFormDownload: TPanel
-          Left = 5
-          Top = 632
-          Width = 726
+          Left = 0
+          Top = 0
+          Width = 561
           Height = 63
-          Align = alBottom
-          TabOrder = 10
-          ExplicitWidth = 687
+          Align = alTop
+          TabOrder = 0
+          ExplicitWidth = 559
           DesignSize = (
-            726
+            561
             63)
           object ShapeFormXml: TShape
             Left = 16
@@ -402,6 +199,246 @@ object FormMain: TFormMain
             PopupMenu = PopupMenuLinks
             ShowHint = True
             Layout = tlCenter
+          end
+        end
+        object PanelFormContent: TPanel
+          Left = 0
+          Top = 63
+          Width = 561
+          Height = 550
+          Align = alClient
+          Padding.Left = 5
+          Padding.Top = 5
+          Padding.Right = 5
+          Padding.Bottom = 5
+          TabOrder = 1
+          ExplicitWidth = 559
+          ExplicitHeight = 542
+          DesignSize = (
+            561
+            550)
+          object LabelFormFullName: TLabel
+            AlignWithMargins = True
+            Left = 3
+            Top = 51
+            Width = 208
+            Height = 25
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = #1055#1086#1083#1085#1086#1077' '#1085#1072#1079#1074#1072#1085#1080#1077' '#1092#1086#1088#1084#1099
+          end
+          object LabelFormName: TLabel
+            Left = 6
+            Top = 6
+            Width = 549
+            Height = 25
+            Align = alTop
+            AutoSize = False
+            Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1092#1086#1088#1084#1099
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -16
+            Font.Name = 'Montserrat'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ExplicitLeft = 4
+          end
+          object LabelFormOKUD: TLabel
+            AlignWithMargins = True
+            Left = 3
+            Top = 184
+            Width = 208
+            Height = 25
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = #1054#1050#1059#1044
+          end
+          object LabelFormPeriod: TLabel
+            AlignWithMargins = True
+            Left = 3
+            Top = 144
+            Width = 208
+            Height = 25
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = #1055#1077#1088#1080#1086#1076#1080#1095#1085#1086#1089#1090#1100
+          end
+          object LabelFormSrok: TLabel
+            AlignWithMargins = True
+            Left = 3
+            Top = 227
+            Width = 208
+            Height = 25
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = #1057#1088#1086#1082' '#1089#1076#1072#1095#1080' '#1092#1086#1088#1084#1099
+          end
+          object EditFormFill: TEdit
+            AlignWithMargins = True
+            Left = 217
+            Top = 371
+            Width = 329
+            Height = 25
+            Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
+            ReadOnly = True
+            TabOrder = 0
+            StyleName = 'Glossy'
+            ExplicitWidth = 327
+          end
+          object EditFormFullName: TEdit
+            AlignWithMargins = True
+            Left = 217
+            Top = 329
+            Width = 329
+            Height = 25
+            Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
+            ReadOnly = True
+            TabOrder = 1
+            StyleName = 'Glossy'
+            ExplicitWidth = 327
+          end
+          object EditFormOKUD: TEdit
+            AlignWithMargins = True
+            Left = 217
+            Top = 184
+            Width = 329
+            Height = 25
+            Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
+            ReadOnly = True
+            TabOrder = 2
+            StyleName = 'Glossy'
+            ExplicitWidth = 327
+          end
+          object EditFormPeriod: TEdit
+            AlignWithMargins = True
+            Left = 217
+            Top = 141
+            Width = 329
+            Height = 25
+            Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
+            ReadOnly = True
+            TabOrder = 3
+            StyleName = 'Glossy'
+            ExplicitWidth = 327
+          end
+          object EditFormYtv: TEdit
+            AlignWithMargins = True
+            Left = 217
+            Top = 411
+            Width = 329
+            Height = 25
+            Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
+            ReadOnly = True
+            TabOrder = 4
+            StyleName = 'Glossy'
+            ExplicitWidth = 327
+          end
+          object LinkLabelFormFill: TLinkLabel
+            Left = 3
+            Top = 371
+            Width = 208
+            Height = 22
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 
+              '<a href="http://www.somelink.com">'#1059#1082#1072#1079#1072#1085#1080#1103' '#1087#1086' '#1079#1072#1087#1086#1083#1085#1077#1085#1080#1102' '#1092#1086#1088#1084#1099'</' +
+              'a>'
+            Color = clBtnFace
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Montserrat'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+            TabOrder = 5
+            UseVisualStyle = True
+          end
+          object LinkLabelFormVersion: TLinkLabel
+            Left = 3
+            Top = 329
+            Width = 208
+            Height = 22
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = '<a href="http://www.somelink.com">'#1042#1077#1088#1089#1080#1103' '#1096#1072#1073#1083#1086#1085#1072' .xml</a>'
+            Color = clBtnFace
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Montserrat'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+            TabOrder = 6
+            UseVisualStyle = True
+          end
+          object LinkLabelFormYtv: TLinkLabel
+            Left = 3
+            Top = 411
+            Width = 208
+            Height = 22
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 
+              '<a href="http://www.somelink.com">'#1055#1088#1080#1082#1072#1079' '#1086#1073' '#1091#1090#1074#1077#1088#1078#1076#1077#1085#1080#1080' '#1092#1086#1088#1084#1099'</a' +
+              '>'
+            Color = clBtnFace
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Montserrat'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+            TabOrder = 7
+            UseVisualStyle = True
+          end
+          object MemoFormFullName: TMemo
+            Left = 217
+            Top = 51
+            Width = 329
+            Height = 70
+            Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvLowered
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            ReadOnly = True
+            TabOrder = 8
+            ExplicitWidth = 327
+          end
+          object MemoFormSrok: TMemo
+            Left = 217
+            Top = 227
+            Width = 329
+            Height = 70
+            Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvLowered
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            ReadOnly = True
+            TabOrder = 9
+            ExplicitWidth = 327
           end
         end
       end

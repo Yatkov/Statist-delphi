@@ -14,7 +14,7 @@ begin
   Application.MainFormOnTaskbar := True;
   TStyleManager.TrySetStyle('Glossy');
   Application.Title := 'Статист';
-  Application.CreateForm(TFormMain, FormMain);
   Application.CreateForm(TDataModule1, DataModule1);
+  Application.CreateForm(TFormMain, FormMain);
   Application.Run;
 end.

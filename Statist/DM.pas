@@ -8,11 +8,14 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.SQLite,
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.VCLUI.Wait, Data.DB,
-  FireDAC.Comp.Client, Vcl.Forms;
+  FireDAC.Comp.Client, Vcl.Forms, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet;
 
 type
   TDataModule1 = class(TDataModule)
     FDConRosstatForm: TFDConnection;
+    FDTableForms: TFDTable;
+    FDQueryForms: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -41,6 +44,12 @@ begin
   try
     FDConRosstatForm.DriverName := 'SQLite';
     FDConRosstatForm.ConnectionName := ExtractFilePath(Application.ExeName) + 'db/RosstatForms.db';
+    FDConRosstatForm.Params.DriverID := 'SQLite';
+    FDConRosstatForm.Params.Database := ExtractFilePath(Application.ExeName) + 'db/RosstatForms.db';
+    FDTableForms.ConnectionName := FDConRosstatForm.ConnectionName;
+    FDTableForms.TableName := 'Forms';
+    FDQueryForms.ConnectionName :=  FDConRosstatForm.ConnectionName;
+    FDQueryForms.Connection := FDConRosstatForm;
   finally
 
   end;
