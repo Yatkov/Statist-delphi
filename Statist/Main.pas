@@ -8,7 +8,8 @@ uses
   Vcl.ExtCtrls, Vcl.ControlList, Vcl.VirtualImage, Vcl.WinXPanels, IdIOHandler,
   IdIOHandlerSocket, IdIOHandlerStack, IdSSL, IdSSLOpenSSL, IdServerIOHandler,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
-  System.Actions, Vcl.ActnList, Vcl.StdActns, clipbrd, JSON, System.RegularExpressions, XmlIntf, XmlDoc;
+  System.Actions, Vcl.ActnList, Vcl.StdActns, clipbrd, JSON, System.RegularExpressions, XmlIntf, XmlDoc,
+  Data.DB, Vcl.Grids, Vcl.DBGrids;
 
 type
   TFormMain = class(TForm)
@@ -20,7 +21,6 @@ type
     N2: TMenuItem;
     PanelForms: TPanel;
     EditFormsFind: TEdit;
-    ListBoxForms: TListBox;
     CheckBoxFormsFullName: TCheckBox;
     ScrollBoxForms: TScrollBox;
     LabelFormName: TLabel;
@@ -51,6 +51,9 @@ type
     PanelFormContent: TPanel;
     PanelFormControl: TPanel;
     ButtonUpdateForms: TButton;
+    LabelFormCounter: TLabel;
+    LabelMsg: TLabel;
+    DBGridForms: TDBGrid;
     procedure NLinksCopyToClipboardClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonUpdateFormsClick(Sender: TObject);
@@ -70,7 +73,6 @@ type
 
 var
   FormMain: TFormMain;
-
 implementation
 
 {$R *.dfm}
@@ -83,13 +85,21 @@ begin
 
   DataModule1.FDConRosstatForm.Open();
   DataModule1.FDTableForms.Open();
+
+  LabelFormCounter.Caption := 'Количество форм: ' + DataModule1.FDTableForms.RecordCount.ToString;
+  DBGridForms.Columns.Add;
+  DBGridForms.Columns[DBGridForms.Columns.Count-1].FieldName := 'shortName';
+  DBGridForms.Columns[DBGridForms.Columns.Count-1].Width := 250;
+  DBGridForms.Columns[DBGridForms.Columns.Count-1].Title.Caption := 'Название';
+  DBGridForms.Columns.Add;
+  DBGridForms.Columns[DBGridForms.Columns.Count-1].FieldName := 'xmlDate';
+  DBGridForms.Columns[DBGridForms.Columns.Count-1].Title.Caption := 'Версия';
+
 end;
 
 // Загрузка форм
 procedure TFormMain.loadForms();
-var HTTP: TIdHTTP;
-    SSL:TIdSSLIOHandlerSocketOpenSSL;
-    pageCount, temp, formsCounter: Integer;
+var pageCount, temp, formsCounter: Integer;
     pageRosstat, currentPage, nextPage, htmlDoc: String;
     RegExDateYtv, RegExDateYtvLink: TRegEx;
     JSONPage: TJSONObject;
@@ -97,6 +107,9 @@ var HTTP: TIdHTTP;
     forms: array of TStringList;
     XMLLink, DOCLink, PDFLink, shortName, longName, period, srok, Okud, DateYtv, DateYtvLink: String;
     XMLPos, DOCPos, PDFPos, shortNamePos, longNamePos, periodPos, srokPos, OkudPos, DateYtvPos: Integer;
+
+    HTTP: TIdHTTP;
+    SSL:TIdSSLIOHandlerSocketOpenSSL;
 begin
   HTTP := TIdHTTP.Create(nil);
   HTTP.HandleRedirects:=True;
@@ -104,7 +117,10 @@ begin
   HTTP.IOHandler := SSL;
   SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
   SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
+  //HTTP.ConnectTimeout := 5000;
+  //HTTP.ReadTimeout := 5000;
   pageCount := 0;
+  try
   try
     nextPage := '0';
     RegExDateYtv := TRegEx.Create('\<a href\=\".*?\>');
@@ -173,11 +189,16 @@ begin
         end;
         if OkudPos > 0 then Okud := formatText(forms[i].Strings[OkudPos], '<div>', '</div>');
         // createRecord(shortName, XMLLink, DOCLink, PDFLink, longName, DateYtv);
+        labelMsg.Caption := 'Обработка формы ' + shortName;
+        Application.ProcessMessages;
         writeToDB(shortName, longName, period, Okud, srok, DateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink);
       end;
       JSONPage.Free;
       //printData(shortName, longName, XMLLink, DOCLink, PDFLink, period, srok, DateYtv);
     end;
+  except on e:Exception do labelMsg.Caption := e.Message;
+
+  end;
   finally
     SSL.Free;
     HTTP.Free;
@@ -190,19 +211,28 @@ end;
 procedure TFormMain.writeToDB(shortName, longName, period, Okud, srok, dateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink: String);
 begin
   try
-    DataModule1.FDQueryForms.SQL.Text := 'Insert into Forms (shortName, fullName, period, Okud, srok, ytvDate, ytvLink, xmlLink, xmlDate, docLink, pdfLink) Values (:Value1, :Value2, :Value3, :Value4, :Value5, :Value6, :Value7, :Value8, :Value9, :Value10, :Value11)';
-    DataModule1.FDQueryForms.ParamByName('Value1').AsString := shortName;
-    DataModule1.FDQueryForms.ParamByName('Value2').AsString := longName;
-    DataModule1.FDQueryForms.ParamByName('Value3').AsString := period;
-    DataModule1.FDQueryForms.ParamByName('Value4').AsString := Okud;
-    DataModule1.FDQueryForms.ParamByName('Value5').AsString := srok;
-    DataModule1.FDQueryForms.ParamByName('Value6').AsString := dateYtv;
-    if length(dateYtvLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value7').AsString := 'https://rosstat.gov.ru' + dateYtvLink;
-    if length(XMLLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value8').AsString := 'https://rosstat.gov.ru' + XMLLink;
-    if length(XMLLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value9').AsString := parseXML('https://rosstat.gov.ru' + XMLLink);
-    if length(DOCLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value10').AsString := 'https://rosstat.gov.ru' + DOCLink;
-    if length(PDFLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value11').AsString := 'https://rosstat.gov.ru' + PDFLink;
-    DataModule1.FDQueryForms.ExecSQL;
+    try
+      DataModule1.FDQueryForms.SQL.Text := 'Insert into Forms (shortName, fullName, period, Okud, srok, ytvDate, ytvLink, xmlLink, xmlDate, docLink, pdfLink) Values (:Value1, :Value2, :Value3, :Value4, :Value5, :Value6, :Value7, :Value8, :Value9, :Value10, :Value11)';
+      DataModule1.FDQueryForms.ParamByName('Value1').AsString := shortName;
+      DataModule1.FDQueryForms.ParamByName('Value2').AsString := longName;
+      DataModule1.FDQueryForms.ParamByName('Value3').AsString := period;
+      DataModule1.FDQueryForms.ParamByName('Value4').AsString := Okud;
+      DataModule1.FDQueryForms.ParamByName('Value5').AsString := srok;
+      DataModule1.FDQueryForms.ParamByName('Value6').AsString := dateYtv;
+      if length(dateYtvLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value7').AsString := 'https://rosstat.gov.ru' + dateYtvLink
+      else DataModule1.FDQueryForms.ParamByName('Value7').AsString := '';
+      if length(XMLLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value8').AsString := 'https://rosstat.gov.ru' + XMLLink
+      else DataModule1.FDQueryForms.ParamByName('Value8').AsString := '';
+      if length(XMLLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value9').AsString := parseXML('https://rosstat.gov.ru' + XMLLink)
+      else DataModule1.FDQueryForms.ParamByName('Value9').AsString := '';
+      if length(DOCLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value10').AsString := 'https://rosstat.gov.ru' + DOCLink
+      else DataModule1.FDQueryForms.ParamByName('Value10').AsString := '';
+      if length(PDFLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value11').AsString := 'https://rosstat.gov.ru' + PDFLink
+      else DataModule1.FDQueryForms.ParamByName('Value11').AsString := '';
+      DataModule1.FDQueryForms.ExecSQL;
+    except on e:Exception do labelMsg.Caption := 'Ошибка при добавлении формы в БД';
+
+    end;
   finally
     DataModule1.FDQueryForms.Close;
   end;
@@ -222,12 +252,18 @@ end;
 
 procedure TFormMain.ButtonUpdateFormsClick(Sender: TObject);
 begin
-  loadForms;
+  if Application.MessageBox(pChar('Обновить формы (данные перезапишутся)?'), 'Обновление форм', MB_YESNO) = idYes then begin
+    //try
+      loadForms;
+    //except on e:Exception do labelMsg.Caption := 'Ошибка при обновлении!';
+      labelMsg.Caption := '';
+    //end;
+  end;
 end;
 
 procedure TFormMain.createRecord(title, XMLLink, DOCLink, PDFLink, longName, dateYtv: String);
 begin
-    ListBoxForms.Items.Add(title);
+    //ListBoxForms.Items.Add(title);
 end;
 
 procedure TFormMain.NLinksCopyToClipboardClick(Sender: TObject);
@@ -239,6 +275,7 @@ function TFormMain.parseXML(fileLink: string): String;
 var XMLDoc: IXMLDocument;
     XMLNode: IXMLNode;
     xmlFile: TMemoryStream;
+    version: string;
 
     HTTP: TIdHTTP;
     SSL:TIdSSLIOHandlerSocketOpenSSL;
@@ -249,6 +286,8 @@ begin
   HTTP.IOHandler := SSL;
   SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
   SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
+  //HTTP.ConnectTimeout := 5000;
+  //HTTP.ReadTimeout := 5000;
   XMLDoc := TXMLDocument.Create(nil);
   xmlFile := TMemoryStream.Create();
   try
@@ -256,8 +295,9 @@ begin
       HTTP.Get(fileLink, xmlFile);
       XMLDoc.LoadFromStream(xmlFile);
       XMLDoc.Active := True;
-      parseXML := XMLDoc.ChildNodes['metaForm'].AttributeNodes['version'].Text;
-    except on e: Exception do ShowMessage(e.Message);
+      version := XMLDoc.ChildNodes['metaForm'].AttributeNodes['version'].Text;
+      StringReplace(version, '-', '.' , [rfReplaceAll]);
+    except on e: Exception do labelMsg.Caption := 'Ошибка при чтении XML!';
     end;
   finally
     xmlFile.Free;

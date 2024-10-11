@@ -1,9 +1,6 @@
 ﻿[CheckBoxFormsFullName]
 Coordinates=140,144,142,51
 
-[ListBoxForms]
-Coordinates=10,10,84,105
-
 [PageControl1]
 Coordinates=10,258,81,33
 
@@ -38,7 +35,7 @@ Coordinates=349,10,113,51
 Coordinates=10,212,93,33
 
 []
-Coordinates=125,212,125,33
+Coordinates=10,10,84,105
 Visible=True
 
 [EditFormFullName]

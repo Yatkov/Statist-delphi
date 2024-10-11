@@ -2,8 +2,8 @@ object FormMain: TFormMain
   Left = 0
   Top = 0
   Caption = #1057#1090#1072#1090#1080#1089#1090
-  ClientHeight = 663
-  ClientWidth = 972
+  ClientHeight = 446
+  ClientWidth = 804
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -14,13 +14,13 @@ object FormMain: TFormMain
   WindowState = wsMaximized
   StyleName = 'Windows10 Dark'
   OnCreate = FormCreate
-  TextHeight = 18
+  TextHeight = 16
   object PageControl1: TPageControl
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 966
-    Height = 657
+    Width = 798
+    Height = 440
     ActivePage = TabSheet1
     Align = alClient
     MultiLine = True
@@ -29,53 +29,58 @@ object FormMain: TFormMain
     TabOrder = 0
     TabWidth = 170
     StyleName = 'Glossy'
-    ExplicitWidth = 964
-    ExplicitHeight = 649
     object TabSheet1: TTabSheet
       Caption = #1057#1074#1077#1076#1077#1085#1080#1103' '#1087#1086' '#1092#1086#1088#1084#1072#1084
       object PanelForms: TPanel
         Left = 0
         Top = 0
         Width = 393
-        Height = 617
+        Height = 400
         Align = alLeft
         TabOrder = 0
-        ExplicitHeight = 609
         object EditFormsFind: TEdit
           Left = 1
           Top = 1
           Width = 391
-          Height = 26
+          Height = 24
           Align = alTop
           TabOrder = 0
           TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1086#1088#1084#1072#1084'...'
         end
-        object ListBoxForms: TListBox
-          Left = 1
-          Top = 27
-          Width = 391
-          Height = 493
-          Align = alClient
-          Ctl3D = False
-          DoubleBuffered = True
-          ItemHeight = 18
-          ParentCtl3D = False
-          ParentDoubleBuffered = False
-          Sorted = True
-          TabOrder = 1
-          ExplicitHeight = 474
-        end
         object PanelFormControl: TPanel
           Left = 1
-          Top = 520
+          Top = 224
           Width = 391
-          Height = 96
+          Height = 175
           Align = alBottom
           Padding.Left = 5
           Padding.Top = 5
           Padding.Right = 5
           Padding.Bottom = 5
-          TabOrder = 2
+          TabOrder = 1
+          object LabelFormCounter: TLabel
+            Left = 6
+            Top = 65
+            Width = 379
+            Height = 16
+            Align = alTop
+            ExplicitWidth = 4
+          end
+          object LabelMsg: TLabel
+            Left = 6
+            Top = 81
+            Width = 379
+            Height = 15
+            Align = alTop
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Cambria'
+            Font.Style = [fsItalic]
+            ParentFont = False
+            StyleName = 'Windows'
+            ExplicitWidth = 3
+          end
           object CheckBoxFormsFullName: TCheckBox
             Left = 6
             Top = 6
@@ -84,9 +89,6 @@ object FormMain: TFormMain
             Align = alTop
             Caption = #1055#1086#1083#1085#1086#1077' '#1085#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1092#1086#1088#1084
             TabOrder = 0
-            ExplicitLeft = 1
-            ExplicitTop = 599
-            ExplicitWidth = 391
           end
           object ButtonUpdateForms: TButton
             Left = 6
@@ -99,28 +101,40 @@ object FormMain: TFormMain
             OnClick = ButtonUpdateFormsClick
           end
         end
+        object DBGridForms: TDBGrid
+          Left = 1
+          Top = 25
+          Width = 391
+          Height = 199
+          Align = alClient
+          DataSource = DataModule1.DataSource1
+          Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+          TabOrder = 2
+          TitleFont.Charset = RUSSIAN_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -13
+          TitleFont.Name = 'Montserrat Medium'
+          TitleFont.Style = [fsBold]
+        end
       end
       object ScrollBoxForms: TScrollBox
         Left = 393
         Top = 0
-        Width = 565
-        Height = 617
+        Width = 397
+        Height = 400
         VertScrollBar.Smooth = True
         Align = alClient
         TabOrder = 1
         StyleName = 'Glossy'
-        ExplicitWidth = 563
-        ExplicitHeight = 609
         object PanelFormDownload: TPanel
           Left = 0
           Top = 0
-          Width = 561
+          Width = 393
           Height = 63
           Align = alTop
           TabOrder = 0
-          ExplicitWidth = 559
           DesignSize = (
-            561
+            393
             63)
           object ShapeFormXml: TShape
             Left = 16
@@ -204,19 +218,17 @@ object FormMain: TFormMain
         object PanelFormContent: TPanel
           Left = 0
           Top = 63
-          Width = 561
-          Height = 550
+          Width = 393
+          Height = 333
           Align = alClient
           Padding.Left = 5
           Padding.Top = 5
           Padding.Right = 5
           Padding.Bottom = 5
           TabOrder = 1
-          ExplicitWidth = 559
-          ExplicitHeight = 542
           DesignSize = (
-            561
-            550)
+            393
+            333)
           object LabelFormFullName: TLabel
             AlignWithMargins = True
             Left = 3
@@ -230,7 +242,7 @@ object FormMain: TFormMain
           object LabelFormName: TLabel
             Left = 6
             Top = 6
-            Width = 549
+            Width = 381
             Height = 25
             Align = alTop
             AutoSize = False
@@ -242,6 +254,7 @@ object FormMain: TFormMain
             Font.Style = [fsBold]
             ParentFont = False
             ExplicitLeft = 4
+            ExplicitWidth = 549
           end
           object LabelFormOKUD: TLabel
             AlignWithMargins = True
@@ -277,7 +290,7 @@ object FormMain: TFormMain
             AlignWithMargins = True
             Left = 217
             Top = 371
-            Width = 329
+            Width = 161
             Height = 25
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -287,13 +300,12 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 0
             StyleName = 'Glossy'
-            ExplicitWidth = 327
           end
           object EditFormFullName: TEdit
             AlignWithMargins = True
             Left = 217
             Top = 329
-            Width = 329
+            Width = 161
             Height = 25
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -303,13 +315,12 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 1
             StyleName = 'Glossy'
-            ExplicitWidth = 327
           end
           object EditFormOKUD: TEdit
             AlignWithMargins = True
             Left = 217
             Top = 184
-            Width = 329
+            Width = 161
             Height = 25
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -319,13 +330,12 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 2
             StyleName = 'Glossy'
-            ExplicitWidth = 327
           end
           object EditFormPeriod: TEdit
             AlignWithMargins = True
             Left = 217
             Top = 141
-            Width = 329
+            Width = 161
             Height = 25
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -335,13 +345,12 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 3
             StyleName = 'Glossy'
-            ExplicitWidth = 327
           end
           object EditFormYtv: TEdit
             AlignWithMargins = True
             Left = 217
             Top = 411
-            Width = 329
+            Width = 161
             Height = 25
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -351,7 +360,6 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 4
             StyleName = 'Glossy'
-            ExplicitWidth = 327
           end
           object LinkLabelFormFill: TLinkLabel
             Left = 3
@@ -417,7 +425,7 @@ object FormMain: TFormMain
           object MemoFormFullName: TMemo
             Left = 217
             Top = 51
-            Width = 329
+            Width = 161
             Height = 70
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvLowered
@@ -425,12 +433,11 @@ object FormMain: TFormMain
             BorderStyle = bsNone
             ReadOnly = True
             TabOrder = 8
-            ExplicitWidth = 327
           end
           object MemoFormSrok: TMemo
             Left = 217
             Top = 227
-            Width = 329
+            Width = 161
             Height = 70
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvLowered
@@ -438,7 +445,6 @@ object FormMain: TFormMain
             BorderStyle = bsNone
             ReadOnly = True
             TabOrder = 9
-            ExplicitWidth = 327
           end
         end
       end
