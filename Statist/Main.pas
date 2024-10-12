@@ -1,4 +1,4 @@
-unit Main;
+﻿unit Main;
 
 interface
 
@@ -9,7 +9,15 @@ uses
   IdIOHandlerSocket, IdIOHandlerStack, IdSSL, IdSSLOpenSSL, IdServerIOHandler,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
   System.Actions, Vcl.ActnList, Vcl.StdActns, clipbrd, JSON, System.RegularExpressions, XmlIntf, XmlDoc,
-  Data.DB, Vcl.Grids, Vcl.DBGrids;
+  Data.DB, Vcl.Grids, Vcl.DBGrids, System.ImageList, Vcl.ImgList, Vcl.CheckLst,
+  Vcl.Buttons, Vcl.DBCtrls, Vcl.Mask, Vcl.Imaging.pngimage, Vcl.Samples.Spin;
+
+type
+  TDBGrid = class(Vcl.DBGrids.TDBGrid)
+  protected
+    procedure DrawColumnCell(const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState); override;
+  end;
 
 type
   TFormMain = class(TForm)
@@ -21,18 +29,13 @@ type
     N2: TMenuItem;
     PanelForms: TPanel;
     EditFormsFind: TEdit;
-    CheckBoxFormsFullName: TCheckBox;
     ScrollBoxForms: TScrollBox;
     LabelFormName: TLabel;
     LabelFormFullName: TLabel;
     EditFormFullName: TEdit;
-    MemoFormFullName: TMemo;
-    EditFormPeriod: TEdit;
-    EditFormOKUD: TEdit;
     LabelFormPeriod: TLabel;
     LabelFormOKUD: TLabel;
     LabelFormSrok: TLabel;
-    MemoFormSrok: TMemo;
     EditFormFill: TEdit;
     LinkLabelFormVersion: TLinkLabel;
     LinkLabelFormFill: TLinkLabel;
@@ -52,19 +55,75 @@ type
     PanelFormControl: TPanel;
     ButtonUpdateForms: TButton;
     LabelFormCounter: TLabel;
-    LabelMsg: TLabel;
     DBGridForms: TDBGrid;
+    ImageList1: TImageList;
+    PanelFormsSettings: TPanel;
+    ButtonFormsSettings: TButton;
+    Splitter1: TSplitter;
+    PanelFormsSettingsButton: TPanel;
+    GroupBoxSettings1: TGroupBox;
+    CheckListBoxFormsFields: TCheckListBox;
+    CheckBoxFormsFieldsAll: TCheckBox;
+    PanelCheckBoxFormsFieldControl: TPanel;
+    BitBtnCheckBoxOk: TBitBtn;
+    BitBtnCheckBoxCancel: TBitBtn;
+    DBMemoFormFullName: TDBMemo;
+    DBEditFormPeriod: TDBEdit;
+    DBEditFormOKUD: TDBEdit;
+    DBMemoFormSrok: TDBMemo;
+    PanelUpdate: TPanel;
+    GroupBoxFormsUpdate: TGroupBox;
+    CheckBoxForceUpdate: TCheckBox;
+    PanelUpdateControl: TPanel;
+    PanelUpdateHeader: TPanel;
+    PanelUpdateForms: TPanel;
+    CheckBoxSelectAllForms: TCheckBox;
+    ImageUpdateClose: TImage;
+    ButtonCheckForms: TButton;
+    LabelUpdateHelp1: TLabel;
+    ButtonBeginUpdateForms: TButton;
+    LabelUpdateHelp2: TLabel;
+    CheckListBoxFormsUpdate: TCheckListBox;
+    EditFormFindUpdate: TEdit;
+    PanelFormFindUpdate: TPanel;
+    LabelRecordCountUpdate: TLabel;
+    SpinButtonChangeRecordUpdate: TSpinButton;
+    PopupMenuSort: TPopupMenu;
+    NUnsort: TMenuItem;
+    MemoUpdateMsg: TMemo;
     procedure NLinksCopyToClipboardClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonUpdateFormsClick(Sender: TObject);
+    procedure ButtonFormsSettingsClick(Sender: TObject);
+    procedure CheckBoxFormsFieldsAllClick(Sender: TObject);
+    procedure BitBtnCheckBoxCancelClick(Sender: TObject);
+    procedure BitBtnCheckBoxOkClick(Sender: TObject);
+    procedure EditFormsFindChange(Sender: TObject);
+    procedure DBGridFormsCellClick(Column: TColumn);
+    procedure ImageUpdateCloseClick(Sender: TObject);
+    procedure PanelUpdateHeaderMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure ButtonBeginUpdateFormsClick(Sender: TObject);
+    procedure CheckBoxForceUpdateClick(Sender: TObject);
+    procedure ButtonCheckFormsClick(Sender: TObject);
+    procedure EditFormFindUpdateChange(Sender: TObject);
+    procedure SpinButtonChangeRecordUpdateDownClick(Sender: TObject);
+    procedure SpinButtonChangeRecordUpdateUpClick(Sender: TObject);
+    procedure CheckBoxSelectAllFormsClick(Sender: TObject);
+    procedure DBGridFormsTitleClick(Column: TColumn);
+    procedure NUnsortClick(Sender: TObject);
   private
     { Private declarations }
+    var okuds: array of String;
+        findRecordsInUpdate: array of Integer;
+        fSortColumn: string;
+        fSortDirection: boolean;
     procedure loadForms();
     procedure printData(shortName, longName, XMLLink, DOCLink, PDFLink, period, srok, DateYtv: String);
     procedure SplitByMultipleSpaces(const Input: string; List: TStringList);
     function formatText(inputText, firstPos, lastPos: String):String;
     function JSONUnescape(const Source: string; CRLF: string = #13#10): string;
-    procedure createRecord(title, XMLLink, DOCLink, PDFLink, longName, dateYtv: String);
+    procedure clearDB();
     procedure writeToDB(shortName, longName, period, Okud, srok, dateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink: String);
     function parseXML(fileLink: string): String;
   public
@@ -79,25 +138,365 @@ implementation
 
 uses DM;
 
+// Перерисовка Таблицы для троеточия
+procedure TDBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer;
+  Column: TColumn; State: TGridDrawState);
+var
+  CellText: string;
+  TextWidth: Integer;
+  MaxWidth: Integer;
+begin
+  // Получаем текст из текущей ячейки
+  CellText := Column.Field.AsString;
+
+  // Вычисляем ширину текста
+  TextWidth := Canvas.TextWidth(CellText);
+
+  // Максимальная ширина ячейки
+  MaxWidth := Rect.Right - Rect.Left - 10; // Учитываем небольшой отступ
+
+  // Если текст шире, чем ячейка, добавляем троеточие
+  if TextWidth > MaxWidth then
+  begin
+    // Убираем часть текста и добавляем троеточие
+    while (TextWidth > MaxWidth) and (Length(CellText) > 0) do
+    begin
+      CellText := Copy(CellText, 1, Length(CellText) - 1);
+      TextWidth := Canvas.TextWidth(CellText + '...');
+    end;
+    CellText := CellText + '...';
+  end;
+
+  // Рисуем ячейку с нужным текстом
+  inherited DrawColumnCell(Rect, DataCol, Column, State);
+
+  // Рисуем текст в ячейке
+  Canvas.FillRect(Rect);
+  TextOut(Canvas.Handle, Rect.Left + 2, Rect.Top + (Rect.Height div 2) - (Canvas.TextHeight(CellText) div 2), PChar(CellText), Length(CellText));
+end;
+
+// При создании
 procedure TFormMain.FormCreate(Sender: TObject);
+var fCaption:array[0..11] of String;
+    fSize: array[0..11] of Integer;
 begin
   Self.Position := poScreenCenter;
 
   DataModule1.FDConRosstatForm.Open();
   DataModule1.FDTableForms.Open();
 
-  LabelFormCounter.Caption := '���������� ����: ' + DataModule1.FDTableForms.RecordCount.ToString;
-  DBGridForms.Columns.Add;
-  DBGridForms.Columns[DBGridForms.Columns.Count-1].FieldName := 'shortName';
-  DBGridForms.Columns[DBGridForms.Columns.Count-1].Width := 250;
-  DBGridForms.Columns[DBGridForms.Columns.Count-1].Title.Caption := '��������';
-  DBGridForms.Columns.Add;
-  DBGridForms.Columns[DBGridForms.Columns.Count-1].FieldName := 'xmlDate';
-  DBGridForms.Columns[DBGridForms.Columns.Count-1].Title.Caption := '������';
+  LabelFormCounter.Caption := 'Количество форм: ' + IntToStr(DataModule1.FDTableForms.RecordCount);
+
+  fCaption[0] := 'Название формы';            fSize[0] := 250;
+  fCaption[1] := 'Полное название';           fSize[1] := 250;
+  fCaption[2] := 'Период';                    fSize[2] := 100;
+  fCaption[3] := 'ОКУД';                      fSize[3] := 100;
+  fCaption[4] := 'Срок сдачи';                fSize[4] := 250;
+  fCaption[5] := 'Дата утверждения';          fSize[5] := 150;
+  fCaption[6] := 'Ссылка на утверждение';     fSize[6] := 250;
+  fCaption[7] := 'Ссылка на .xml';            fSize[7] := 250;
+  fCaption[8] := 'Дата .xml';                 fSize[8] := 100;
+  fCaption[9] := 'Ссылка на .doc';            fSize[9] := 250;
+  fCaption[10] := 'Ссылка на .pdf';           fSize[10] := 250;
+  fCaption[11] := 'Ссылка на документацию';   fSize[11] := 250;
+
+  for var i := 0 to DataModule1.FDTableForms.FieldCount-1 do begin
+    DBGridForms.Columns.Add;
+    DBGridForms.Columns[i].FieldName := DataModule1.FDTableForms.Fields[i].FieldName;
+    DBGridForms.Columns[i].Width := fSize[i];
+    DBGridForms.Columns[i].Title.Caption := fCaption[i];
+    CheckListBoxFormsFields.Items.Add(fCaption[i]);
+  end;
+  DBGridForms.Columns[1].Visible := false;
+  DBGridForms.Columns[2].Visible := false;
+  DBGridForms.Columns[3].Visible := false;
+  DBGridForms.Columns[4].Visible := false;
+  DBGridForms.Columns[5].Visible := false;
+  DBGridForms.Columns[6].Visible := false;
+  DBGridForms.Columns[7].Visible := false;
+  DBGridForms.Columns[9].Visible := false;
+  DBGridForms.Columns[10].Visible := false;
+  DBGridForms.Columns[11].Visible := false;
+
+  DBMemoFormFullName.DataField := 'fullName';
+  DBEditFormPeriod.DataField := 'period';
+  DBEditFormOKUD.DataField := 'okud';
+  DBMemoFormSrok.DataField := 'srok';
+
+  PanelUpdate.Left := (screen.width - PanelUpdate.Width) div 2;
+  PanelUpdate.Top := (screen.height - PanelUpdate.Height) div 3;
 
 end;
 
-// �������� ����
+// Выбрать все формы
+procedure TFormMain.CheckBoxFormsFieldsAllClick(Sender: TObject);
+begin
+  CheckListBoxFormsFields.CheckAll(CheckBoxFormsFieldsAll.State);
+end;
+
+procedure TFormMain.printData(shortName, longName, XMLLink, DOCLink, PDFLink, period, srok, DateYtv: String);
+begin
+  {LabelFormName.Caption := shortName;
+  EditFormFullName.Text := longName;
+  LabelFormXML.Hint := XMLLink;
+  LabelFormDoc.Hint := DOCLink;
+  LabelFormPdf.Hint := PDFLink;
+  EditFormPeriod.Text := period;
+  MemoFormSrok.Text := srok;
+  EditFormYtv.Text := DateYtv; }
+end;
+
+// Выбор формы из списка
+procedure TFormMain.DBGridFormsCellClick(Column: TColumn);
+var shortName: string;
+begin
+  LabelFormName.Caption := DBGridForms.Fields[0].AsString;
+end;
+
+// Сортировка таблицы форм
+procedure TFormMain.DBGridFormsTitleClick(Column: TColumn);
+var sortOrder: string;
+    columnIntex: integer;
+begin
+ if fSortColumn = Column.FieldName then
+  fSortDirection := not fSortDirection
+ else begin
+  fSortColumn := Column.FieldName;
+  fSortDirection := True;
+ end;
+
+ if fSortDirection then sortOrder := 'A'
+ else sortOrder := 'D';
+
+ DataModule1.FDTableForms.Close;
+ if DataModule1.FDTableForms.IndexFieldNames <> '' then DBGridForms.Columns[Column.Index].Title.Caption := Copy(DBGridForms.Columns[Column.Index].Title.Caption, 1, Length(DBGridForms.Columns[Column.Index].Title.Caption)-2);
+ DataModule1.FDTableForms.IndexFieldNames := fSortColumn + ':' + sortOrder;
+
+ if sortOrder = 'A' then DBGridForms.Columns[Column.Index].Title.Caption := DBGridForms.Columns[Column.Index].Title.Caption + ' ↓';
+ if sortOrder = 'D' then DBGridForms.Columns[Column.Index].Title.Caption := DBGridForms.Columns[Column.Index].Title.Caption + ' ↑';
+
+ DataModule1.FDTableForms.Open;
+ NUnsort.Enabled := true;
+end;
+
+// Отмена сортировки
+procedure TFormMain.NUnsortClick(Sender: TObject);
+var sortingRecord: string;
+begin
+  fSortColumn := '';
+  fSortDirection := True;
+  DataModule1.FDTableForms.Close;
+  sortingRecord := copy(DataModule1.FDTableForms.IndexFieldNames, 1, Length(DataModule1.FDTableForms.IndexFieldNames)-2);
+  DataModule1.FDTableForms.IndexFieldNames := '';
+  DataModule1.FDTableForms.Open;
+  NUnsort.Enabled := false;
+
+  for var i := 0 to DataModule1.FDTableForms.FieldCount-1 do begin
+    if DBGridForms.Columns[i].FieldName = sortingRecord then begin
+      DBGridForms.Columns[i].Title.Caption := Copy(DBGridForms.Columns[i].Title.Caption, 1, Length(DBGridForms.Columns[i].Title.Caption)-2);
+      break;
+    end;
+  end;
+end;
+
+//======================= НАСТРОЙКИ =====================================
+
+// Вызов панели настроек
+procedure TFormMain.ButtonFormsSettingsClick(Sender: TObject);
+begin
+    PanelFormsSettings.Visible := not(PanelFormsSettings.Visible);
+    PanelFormsSettingsButton.SetFocus;
+
+    for var i := 0 to DataModule1.FDTableForms.FieldCount-1 do
+      if DBGridForms.Columns[i].Visible then
+        CheckListBoxFormsFields.Checked[i] := True
+      else CheckListBoxFormsFields.Checked[i] := False;
+end;
+
+// ОК - Показать отмеченные поля форм
+procedure TFormMain.BitBtnCheckBoxOkClick(Sender: TObject);
+begin
+  for var i := 0 to DataModule1.FDTableForms.FieldCount-1 do
+      if CheckListBoxFormsFields.Checked[i] then
+        DBGridForms.Columns[i].Visible := True
+      else DBGridForms.Columns[i].Visible := False;
+  PanelFormsSettings.Visible := False;
+end;
+
+// Отмена - закрытие окна настроек
+procedure TFormMain.BitBtnCheckBoxCancelClick(Sender: TObject);
+begin
+  PanelFormsSettings.Visible := False;
+end;
+
+//======================= ОБНОВЛЕНИЕ =====================================
+
+// Кнопка запуска мастера обновления форм
+procedure TFormMain.ButtonUpdateFormsClick(Sender: TObject);
+begin
+  NUnsortClick(Sender);
+  PanelForms.Enabled := false;
+  PanelFormsSettings.Visible := False;
+  PanelUpdate.Visible := True;
+
+  PanelUpdate.SetFocus;
+  if CheckListBoxFormsUpdate.Count <= 0 then begin
+    setlength(okuds, DataModule1.FDTableForms.RecordCount);
+    var i := 0;
+
+    DataModule1.FDQueryForms.SQL.Text := 'select * from Forms';
+    DataModule1.FDQueryForms.Open();
+    CheckListBoxFormsUpdate.Items.BeginUpdate;
+    while not DataModule1.FDQueryForms.Eof do begin
+      okuds[i] := DataModule1.FDQueryForms.FieldByName('okud').AsString;
+      CheckListBoxFormsUpdate.Items.Add(DataModule1.FDQueryForms.FieldByName('shortName').AsString);
+      DataModule1.FDQueryForms.Next;
+      inc(i);
+    end;
+    CheckListBoxFormsUpdate.Items.EndUpdate;
+  end;
+end;
+
+// Закрытие панели Мастера обновления
+procedure TFormMain.ImageUpdateCloseClick(Sender: TObject);
+begin
+  PanelUpdate.Visible := False;
+  PanelForms.Enabled := true;
+end;
+
+// Перемещение панели обновления
+procedure TFormMain.PanelUpdateHeaderMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+const SC_DragMove = $F012;
+begin
+   ReleaseCapture;
+   PanelUpdate.Perform(WM_SysCommand, SC_DragMove, 0);
+end;
+
+// Выбрать все формы в обновлении
+procedure TFormMain.CheckBoxSelectAllFormsClick(Sender: TObject);
+begin
+  CheckListBoxFormsUpdate.CheckAll(CheckBoxSelectAllForms.State);
+end;
+
+// Включить возможность принудительного обновления
+procedure TFormMain.CheckBoxForceUpdateClick(Sender: TObject);
+begin
+  if Application.MessageBox(pChar('Включить возможность принудительного обновления? Такое обновление очистит всю базу данных и займет какое то время на добавление'), 'Включение принудительного обновления', MB_YESNO) = idYes then begin
+    ButtonBeginUpdateForms.Enabled := CheckBoxForceUpdate.Checked;
+    PanelUpdate.SetFocus;
+  end;
+end;
+
+// Поиск по формам в окне обновления
+procedure TFormMain.EditFormFindUpdateChange(Sender: TObject);
+begin
+  if Length(EditFormFindUpdate.Text) = 0 then begin
+    LabelRecordCountUpdate.Caption := '';
+    SpinButtonChangeRecordUpdate.Enabled := false;
+  end else begin
+
+    setLength(findRecordsInUpdate, 0);
+    for var i := 0 to CheckListBoxFormsUpdate.Count-1 do begin
+      if Pos(EditFormFindUpdate.Text, CheckListBoxFormsUpdate.Items[i]) > 0 then begin
+        //CheckListBoxFormsUpdate.Selected[i] := true;
+        //break;
+        setLength(findRecordsInUpdate, Length(findRecordsInUpdate)+1);
+        findRecordsInUpdate[Length(findRecordsInUpdate)-1] := i;
+      end;
+    end;
+
+    if Length(findRecordsInUpdate) > 0 then begin
+      LabelRecordCountUpdate.Caption := ' 1 / ' + Length(findRecordsInUpdate).ToString;
+      CheckListBoxFormsUpdate.Selected[findRecordsInUpdate[0]] := true;
+    end;
+    SpinButtonChangeRecordUpdate.Enabled := true;
+  end;
+end;
+
+// Перемещение между найденными записями в Обновлении - вниз
+procedure TFormMain.SpinButtonChangeRecordUpdateDownClick(Sender: TObject);
+var currentRecord, recordsCount: String;
+begin
+  currentRecord := LabelRecordCountUpdate.Caption;
+  recordsCount := LabelRecordCountUpdate.Caption;
+
+  Delete(currentRecord, Pos(' / ', currentRecord), length(currentRecord));
+  Delete(recordsCount, 1, Pos(' / ', recordsCount)+1);
+
+  if StrToInt(currentRecord) < StrToInt(recordsCount) then begin
+    currentRecord := IntToStr(StrToInt(currentRecord)+1);
+    LabelRecordCountUpdate.Caption := ' ' + currentRecord + ' /' + recordsCount;
+    CheckListBoxFormsUpdate.Selected[findRecordsInUpdate[StrToInt(currentRecord)-1]] := true;
+  end;
+end;
+
+// Перемещение между найденными записями в Обновлении - наверх
+procedure TFormMain.SpinButtonChangeRecordUpdateUpClick(Sender: TObject);
+var currentRecord, recordsCount: String;
+begin
+  currentRecord := LabelRecordCountUpdate.Caption;
+  recordsCount := LabelRecordCountUpdate.Caption;
+
+  Delete(currentRecord, Pos(' / ', currentRecord), length(currentRecord));
+  Delete(recordsCount, 1, Pos(' / ', recordsCount)+1);
+
+  if StrToInt(currentRecord) > 1 then begin
+    currentRecord := IntToStr(StrToInt(currentRecord)-1);
+    LabelRecordCountUpdate.Caption := ' ' + currentRecord + ' /' + recordsCount;
+    CheckListBoxFormsUpdate.Selected[findRecordsInUpdate[StrToInt(currentRecord)-1]] := true;
+  end;
+end;
+
+// Проверка актуальности выбранных форм
+procedure TFormMain.ButtonCheckFormsClick(Sender: TObject);
+begin
+  PanelUpdate.SetFocus;
+  if Application.MessageBox(pChar('Проверить отмеченные формы?'), 'Проверка актуальности', MB_YESNO) = idYes then begin
+    //pass
+  end;
+end;
+
+// Принудительнное обновление
+procedure TFormMain.ButtonBeginUpdateFormsClick(Sender: TObject);
+var HTTP: TIdHTTP;
+    SSL:TIdSSLIOHandlerSocketOpenSSL;
+begin
+  if Application.MessageBox(pChar('Обновить все формы принудительно? Данные базы данных очистяться!'), 'Обновление форм', MB_YESNO) = idYes then begin
+      HTTP := TIdHTTP.Create(nil);
+      HTTP.HandleRedirects:=True;
+      SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
+      HTTP.IOHandler := SSL;
+      SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
+      SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
+      try
+        try
+          HTTP.Get('https://rosstat.gov.ru/monitoring/getPage?page=1&query=&year=2024&heading=');
+          if HTTP.ResponseCode = 200 then begin
+            DataModule1.FDTableForms.Close();
+            MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Начало обновления');
+            clearDB;
+            loadForms;
+            DataModule1.FDTableForms.Open();
+            MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Обновление завершено');
+          end;
+        except  on e: EIdHTTPProtocolException do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] [HTTP code ' + intToStr(HTTP.ResponseCode) + '] ' + e.Message);
+                on e: Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + e.Message);
+        end;
+      finally
+        SSL.Free;
+        HTTP.Free;
+      end;
+  end;
+end;
+
+procedure TFormMain.clearDB();
+begin
+  DataModule1.FDQueryForms.SQL.Text := 'delete from Forms';
+  DataModule1.FDQueryForms.ExecSQL;
+end;
+
+// Загрузка форм
 procedure TFormMain.loadForms();
 var pageCount, temp, formsCounter: Integer;
     pageRosstat, currentPage, nextPage, htmlDoc: String;
@@ -168,11 +567,11 @@ begin
           if (AnsiPos('<a class="btn btn-icon btn-white btn-br"', forms[i].Strings[j]) > 0) and (AnsiPos('.xml', forms[i].Strings[j]) > 0) then XMLPos := j;
           if (AnsiPos('<a class="btn btn-icon btn-white btn-br"', forms[i].Strings[j]) > 0) and (AnsiPos('.doc', forms[i].Strings[j]) > 0) then DOCPos := j;
           if (AnsiPos('<a class="btn btn-icon btn-white btn-br"', forms[i].Strings[j]) > 0) and (AnsiPos('.pdf', forms[i].Strings[j]) > 0) then PDFPos := j;
-          if AnsiPos('<div>������ �����</div>', forms[i].Strings[j]) > 0 then shortNamePos := j+1;
-          if AnsiPos('<div>�������������</div>', forms[i].Strings[j]) > 0 then periodPos := j+1;
-          if AnsiPos('<div>���� ����� �����</div>', forms[i].Strings[j]) > 0 then srokPos := j+1;
-          if AnsiPos('<div>���� � ����� ������� �� ����������� �����</div>', forms[i].Strings[j]) > 0 then DateYtvPos := j+2;
-          if AnsiPos('<div>��� ����� �� ����</div>', forms[i].Strings[j]) > 0 then OkudPos := j+1;
+          if AnsiPos('<div>Индекс формы</div>', forms[i].Strings[j]) > 0 then shortNamePos := j+1;
+          if AnsiPos('<div>Периодичность</div>', forms[i].Strings[j]) > 0 then periodPos := j+1;
+          if AnsiPos('<div>Срок сдачи формы</div>', forms[i].Strings[j]) > 0 then srokPos := j+1;
+          if AnsiPos('<div>Дата и номер приказа об утверждении формы</div>', forms[i].Strings[j]) > 0 then DateYtvPos := j+2;
+          if AnsiPos('<div>Код формы по ОКУД</div>', forms[i].Strings[j]) > 0 then OkudPos := j+1;
         end;
         if longNamePos > 0 then longName := formatText(forms[i].Strings[longNamePos], '<div class="toggle-card__title">', '</div>');
         if shortNamePos > 0 then shortName := formatText(forms[i].Strings[shortNamePos], '<div>', '</div>');
@@ -189,14 +588,14 @@ begin
         end;
         if OkudPos > 0 then Okud := formatText(forms[i].Strings[OkudPos], '<div>', '</div>');
         // createRecord(shortName, XMLLink, DOCLink, PDFLink, longName, DateYtv);
-        labelMsg.Caption := '��������� ����� ' + shortName;
+        MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Обработка формы ' + shortName + '...');
         Application.ProcessMessages;
         writeToDB(shortName, longName, period, Okud, srok, DateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink);
       end;
       JSONPage.Free;
       //printData(shortName, longName, XMLLink, DOCLink, PDFLink, period, srok, DateYtv);
     end;
-  except on e:Exception do labelMsg.Caption := e.Message;
+  except on e:Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + ']' + e.Message);
 
   end;
   finally
@@ -208,62 +607,14 @@ begin
   //showMessage(IntToStr(Http.ResponseCode));
 end;
 
-procedure TFormMain.writeToDB(shortName, longName, period, Okud, srok, dateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink: String);
+// Поиск по формам
+procedure TFormMain.EditFormsFindChange(Sender: TObject);
 begin
-  try
-    try
-      DataModule1.FDQueryForms.SQL.Text := 'Insert into Forms (shortName, fullName, period, Okud, srok, ytvDate, ytvLink, xmlLink, xmlDate, docLink, pdfLink) Values (:Value1, :Value2, :Value3, :Value4, :Value5, :Value6, :Value7, :Value8, :Value9, :Value10, :Value11)';
-      DataModule1.FDQueryForms.ParamByName('Value1').AsString := shortName;
-      DataModule1.FDQueryForms.ParamByName('Value2').AsString := longName;
-      DataModule1.FDQueryForms.ParamByName('Value3').AsString := period;
-      DataModule1.FDQueryForms.ParamByName('Value4').AsString := Okud;
-      DataModule1.FDQueryForms.ParamByName('Value5').AsString := srok;
-      DataModule1.FDQueryForms.ParamByName('Value6').AsString := dateYtv;
-      if length(dateYtvLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value7').AsString := 'https://rosstat.gov.ru' + dateYtvLink
-      else DataModule1.FDQueryForms.ParamByName('Value7').AsString := '';
-      if length(XMLLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value8').AsString := 'https://rosstat.gov.ru' + XMLLink
-      else DataModule1.FDQueryForms.ParamByName('Value8').AsString := '';
-      if length(XMLLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value9').AsString := parseXML('https://rosstat.gov.ru' + XMLLink)
-      else DataModule1.FDQueryForms.ParamByName('Value9').AsString := '';
-      if length(DOCLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value10').AsString := 'https://rosstat.gov.ru' + DOCLink
-      else DataModule1.FDQueryForms.ParamByName('Value10').AsString := '';
-      if length(PDFLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value11').AsString := 'https://rosstat.gov.ru' + PDFLink
-      else DataModule1.FDQueryForms.ParamByName('Value11').AsString := '';
-      DataModule1.FDQueryForms.ExecSQL;
-    except on e:Exception do labelMsg.Caption := '������ ��� ���������� ����� � ��';
-
-    end;
-  finally
-    DataModule1.FDQueryForms.Close;
-  end;
-end;
-
-procedure TFormMain.printData(shortName, longName, XMLLink, DOCLink, PDFLink, period, srok, DateYtv: String);
-begin
-  LabelFormName.Caption := shortName;
-  EditFormFullName.Text := longName;
-  LabelFormXML.Hint := XMLLink;
-  LabelFormDoc.Hint := DOCLink;
-  LabelFormPdf.Hint := PDFLink;
-  EditFormPeriod.Text := period;
-  MemoFormSrok.Text := srok;
-  EditFormYtv.Text := DateYtv;
-end;
-
-procedure TFormMain.ButtonUpdateFormsClick(Sender: TObject);
-begin
-  if Application.MessageBox(pChar('�������� ����� (������ �������������)?'), '���������� ����', MB_YESNO) = idYes then begin
-    //try
-      loadForms;
-    //except on e:Exception do labelMsg.Caption := '������ ��� ����������!';
-      labelMsg.Caption := '';
-    //end;
-  end;
-end;
-
-procedure TFormMain.createRecord(title, XMLLink, DOCLink, PDFLink, longName, dateYtv: String);
-begin
-    //ListBoxForms.Items.Add(title);
+  if Length(EditFormsFind.Text) > 0 then begin
+    DataModule1.DataSource1.DataSet := DataModule1.FDQueryForms;
+    DataModule1.FDQueryForms.SQL.Text := 'select * from Forms where shortName like ' + '''%' + EditFormsFind.Text + '%''';
+    DataModule1.FDQueryForms.Open();
+  end else DataModule1.DataSource1.DataSet := DataModule1.FDTableForms;
 end;
 
 procedure TFormMain.NLinksCopyToClipboardClick(Sender: TObject);
@@ -271,6 +622,7 @@ begin
   Clipboard.AsText := (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TLabel).hint;
 end;
 
+// Парсинг .xml
 function TFormMain.parseXML(fileLink: string): String;
 var XMLDoc: IXMLDocument;
     XMLNode: IXMLNode;
@@ -297,7 +649,7 @@ begin
       XMLDoc.Active := True;
       version := XMLDoc.ChildNodes['metaForm'].AttributeNodes['version'].Text;
       StringReplace(version, '-', '.' , [rfReplaceAll]);
-    except on e: Exception do labelMsg.Caption := '������ ��� ������ XML!';
+    except on e: Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + ']' + e.Message);
     end;
   finally
     xmlFile.Free;
@@ -306,7 +658,38 @@ begin
   end;
 end;
 
-// �������� �������� � ������� �����
+// Запись в БД
+procedure TFormMain.writeToDB(shortName, longName, period, Okud, srok, dateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink: String);
+begin
+  try
+    try
+      DataModule1.FDQueryForms.SQL.Text := 'Insert into Forms (shortName, fullName, period, Okud, srok, ytvDate, ytvLink, xmlLink, xmlDate, docLink, pdfLink) Values (:Value1, :Value2, :Value3, :Value4, :Value5, :Value6, :Value7, :Value8, :Value9, :Value10, :Value11)';
+      DataModule1.FDQueryForms.ParamByName('Value1').AsString := shortName;
+      DataModule1.FDQueryForms.ParamByName('Value2').AsString := longName;
+      DataModule1.FDQueryForms.ParamByName('Value3').AsString := period;
+      DataModule1.FDQueryForms.ParamByName('Value4').AsString := Okud;
+      DataModule1.FDQueryForms.ParamByName('Value5').AsString := srok;
+      DataModule1.FDQueryForms.ParamByName('Value6').AsString := dateYtv;
+      if length(dateYtvLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value7').AsString := 'https://rosstat.gov.ru' + dateYtvLink
+      else DataModule1.FDQueryForms.ParamByName('Value7').AsString := '';
+      if length(XMLLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value8').AsString := 'https://rosstat.gov.ru' + XMLLink
+      else DataModule1.FDQueryForms.ParamByName('Value8').AsString := '';
+      if length(XMLLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value9').AsString := parseXML('https://rosstat.gov.ru' + XMLLink)
+      else DataModule1.FDQueryForms.ParamByName('Value9').AsString := '';
+      if length(DOCLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value10').AsString := 'https://rosstat.gov.ru' + DOCLink
+      else DataModule1.FDQueryForms.ParamByName('Value10').AsString := '';
+      if length(PDFLink) > 0 then DataModule1.FDQueryForms.ParamByName('Value11').AsString := 'https://rosstat.gov.ru' + PDFLink
+      else DataModule1.FDQueryForms.ParamByName('Value11').AsString := '';
+      DataModule1.FDQueryForms.ExecSQL;
+    except on e:Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + ']' + e.Message);
+
+    end;
+  finally
+    DataModule1.FDQueryForms.Close;
+  end;
+end;
+
+// Удаление пробелов и перенос строк
 procedure TFormMain.SplitByMultipleSpaces(const Input: string; List: TStringList);
 var
   Matches: TMatchCollection;
@@ -314,7 +697,7 @@ var
   LastIndex, StartIndex: Integer;
 begin
   List.Clear;
-  Matches := TRegEx.Matches(Input, '\s{2,}'); // ���� ������������������ �� ���� ��� ����� ��������
+  Matches := TRegEx.Matches(Input, '\s{2,}'); // Ищем последовательности из двух или более пробелов
   LastIndex := 1;
   for Match in Matches do
   begin
@@ -326,7 +709,7 @@ begin
     List.Add(Copy(Input, LastIndex, MaxInt));
 end;
 
-// �������������� ������ �� HTML
+// Форматирование данных их HTML
 function TFormMain.formatText(inputText, firstPos, lastPos: String):String;
 var text: String;
     firstPosCount: Integer;
@@ -338,7 +721,7 @@ begin
   formatText := text;
 end;
 
-// ������ �������
+// Юникод декодер
 function TFormMain.JSONUnescape(const Source: string; CRLF: string = #13#10): string;
 const
   ESCAPE_CHAR = '\';

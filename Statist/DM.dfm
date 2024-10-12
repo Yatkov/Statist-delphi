@@ -11,11 +11,14 @@ object DataModule1: TDataModule1
   end
   object FDTableForms: TFDTable
     Connection = FDConRosstatForm
+    FetchOptions.AssignedValues = [evRowsetSize]
+    FetchOptions.RowsetSize = 250
     Left = 179
     Top = 13
   end
   object FDQueryForms: TFDQuery
     Connection = FDConRosstatForm
+    FetchOptions.AssignedValues = [evRowsetSize]
     Left = 269
     Top = 13
   end
