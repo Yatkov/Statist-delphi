@@ -3,7 +3,7 @@ object FormMain: TFormMain
   Top = 0
   Caption = #1057#1090#1072#1090#1080#1089#1090
   ClientHeight = 738
-  ClientWidth = 1099
+  ClientWidth = 1215
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -16,13 +16,13 @@ object FormMain: TFormMain
   StyleName = 'Windows10 Dark'
   OnCreate = FormCreate
   TextHeight = 18
-  object PageControl1: TPageControl
+  object PageControlMain: TPageControl
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 1093
+    Width = 1209
     Height = 732
-    ActivePage = TabSheet1
+    ActivePage = TabSheetForms
     Align = alClient
     MultiLine = True
     ScrollOpposite = True
@@ -30,7 +30,8 @@ object FormMain: TFormMain
     TabOrder = 0
     TabWidth = 170
     StyleName = 'Glossy'
-    object TabSheet1: TTabSheet
+    ExplicitWidth = 1093
+    object TabSheetForms: TTabSheet
       Caption = #1057#1074#1077#1076#1077#1085#1080#1103' '#1087#1086' '#1092#1086#1088#1084#1072#1084
       object Splitter1: TSplitter
         Left = 389
@@ -61,9 +62,9 @@ object FormMain: TFormMain
         end
         object PanelFormControl: TPanel
           Left = 1
-          Top = 630
+          Top = 648
           Width = 387
-          Height = 61
+          Height = 43
           Align = alBottom
           Padding.Left = 5
           Padding.Top = 5
@@ -83,7 +84,7 @@ object FormMain: TFormMain
           Left = 1
           Top = 68
           Width = 387
-          Height = 562
+          Height = 580
           Align = alClient
           DataSource = DataModule1.DataSource1
           Options = [dgTitles, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -217,425 +218,537 @@ object FormMain: TFormMain
       object ScrollBoxForms: TScrollBox
         Left = 399
         Top = 0
-        Width = 686
+        Width = 802
         Height = 692
         VertScrollBar.Smooth = True
         Align = alClient
         TabOrder = 1
         StyleName = 'Glossy'
+        ExplicitWidth = 686
         object PanelFormDownload: TPanel
           Left = 0
           Top = 0
-          Width = 682
-          Height = 63
+          Width = 798
+          Height = 169
           Align = alTop
           TabOrder = 0
-          DesignSize = (
-            682
-            63)
-          object ShapeFormXml: TShape
-            Left = 16
-            Top = 16
-            Width = 81
-            Height = 33
-            Cursor = crHandPoint
-            Anchors = [akLeft, akTop, akBottom]
-            Brush.Style = bsClear
-            Pen.Color = clWhite
-            Shape = stRoundRect
+          ExplicitWidth = 682
+          object GroupBoxUsefulFiles: TGroupBox
+            Left = 561
+            Top = 1
+            Width = 232
+            Height = 167
+            Align = alLeft
+            Caption = #1055#1086#1083#1077#1079#1085#1099#1077' '#1092#1072#1081#1083#1099
+            TabOrder = 0
+            object TreeViewUsefulFiles: TTreeView
+              Left = 2
+              Top = 20
+              Width = 228
+              Height = 145
+              Align = alClient
+              Images = ImageListUsefulFiles
+              Indent = 19
+              ReadOnly = True
+              ShowRoot = False
+              StateImages = ImageListUsefulFiles
+              TabOrder = 0
+              Items.NodeData = {
+                070100000009540054007200650065004E006F00640065003B00000000000000
+                00000000FFFFFFFFFFFFFFFF00000000000000000000000000010E1004320442
+                043E04370430043F043E043B043D0435043D0438043504}
+              ExplicitWidth = 183
+            end
           end
-          object ShapeFormDoc: TShape
-            Left = 144
-            Top = 16
-            Width = 81
-            Height = 33
-            Cursor = crHandPoint
-            Anchors = [akLeft, akTop, akBottom]
-            Brush.Style = bsClear
-            Pen.Color = clWhite
-            Shape = stRoundRect
+          object GroupBoxFormGovernmLinks: TGroupBox
+            Left = 209
+            Top = 1
+            Width = 352
+            Height = 167
+            Align = alLeft
+            Caption = #1047#1072#1082#1086#1085#1086#1076#1072#1090#1077#1083#1100#1085#1072#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1103
+            TabOrder = 1
+            DesignSize = (
+              352
+              167)
+            object LinkLabelFormFill: TLinkLabel
+              Left = 5
+              Top = 34
+              Width = 188
+              Height = 22
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 
+                '<a href="http://www.somelink.com">'#1059#1082#1072#1079#1072#1085#1080#1103' '#1087#1086' '#1079#1072#1087#1086#1083#1085#1077#1085#1080#1102' '#1092#1086#1088#1084#1099'</' +
+                'a>'
+              Color = clBtnFace
+              Font.Charset = RUSSIAN_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -19
+              Font.Name = 'Montserrat'
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+              TabOrder = 0
+              UseVisualStyle = True
+            end
+            object LinkLabelFormYtv: TLinkLabel
+              Left = 5
+              Top = 80
+              Width = 188
+              Height = 22
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 
+                '<a href="http://www.somelink.com">'#1055#1088#1080#1082#1072#1079' '#1086#1073' '#1091#1090#1074#1077#1088#1078#1076#1077#1085#1080#1080' '#1092#1086#1088#1084#1099'</a' +
+                '>'
+              Color = clBtnFace
+              Font.Charset = RUSSIAN_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -19
+              Font.Name = 'Montserrat'
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+              TabOrder = 1
+              UseVisualStyle = True
+            end
+            object DBEditFormFill: TDBEdit
+              Left = 207
+              Top = 34
+              Width = 134
+              Height = 26
+              Anchors = [akLeft, akTop, akRight]
+              DataSource = DataModule1.DataSource1
+              ReadOnly = True
+              TabOrder = 2
+              ExplicitWidth = 138
+            end
+            object DBEditFormYtv: TDBEdit
+              Left = 206
+              Top = 77
+              Width = 135
+              Height = 26
+              Anchors = [akLeft, akTop, akRight]
+              DataSource = DataModule1.DataSource1
+              ReadOnly = True
+              TabOrder = 3
+              ExplicitWidth = 139
+            end
           end
-          object ShapeFormPdf: TShape
-            Left = 264
-            Top = 16
-            Width = 81
-            Height = 33
-            Cursor = crHandPoint
-            Anchors = [akLeft, akTop, akBottom]
-            Brush.Style = bsClear
-            Pen.Color = clWhite
-            Shape = stRoundRect
-          end
-          object LabelFormXML: TLabel
-            Left = 16
-            Top = 16
-            Width = 81
-            Height = 33
-            Cursor = crHandPoint
-            Alignment = taCenter
-            Anchors = [akLeft, akTop, akBottom]
-            AutoSize = False
-            Caption = 'XML'
-            ParentShowHint = False
-            PopupMenu = PopupMenuLinks
-            ShowHint = True
-            Layout = tlCenter
-          end
-          object LabelFormDoc: TLabel
-            Left = 144
-            Top = 16
-            Width = 81
-            Height = 33
-            Cursor = crHandPoint
-            Alignment = taCenter
-            Anchors = [akLeft, akTop, akBottom]
-            AutoSize = False
-            Caption = 'DOC'
-            ParentShowHint = False
-            PopupMenu = PopupMenuLinks
-            ShowHint = True
-            Layout = tlCenter
-          end
-          object LabelFormPdf: TLabel
-            Left = 264
-            Top = 16
-            Width = 81
-            Height = 33
-            Cursor = crHandPoint
-            Alignment = taCenter
-            Anchors = [akLeft, akTop, akBottom]
-            AutoSize = False
-            Caption = 'PDF'
-            ParentShowHint = False
-            PopupMenu = PopupMenuLinks
-            ShowHint = True
-            Layout = tlCenter
+          object GroupBoxFormMainLink: TGroupBox
+            Left = 1
+            Top = 1
+            Width = 208
+            Height = 167
+            Align = alLeft
+            Caption = #1057#1089#1099#1083#1082#1080' '#1085#1072' '#1086#1089#1085#1086#1074#1085#1099#1077' '#1092#1072#1081#1083#1099
+            TabOrder = 2
+            object ShapeFormDoc: TShape
+              Left = 16
+              Top = 80
+              Width = 81
+              Height = 33
+              Cursor = crHandPoint
+              Brush.Style = bsClear
+              ParentShowHint = False
+              Pen.Color = clWhite
+              Shape = stRoundRect
+              ShowHint = False
+            end
+            object ShapeFormPdf: TShape
+              Left = 16
+              Top = 128
+              Width = 81
+              Height = 33
+              Cursor = crHandPoint
+              Brush.Style = bsClear
+              ParentShowHint = False
+              Pen.Color = clWhite
+              Shape = stRoundRect
+              ShowHint = False
+            end
+            object ShapeFormXml: TShape
+              Left = 16
+              Top = 30
+              Width = 81
+              Height = 33
+              Cursor = crHandPoint
+              Brush.Style = bsClear
+              ParentShowHint = False
+              Pen.Color = clWhite
+              Shape = stRoundRect
+              ShowHint = False
+            end
+            object LabelFormXML: TLabel
+              Left = 16
+              Top = 30
+              Width = 81
+              Height = 33
+              Cursor = crHandPoint
+              Alignment = taCenter
+              AutoSize = False
+              Caption = 'XML'
+              ParentShowHint = False
+              PopupMenu = PopupMenuLinks
+              ShowHint = True
+              Transparent = True
+              Layout = tlCenter
+            end
+            object LabelFormPdf: TLabel
+              Left = 16
+              Top = 128
+              Width = 81
+              Height = 33
+              Cursor = crHandPoint
+              Alignment = taCenter
+              AutoSize = False
+              Caption = 'PDF'
+              ParentShowHint = False
+              PopupMenu = PopupMenuLinks
+              ShowHint = True
+              Layout = tlCenter
+            end
+            object LabelFormDoc: TLabel
+              Left = 16
+              Top = 80
+              Width = 81
+              Height = 33
+              Cursor = crHandPoint
+              Alignment = taCenter
+              AutoSize = False
+              Caption = 'DOC'
+              ParentShowHint = False
+              PopupMenu = PopupMenuLinks
+              ShowHint = True
+              Layout = tlCenter
+            end
+            object DBEditFormXmlDate: TDBEdit
+              Left = 111
+              Top = 34
+              Width = 90
+              Height = 26
+              Hint = #1042#1077#1088#1089#1080#1103' xml'
+              BevelInner = bvNone
+              BevelOuter = bvNone
+              BorderStyle = bsNone
+              Color = 1973790
+              DataSource = DataModule1.DataSource1
+              Font.Charset = RUSSIAN_CHARSET
+              Font.Color = clWhite
+              Font.Height = -13
+              Font.Name = 'Montserrat Medium'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ParentShowHint = False
+              ReadOnly = True
+              ShowHint = True
+              TabOrder = 0
+              StyleName = 'Windows'
+            end
           end
         end
         object PanelFormContent: TPanel
           Left = 0
-          Top = 63
-          Width = 682
-          Height = 625
-          Align = alClient
+          Top = 169
+          Width = 798
+          Height = 248
+          Align = alTop
           Padding.Left = 5
           Padding.Top = 5
           Padding.Right = 5
           Padding.Bottom = 5
           TabOrder = 1
+          ExplicitWidth = 682
           DesignSize = (
-            682
-            625)
+            798
+            248)
           object LabelFormFullName: TLabel
             AlignWithMargins = True
             Left = 3
             Top = 51
-            Width = 208
+            Width = 190
             Height = 25
             Alignment = taRightJustify
             AutoSize = False
             Caption = #1055#1086#1083#1085#1086#1077' '#1085#1072#1079#1074#1072#1085#1080#1077' '#1092#1086#1088#1084#1099
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Montserrat SemiBold'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object LabelFormName: TLabel
+          object LabelFormOKUD: TLabel
+            AlignWithMargins = True
+            Left = 3
+            Top = 127
+            Width = 190
+            Height = 25
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = #1054#1050#1059#1044
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Montserrat SemiBold'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelFormPeriod: TLabel
+            AlignWithMargins = True
+            Left = 367
+            Top = 127
+            Width = 114
+            Height = 25
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = #1055#1077#1088#1080#1086#1076#1080#1095#1085#1086#1089#1090#1100
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Montserrat SemiBold'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelFormSrok: TLabel
+            AlignWithMargins = True
+            Left = 3
+            Top = 164
+            Width = 190
+            Height = 25
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = #1057#1088#1086#1082' '#1089#1076#1072#1095#1080' '#1092#1086#1088#1084#1099
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Montserrat SemiBold'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object DBTextFormName: TDBText
             Left = 6
             Top = 6
-            Width = 670
+            Width = 786
             Height = 25
             Align = alTop
-            AutoSize = False
-            Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1092#1086#1088#1084#1099
+            DataSource = DataModule1.DataSource1
             Font.Charset = RUSSIAN_CHARSET
             Font.Color = clWindowText
             Font.Height = -16
             Font.Name = 'Montserrat'
             Font.Style = [fsBold]
             ParentFont = False
-            ExplicitLeft = 4
-            ExplicitWidth = 549
-          end
-          object LabelFormOKUD: TLabel
-            AlignWithMargins = True
-            Left = 3
-            Top = 184
-            Width = 208
-            Height = 25
-            Alignment = taRightJustify
-            AutoSize = False
-            Caption = #1054#1050#1059#1044
-          end
-          object LabelFormPeriod: TLabel
-            AlignWithMargins = True
-            Left = 3
-            Top = 144
-            Width = 208
-            Height = 25
-            Alignment = taRightJustify
-            AutoSize = False
-            Caption = #1055#1077#1088#1080#1086#1076#1080#1095#1085#1086#1089#1090#1100
-          end
-          object LabelFormSrok: TLabel
-            AlignWithMargins = True
-            Left = 3
-            Top = 227
-            Width = 208
-            Height = 25
-            Alignment = taRightJustify
-            AutoSize = False
-            Caption = #1057#1088#1086#1082' '#1089#1076#1072#1095#1080' '#1092#1086#1088#1084#1099
-          end
-          object EditFormFill: TEdit
-            AlignWithMargins = True
-            Left = 217
-            Top = 371
-            Width = 450
-            Height = 25
-            Anchors = [akLeft, akTop, akRight]
-            BevelInner = bvNone
-            BevelOuter = bvNone
-            BorderStyle = bsNone
-            Color = 1973790
-            ReadOnly = True
-            TabOrder = 0
-            StyleName = 'Glossy'
-          end
-          object EditFormFullName: TEdit
-            AlignWithMargins = True
-            Left = 217
-            Top = 329
-            Width = 450
-            Height = 25
-            Anchors = [akLeft, akTop, akRight]
-            BevelInner = bvNone
-            BevelOuter = bvNone
-            BorderStyle = bsNone
-            Color = 1973790
-            ReadOnly = True
-            TabOrder = 1
-            StyleName = 'Glossy'
-          end
-          object EditFormYtv: TEdit
-            AlignWithMargins = True
-            Left = 217
-            Top = 411
-            Width = 450
-            Height = 25
-            Anchors = [akLeft, akTop, akRight]
-            BevelInner = bvNone
-            BevelOuter = bvNone
-            BorderStyle = bsNone
-            Color = 1973790
-            ReadOnly = True
-            TabOrder = 2
-            StyleName = 'Glossy'
-          end
-          object LinkLabelFormFill: TLinkLabel
-            Left = 3
-            Top = 371
-            Width = 208
-            Height = 22
-            Alignment = taRightJustify
-            AutoSize = False
-            Caption = 
-              '<a href="http://www.somelink.com">'#1059#1082#1072#1079#1072#1085#1080#1103' '#1087#1086' '#1079#1072#1087#1086#1083#1085#1077#1085#1080#1102' '#1092#1086#1088#1084#1099'</' +
-              'a>'
-            Color = clBtnFace
-            Font.Charset = RUSSIAN_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -19
-            Font.Name = 'Montserrat'
-            Font.Style = [fsBold]
-            ParentColor = False
-            ParentFont = False
-            TabOrder = 3
-            UseVisualStyle = True
-          end
-          object LinkLabelFormVersion: TLinkLabel
-            Left = 3
-            Top = 329
-            Width = 208
-            Height = 22
-            Alignment = taRightJustify
-            AutoSize = False
-            Caption = '<a href="http://www.somelink.com">'#1042#1077#1088#1089#1080#1103' '#1096#1072#1073#1083#1086#1085#1072' .xml</a>'
-            Color = clBtnFace
-            Font.Charset = RUSSIAN_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -19
-            Font.Name = 'Montserrat'
-            Font.Style = [fsBold]
-            ParentColor = False
-            ParentFont = False
-            TabOrder = 4
-            UseVisualStyle = True
-          end
-          object LinkLabelFormYtv: TLinkLabel
-            Left = 3
-            Top = 411
-            Width = 208
-            Height = 22
-            Alignment = taRightJustify
-            AutoSize = False
-            Caption = 
-              '<a href="http://www.somelink.com">'#1055#1088#1080#1082#1072#1079' '#1086#1073' '#1091#1090#1074#1077#1088#1078#1076#1077#1085#1080#1080' '#1092#1086#1088#1084#1099'</a' +
-              '>'
-            Color = clBtnFace
-            Font.Charset = RUSSIAN_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -19
-            Font.Name = 'Montserrat'
-            Font.Style = [fsBold]
-            ParentColor = False
-            ParentFont = False
-            TabOrder = 5
-            UseVisualStyle = True
+            ExplicitLeft = 232
+            ExplicitWidth = 65
           end
           object DBMemoFormFullName: TDBMemo
             Left = 217
             Top = 51
-            Width = 450
-            Height = 70
+            Width = 566
+            Height = 62
             Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
             DataSource = DataModule1.DataSource1
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Montserrat Medium'
+            Font.Style = [fsBold]
+            ParentFont = False
             ReadOnly = True
-            TabOrder = 6
+            TabOrder = 0
+            StyleName = 'Windows'
+            ExplicitWidth = 450
           end
           object DBEditFormPeriod: TDBEdit
-            Left = 217
-            Top = 141
-            Width = 450
+            Left = 496
+            Top = 127
+            Width = 286
             Height = 26
             Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
             DataSource = DataModule1.DataSource1
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Montserrat Medium'
+            Font.Style = [fsBold]
+            ParentFont = False
             ReadOnly = True
-            TabOrder = 7
+            TabOrder = 1
+            StyleName = 'Windows'
+            ExplicitWidth = 170
           end
           object DBEditFormOKUD: TDBEdit
             Left = 217
-            Top = 184
-            Width = 450
+            Top = 127
+            Width = 104
             Height = 26
-            Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
             DataSource = DataModule1.DataSource1
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Montserrat Medium'
+            Font.Style = [fsBold]
+            ParentFont = False
             ReadOnly = True
-            TabOrder = 8
+            TabOrder = 2
+            StyleName = 'Windows'
           end
           object DBMemoFormSrok: TDBMemo
             Left = 217
-            Top = 227
-            Width = 450
+            Top = 164
+            Width = 566
             Height = 70
             Anchors = [akLeft, akTop, akRight]
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 1973790
+            DataSource = DataModule1.DataSource1
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Montserrat Medium'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 3
+            StyleName = 'Windows'
+            ExplicitWidth = 450
+          end
+          object DBEditFormXmlLink: TDBEdit
+            Left = 4
+            Top = 195
+            Width = 53
+            Height = 26
             DataSource = DataModule1.DataSource1
             ReadOnly = True
-            TabOrder = 9
+            TabOrder = 4
+            Visible = False
+            OnChange = DBEditFormXmlLinkChange
+          end
+          object DBEditFormDocLink: TDBEdit
+            Left = 72
+            Top = 195
+            Width = 49
+            Height = 26
+            DataSource = DataModule1.DataSource1
+            ReadOnly = True
+            TabOrder = 5
+            Visible = False
+            OnChange = DBEditFormDocLinkChange
+          end
+          object DBEditFormPdfLink: TDBEdit
+            Left = 136
+            Top = 195
+            Width = 49
+            Height = 26
+            DataSource = DataModule1.DataSource1
+            ReadOnly = True
+            TabOrder = 6
+            Visible = False
+            OnChange = DBEditFormPdfLinkChange
+          end
+        end
+        object PageControlFormContent: TPageControl
+          Left = 0
+          Top = 417
+          Width = 798
+          Height = 271
+          ActivePage = TabSheet1
+          Align = alClient
+          TabOrder = 2
+          ExplicitLeft = 168
+          ExplicitTop = 29
+          ExplicitWidth = 577
+          ExplicitHeight = 193
+          object TabSheet1: TTabSheet
+            Caption = #1055#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088
+            object ScrollBoxFormPreview: TScrollBox
+              Left = 0
+              Top = 0
+              Width = 790
+              Height = 238
+              Align = alClient
+              BorderStyle = bsNone
+              Padding.Top = 5
+              Padding.Bottom = 10
+              TabOrder = 0
+              OnMouseWheelDown = ScrollBoxFormPreviewMouseWheelDown
+              OnMouseWheelUp = ScrollBoxFormPreviewMouseWheelUp
+              ExplicitWidth = 569
+              ExplicitHeight = 160
+              object LabelFormPreview: TLabel
+                Left = 0
+                Top = 5
+                Width = 790
+                Height = 21
+                Cursor = crHandPoint
+                Align = alTop
+                Caption = #1055#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088' '#1092#1086#1088#1084#1099
+                Font.Charset = RUSSIAN_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -15
+                Font.Name = 'Montserrat Medium'
+                Font.Style = [fsBold]
+                ParentFont = False
+                OnClick = LabelFormPreviewClick
+                OnMouseEnter = LabelFormPreviewMouseEnter
+                OnMouseLeave = LabelFormPreviewMouseLeave
+                ExplicitWidth = 179
+              end
+            end
+          end
+          object TabSheet2: TTabSheet
+            Caption = #1042#1085#1091#1090#1088#1080#1092#1086#1088#1084#1077#1085#1085#1099#1081' '#1082#1086#1085#1090#1088#1086#1083#1100
+            ImageIndex = 1
+          end
+          object TabSheet3: TTabSheet
+            Caption = #1052#1072#1090#1077#1088#1080#1072#1083
+            ImageIndex = 2
           end
         end
       end
       object PanelUpdate: TPanel
-        Left = 437
-        Top = 104
-        Width = 324
-        Height = 585
+        Left = 405
+        Top = 587
+        Width = 457
+        Height = 686
         BevelOuter = bvNone
         BorderStyle = bsSingle
         Ctl3D = False
         ParentCtl3D = False
         TabOrder = 2
         Visible = False
-        object PanelUpdateControl: TPanel
+        object Splitter2: TSplitter
           Left = 0
-          Top = 368
-          Width = 322
-          Height = 136
+          Top = 540
+          Width = 455
+          Height = 12
+          Cursor = crVSplit
           Align = alBottom
-          Padding.Left = 5
-          Padding.Top = 5
-          Padding.Right = 5
-          Padding.Bottom = 10
-          TabOrder = 0
-          ExplicitTop = 388
-          ExplicitWidth = 330
-          DesignSize = (
-            322
-            136)
-          object LabelUpdateHelp1: TLabel
-            Left = 295
-            Top = 6
-            Width = 10
-            Height = 40
-            Cursor = crHelp
-            Hint = 
-              #1059' '#1086#1090#1084#1077#1095#1077#1085#1085#1099#1093' '#1092#1086#1088#1084' '#1074#1099#1087#1086#1083#1085#1103#1077#1090#1089#1103' '#1087#1086#1080#1089#1082' xml '#1092#1072#1081#1083#1086#1074'. '#1055#1086#1089#1083#1077' '#1101#1090#1086#1075#1086' '#1089#1088#1072#1074 +
-              #1085#1080#1074#1072#1077#1090#1089#1103' '#1074#1077#1088#1089#1080#1103' '#1092#1086#1088#1084#1099' '#1074' '#1092#1072#1081#1083#1077' '#1080' '#1074#1077#1088#1089#1080#1103', '#1082#1086#1090#1086#1088#1072#1103' '#1074' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
-            Alignment = taCenter
-            Anchors = [akLeft, akTop, akRight]
-            AutoSize = False
-            Caption = '?'
-            ParentShowHint = False
-            ShowHint = True
-            Layout = tlCenter
-            ExplicitWidth = 18
-          end
-          object LabelUpdateHelp2: TLabel
-            Left = 247
-            Top = 98
-            Width = 10
-            Height = 27
-            Cursor = crHelp
-            Hint = #1042#1099#1087#1086#1083#1085#1103#1077#1090#1089#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077' '#1086#1090#1084#1077#1095#1077#1085#1085#1099#1093' '#1092#1086#1088#1084' '#1073#1077#1079' '#1087#1088#1086#1074#1077#1088#1082#1080
-            Alignment = taCenter
-            Anchors = [akLeft, akTop, akRight]
-            AutoSize = False
-            Caption = '?'
-            ParentShowHint = False
-            ShowHint = True
-            Layout = tlCenter
-            ExplicitWidth = 18
-          end
-          object CheckBoxForceUpdate: TCheckBox
-            Left = 6
-            Top = 98
-            Width = 227
-            Height = 27
-            Anchors = [akLeft, akTop, akRight]
-            Caption = #1055#1088#1080#1085#1091#1076#1080#1090#1077#1083#1100#1085#1086#1077' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077
-            TabOrder = 0
-            OnClick = CheckBoxForceUpdateClick
-            ExplicitWidth = 235
-          end
-          object ButtonCheckForms: TButton
-            Left = 6
-            Top = 6
-            Width = 275
-            Height = 40
-            Anchors = [akLeft, akTop, akRight]
-            Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1092#1086#1088#1084#1099' '#1085#1072' '#1072#1082#1090#1091#1072#1083#1100#1085#1086#1089#1090#1100
-            TabOrder = 1
-            WordWrap = True
-            OnClick = ButtonCheckFormsClick
-            ExplicitWidth = 283
-          end
-          object ButtonBeginUpdateForms: TButton
-            Left = 6
-            Top = 52
-            Width = 275
-            Height = 40
-            Hint = 
-              #1059' '#1074#1099#1073#1088#1072#1085#1085#1099#1093' '#1092#1086#1088#1084' '#1074#1099#1087#1086#1083#1085#1103#1077#1090#1089#1103' '#1087#1086#1080#1089#1082' '#1085#1072' xml '#1092#1072#1081#1083#1099'. '#1055#1086#1089#1083#1077' '#1101#1090#1086#1075#1086' '#1089#1088#1072 +
-              #1074#1085#1080#1074#1072#1077#1090#1089#1103' '#1074#1077#1088#1089#1080#1103' '#1092#1086#1088#1084#1099' '#1074' '#1092#1072#1081#1083#1077' '#1080' '#1074#1077#1088#1089#1080#1103', '#1082#1086#1090#1086#1088#1072#1103' '#1074' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
-            Anchors = [akLeft, akTop, akRight]
-            Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1086#1090#1084#1077#1095#1077#1085#1099#1077' '#1092#1086#1088#1084#1099
-            Enabled = False
-            TabOrder = 2
-            WordWrap = True
-            OnClick = ButtonBeginUpdateFormsClick
-            ExplicitWidth = 283
-          end
+          Beveled = True
+          ResizeStyle = rsLine
+          ExplicitTop = 539
+          ExplicitWidth = 322
         end
         object PanelUpdateHeader: TPanel
           Left = 0
           Top = 0
-          Width = 322
+          Width = 455
           Height = 41
           Cursor = crArrow
           Hint = #1047#1072#1082#1088#1099#1090#1100
@@ -651,12 +764,11 @@ object FormMain: TFormMain
           Padding.Right = 10
           ParentBackground = False
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 0
           StyleName = 'Windows'
           OnMouseDown = PanelUpdateHeaderMouseDown
-          ExplicitWidth = 330
           object ImageUpdateClose: TImage
-            Left = 288
+            Left = 421
             Top = 0
             Width = 24
             Height = 41
@@ -696,123 +808,11 @@ object FormMain: TFormMain
             ExplicitLeft = 296
           end
         end
-        object PanelUpdateForms: TPanel
-          Left = 0
-          Top = 41
-          Width = 322
-          Height = 327
-          Align = alClient
-          Padding.Left = 5
-          Padding.Right = 5
-          Padding.Bottom = 5
-          TabOrder = 2
-          ExplicitWidth = 330
-          ExplicitHeight = 347
-          object GroupBoxFormsUpdate: TGroupBox
-            Left = 6
-            Top = 54
-            Width = 310
-            Height = 267
-            Align = alClient
-            Caption = #1057#1087#1080#1089#1086#1082' '#1092#1086#1088#1084' '#1082' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1102
-            TabOrder = 0
-            ExplicitTop = 28
-            ExplicitWidth = 318
-            ExplicitHeight = 313
-            object CheckListBoxFormsUpdate: TCheckListBox
-              Left = 1
-              Top = 19
-              Width = 308
-              Height = 247
-              Align = alClient
-              ItemHeight = 18
-              TabOrder = 0
-              ExplicitWidth = 316
-              ExplicitHeight = 293
-            end
-          end
-          object CheckBoxSelectAllForms: TCheckBox
-            Left = 6
-            Top = 1
-            Width = 310
-            Height = 27
-            Align = alTop
-            Caption = #1042#1099#1073#1088#1072#1090#1100' '#1074#1089#1077' '#1092#1086#1088#1084#1099
-            TabOrder = 1
-            OnClick = CheckBoxSelectAllFormsClick
-            ExplicitWidth = 318
-          end
-          object PanelFormFindUpdate: TPanel
-            Left = 6
-            Top = 28
-            Width = 310
-            Height = 26
-            Align = alTop
-            Padding.Left = 5
-            Padding.Right = 15
-            TabOrder = 2
-            ExplicitWidth = 318
-            object LabelRecordCountUpdate: TLabel
-              Left = 221
-              Top = 1
-              Width = 73
-              Height = 24
-              Align = alClient
-              Layout = tlCenter
-              ExplicitWidth = 3
-              ExplicitHeight = 18
-            end
-            object EditFormFindUpdate: TEdit
-              Left = 6
-              Top = 1
-              Width = 195
-              Height = 24
-              Align = alLeft
-              TabOrder = 0
-              TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1086#1088#1084#1072#1084'...'
-              OnChange = EditFormFindUpdateChange
-            end
-            object SpinButtonChangeRecordUpdate: TSpinButton
-              Left = 201
-              Top = 1
-              Width = 20
-              Height = 24
-              Align = alLeft
-              DownGlyph.Data = {
-                0E010000424D0E01000000000000360000002800000009000000060000000100
-                200000000000D800000000000000000000000000000000000000008080000080
-                8000008080000080800000808000008080000080800000808000008080000080
-                8000008080000080800000808000000000000080800000808000008080000080
-                8000008080000080800000808000000000000000000000000000008080000080
-                8000008080000080800000808000000000000000000000000000000000000000
-                0000008080000080800000808000000000000000000000000000000000000000
-                0000000000000000000000808000008080000080800000808000008080000080
-                800000808000008080000080800000808000}
-              Enabled = False
-              TabOrder = 1
-              UpGlyph.Data = {
-                0E010000424D0E01000000000000360000002800000009000000060000000100
-                200000000000D800000000000000000000000000000000000000008080000080
-                8000008080000080800000808000008080000080800000808000008080000080
-                8000000000000000000000000000000000000000000000000000000000000080
-                8000008080000080800000000000000000000000000000000000000000000080
-                8000008080000080800000808000008080000000000000000000000000000080
-                8000008080000080800000808000008080000080800000808000000000000080
-                8000008080000080800000808000008080000080800000808000008080000080
-                800000808000008080000080800000808000}
-              OnDownClick = SpinButtonChangeRecordUpdateDownClick
-              OnUpClick = SpinButtonChangeRecordUpdateUpClick
-              ExplicitLeft = 272
-              ExplicitTop = 8
-              ExplicitHeight = 25
-            end
-          end
-        end
         object MemoUpdateMsg: TMemo
           Left = 0
-          Top = 504
-          Width = 322
-          Height = 79
+          Top = 552
+          Width = 455
+          Height = 132
           Align = alBottom
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clWindowText
@@ -820,14 +820,318 @@ object FormMain: TFormMain
           Font.Name = 'Montserrat'
           Font.Style = []
           ParentFont = False
+          PopupMenu = PopupMenuClearMsg
           ReadOnly = True
-          TabOrder = 3
+          TabOrder = 1
+        end
+        object PageControlUpdate: TPageControl
+          Left = 0
+          Top = 41
+          Width = 455
+          Height = 499
+          ActivePage = TabSheetFormList
+          Align = alClient
+          MultiLine = True
+          TabHeight = 1
+          TabOrder = 2
+          TabPosition = tpBottom
+          object TabSheetFormList: TTabSheet
+            Caption = #1057#1087#1080#1089#1086#1082' '#1092#1086#1088#1084
+            object PanelUpdateMain: TPanel
+              Left = 0
+              Top = 0
+              Width = 447
+              Height = 490
+              Align = alClient
+              TabOrder = 0
+              object PanelUpdateControl: TPanel
+                Left = 1
+                Top = 353
+                Width = 445
+                Height = 136
+                Align = alBottom
+                BevelOuter = bvNone
+                Padding.Left = 5
+                Padding.Top = 5
+                Padding.Right = 5
+                Padding.Bottom = 10
+                TabOrder = 0
+                DesignSize = (
+                  445
+                  136)
+                object LabelUpdateHelp1: TLabel
+                  Left = 279
+                  Top = 6
+                  Width = 34
+                  Height = 40
+                  Cursor = crHelp
+                  Hint = 
+                    #1059' '#1086#1090#1084#1077#1095#1077#1085#1085#1099#1093' '#1092#1086#1088#1084' '#1074#1099#1087#1086#1083#1085#1103#1077#1090#1089#1103' '#1087#1086#1080#1089#1082' xml '#1092#1072#1081#1083#1086#1074'. '#1055#1086#1089#1083#1077' '#1101#1090#1086#1075#1086' '#1089#1088#1072#1074 +
+                    #1085#1080#1074#1072#1077#1090#1089#1103' '#1074#1077#1088#1089#1080#1103' '#1092#1086#1088#1084#1099' '#1074' '#1092#1072#1081#1083#1077' '#1080' '#1074#1077#1088#1089#1080#1103', '#1082#1086#1090#1086#1088#1072#1103' '#1074' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
+                  Alignment = taCenter
+                  Anchors = [akLeft, akTop, akRight]
+                  AutoSize = False
+                  Caption = '?'
+                  ParentShowHint = False
+                  ShowHint = True
+                  Layout = tlCenter
+                end
+                object LabelUpdateHelp2: TLabel
+                  Left = 232
+                  Top = 98
+                  Width = 41
+                  Height = 27
+                  Cursor = crHelp
+                  Hint = #1042#1099#1087#1086#1083#1085#1103#1077#1090#1089#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077' '#1086#1090#1084#1077#1095#1077#1085#1085#1099#1093' '#1092#1086#1088#1084' '#1073#1077#1079' '#1087#1088#1086#1074#1077#1088#1082#1080
+                  Alignment = taCenter
+                  Anchors = [akLeft, akTop, akRight]
+                  AutoSize = False
+                  Caption = '?'
+                  ParentShowHint = False
+                  ShowHint = True
+                  Layout = tlCenter
+                end
+                object CheckBoxForceUpdate: TCheckBox
+                  Left = 6
+                  Top = 98
+                  Width = 235
+                  Height = 27
+                  Anchors = [akLeft, akTop, akRight]
+                  Caption = #1055#1088#1080#1085#1091#1076#1080#1090#1077#1083#1100#1085#1086#1077' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077
+                  TabOrder = 0
+                  OnClick = CheckBoxForceUpdateClick
+                end
+                object ButtonCheckForms: TButton
+                  Left = 6
+                  Top = 6
+                  Width = 267
+                  Height = 40
+                  Action = TabNextTab1
+                  Anchors = [akLeft, akTop, akRight]
+                  Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1072#1082#1090#1091#1072#1083#1100#1085#1086#1089#1090#1100' '#1092#1086#1088#1084
+                  TabOrder = 1
+                  WordWrap = True
+                  OnClick = ButtonCheckFormsClick
+                end
+                object ButtonBeginUpdateForms: TButton
+                  Left = 6
+                  Top = 52
+                  Width = 267
+                  Height = 40
+                  Hint = 
+                    #1059' '#1074#1099#1073#1088#1072#1085#1085#1099#1093' '#1092#1086#1088#1084' '#1074#1099#1087#1086#1083#1085#1103#1077#1090#1089#1103' '#1087#1086#1080#1089#1082' '#1085#1072' xml '#1092#1072#1081#1083#1099'. '#1055#1086#1089#1083#1077' '#1101#1090#1086#1075#1086' '#1089#1088#1072 +
+                    #1074#1085#1080#1074#1072#1077#1090#1089#1103' '#1074#1077#1088#1089#1080#1103' '#1092#1086#1088#1084#1099' '#1074' '#1092#1072#1081#1083#1077' '#1080' '#1074#1077#1088#1089#1080#1103', '#1082#1086#1090#1086#1088#1072#1103' '#1074' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
+                  Anchors = [akLeft, akTop, akRight]
+                  Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1086#1090#1084#1077#1095#1077#1085#1099#1077' '#1092#1086#1088#1084#1099
+                  Enabled = False
+                  TabOrder = 2
+                  WordWrap = True
+                  OnClick = ButtonBeginUpdateFormsClick
+                end
+                object ButtonUpdateNext: TButton
+                  Left = 360
+                  Top = 96
+                  Width = 75
+                  Height = 29
+                  Action = TabNextTab1
+                  Anchors = [akTop, akRight]
+                  TabOrder = 3
+                  Visible = False
+                end
+              end
+              object PanelUpdateForms: TPanel
+                Left = 1
+                Top = 1
+                Width = 445
+                Height = 352
+                Align = alClient
+                Padding.Left = 5
+                Padding.Right = 5
+                Padding.Bottom = 5
+                TabOrder = 1
+                object GroupBoxFormsUpdate: TGroupBox
+                  Left = 6
+                  Top = 54
+                  Width = 433
+                  Height = 292
+                  Align = alClient
+                  Caption = #1042#1099#1073#1086#1088' '#1092#1086#1088#1084' '#1085#1072' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077
+                  TabOrder = 0
+                  object CheckListBoxFormsUpdate: TCheckListBox
+                    Left = 1
+                    Top = 19
+                    Width = 431
+                    Height = 272
+                    Align = alClient
+                    ItemHeight = 18
+                    TabOrder = 0
+                  end
+                end
+                object CheckBoxSelectAllForms: TCheckBox
+                  Left = 6
+                  Top = 1
+                  Width = 433
+                  Height = 27
+                  Align = alTop
+                  Caption = #1042#1099#1073#1088#1072#1090#1100' '#1074#1089#1077' '#1092#1086#1088#1084#1099
+                  TabOrder = 1
+                  OnClick = CheckBoxSelectAllFormsClick
+                end
+                object PanelFormFindUpdate: TPanel
+                  Left = 6
+                  Top = 28
+                  Width = 433
+                  Height = 26
+                  Align = alTop
+                  BevelOuter = bvNone
+                  Padding.Left = 5
+                  Padding.Right = 15
+                  TabOrder = 2
+                  object LabelRecordCountUpdate: TLabel
+                    Left = 220
+                    Top = 0
+                    Width = 198
+                    Height = 26
+                    Align = alClient
+                    Layout = tlCenter
+                    ExplicitWidth = 3
+                    ExplicitHeight = 18
+                  end
+                  object EditFormFindUpdate: TEdit
+                    Left = 5
+                    Top = 0
+                    Width = 195
+                    Height = 26
+                    Align = alLeft
+                    TabOrder = 0
+                    TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1086#1088#1084#1072#1084'...'
+                    OnChange = EditFormFindUpdateChange
+                    ExplicitHeight = 24
+                  end
+                  object SpinButtonChangeRecordUpdate: TSpinButton
+                    Left = 200
+                    Top = 0
+                    Width = 20
+                    Height = 26
+                    Align = alLeft
+                    DownGlyph.Data = {
+                      0E010000424D0E01000000000000360000002800000009000000060000000100
+                      200000000000D800000000000000000000000000000000000000008080000080
+                      8000008080000080800000808000008080000080800000808000008080000080
+                      8000008080000080800000808000000000000080800000808000008080000080
+                      8000008080000080800000808000000000000000000000000000008080000080
+                      8000008080000080800000808000000000000000000000000000000000000000
+                      0000008080000080800000808000000000000000000000000000000000000000
+                      0000000000000000000000808000008080000080800000808000008080000080
+                      800000808000008080000080800000808000}
+                    Enabled = False
+                    TabOrder = 1
+                    UpGlyph.Data = {
+                      0E010000424D0E01000000000000360000002800000009000000060000000100
+                      200000000000D800000000000000000000000000000000000000008080000080
+                      8000008080000080800000808000008080000080800000808000008080000080
+                      8000000000000000000000000000000000000000000000000000000000000080
+                      8000008080000080800000000000000000000000000000000000000000000080
+                      8000008080000080800000808000008080000000000000000000000000000080
+                      8000008080000080800000808000008080000080800000808000000000000080
+                      8000008080000080800000808000008080000080800000808000008080000080
+                      800000808000008080000080800000808000}
+                    OnDownClick = SpinButtonChangeRecordUpdateDownClick
+                    OnUpClick = SpinButtonChangeRecordUpdateUpClick
+                  end
+                end
+              end
+            end
+          end
+          object TabSheetNewFormGrid: TTabSheet
+            Caption = #1053#1086#1074#1099#1077' '#1092#1086#1088#1084#1099
+            ImageIndex = 1
+            object PanelUpdateGrid: TPanel
+              Left = 0
+              Top = 0
+              Width = 447
+              Height = 490
+              Align = alClient
+              BevelOuter = bvNone
+              Padding.Left = 5
+              Padding.Right = 5
+              Padding.Bottom = 5
+              TabOrder = 0
+              object LabelUpdateActualCount: TLabel
+                Left = 5
+                Top = 0
+                Width = 437
+                Height = 31
+                Align = alTop
+                AutoSize = False
+                Caption = #1053#1072#1081#1076#1077#1085#1086' '#1092#1086#1088#1084' '#1082' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1102':'
+                Layout = tlCenter
+                ExplicitTop = 5
+                ExplicitWidth = 317
+              end
+              object StringGridActualForms: TStringGrid
+                Left = 5
+                Top = 31
+                Width = 437
+                Height = 350
+                Align = alClient
+                ColCount = 4
+                FixedCols = 0
+                RowCount = 2
+                TabOrder = 0
+                ColWidths = (
+                  118
+                  88
+                  114
+                  102)
+              end
+              object PanelActualControl: TPanel
+                Left = 5
+                Top = 381
+                Width = 437
+                Height = 104
+                Align = alBottom
+                BevelOuter = bvNone
+                TabOrder = 1
+                DesignSize = (
+                  437
+                  104)
+                object ButtonUpdateUnactual: TButton
+                  Left = 14
+                  Top = 13
+                  Width = 398
+                  Height = 40
+                  Hint = 
+                    #1059' '#1074#1099#1073#1088#1072#1085#1085#1099#1093' '#1092#1086#1088#1084' '#1074#1099#1087#1086#1083#1085#1103#1077#1090#1089#1103' '#1087#1086#1080#1089#1082' '#1085#1072' xml '#1092#1072#1081#1083#1099'. '#1055#1086#1089#1083#1077' '#1101#1090#1086#1075#1086' '#1089#1088#1072 +
+                    #1074#1085#1080#1074#1072#1077#1090#1089#1103' '#1074#1077#1088#1089#1080#1103' '#1092#1086#1088#1084#1099' '#1074' '#1092#1072#1081#1083#1077' '#1080' '#1074#1077#1088#1089#1080#1103', '#1082#1086#1090#1086#1088#1072#1103' '#1074' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
+                  Anchors = [akLeft, akTop, akRight]
+                  Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1085#1077#1072#1082#1090#1091#1072#1083#1100#1085#1099#1077
+                  TabOrder = 0
+                  WordWrap = True
+                end
+                object ButtonUpdateBack: TButton
+                  Left = 14
+                  Top = 72
+                  Width = 115
+                  Height = 29
+                  Action = TabPreviousTab1
+                  Caption = '<< '#1053#1072#1079#1072#1076
+                  TabOrder = 1
+                  OnClick = ButtonUpdateBackClick
+                end
+              end
+            end
+          end
         end
       end
     end
-    object TabSheet2: TTabSheet
+    object TabSheetOrganization: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1088#1082#1072' '#1086#1088#1075#1072#1085#1080#1079#1072#1094#1080#1080
       ImageIndex = 1
+    end
+    object TabSheetDirectory: TTabSheet
+      Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082#1080
+      ImageIndex = 2
     end
   end
   object MainMenu1: TMainMenu
@@ -844,8 +1148,8 @@ object FormMain: TFormMain
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 912
-    Top = 607
+    Left = 216
+    Top = 543
   end
   object PopupMenuLinks: TPopupMenu
     Left = 912
@@ -1078,12 +1382,177 @@ object FormMain: TFormMain
       00000000000000000000000000000000000000000000}
   end
   object PopupMenuSort: TPopupMenu
-    Left = 1014
-    Top = 550
+    Left = 1022
+    Top = 542
     object NUnsort: TMenuItem
       Caption = #1054#1090#1084#1077#1085#1080#1090#1100' '#1089#1086#1088#1090#1080#1088#1086#1074#1082#1091
       Enabled = False
       OnClick = NUnsortClick
     end
+  end
+  object ActionList1: TActionList
+    Left = 118
+    Top = 542
+    object TabNextTab1: TNextTab
+      Category = 'Tab'
+      TabControl = PageControlUpdate
+      Caption = '>>'
+    end
+    object TabPreviousTab1: TPreviousTab
+      Category = 'Tab'
+      TabControl = PageControlUpdate
+      Caption = '&Previous'
+    end
+  end
+  object PopupMenuClearMsg: TPopupMenu
+    Left = 974
+    Top = 622
+    object NClearMsg: TMenuItem
+      Caption = #1054#1095#1080#1089#1090#1080#1090#1100' '#1083#1086#1075#1080
+      OnClick = NClearMsgClick
+    end
+  end
+  object ImageListUsefulFiles: TImageList
+    Left = 102
+    Top = 624
+    Bitmap = {
+      494C010101000800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000001000000001002000000000000010
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FFDDDDDDFFDDDDDDFFDDDDDDFFDDDDDDFFDDDDDDFFDDDDDDFFD2D2
+      D2FF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF222222FF222222FF222222FF222222FF222222FF222222FF1414
+      14FF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF2B2B2BFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF7E7E7EFF818181FF0000
+      00FF000000FFFFFFFFFF111111FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF7E7E7EFF818181FF0000
+      00FFFFFFFFFF111111FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0000
+      00FF000000FF000000FF000000FF000000FF000000FF7E7E7EFF818181FFFFFF
+      FFFF111111FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFFFFFFFFF0505
+      05FF000000FF000000FF000000FF000000FF000000FF7E7E7EFFFFFFFFFF0E0E
+      0EFF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FFFDFD
+      FDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0E0E0EFF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000424D3E000000000000003E000000
+      2800000040000000100000000100010000000000800000000000000000000000
+      000000000000000000000000FFFFFF0000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000}
   end
 end

@@ -10,7 +10,8 @@ uses
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
   System.Actions, Vcl.ActnList, Vcl.StdActns, clipbrd, JSON, System.RegularExpressions, XmlIntf, XmlDoc,
   Data.DB, Vcl.Grids, Vcl.DBGrids, System.ImageList, Vcl.ImgList, Vcl.CheckLst,
-  Vcl.Buttons, Vcl.DBCtrls, Vcl.Mask, Vcl.Imaging.pngimage, Vcl.Samples.Spin;
+  Vcl.Buttons, Vcl.DBCtrls, Vcl.Mask, Vcl.Imaging.pngimage, Vcl.Samples.Spin,
+  Vcl.ExtActns;
 
 type
   TDBGrid = class(Vcl.DBGrids.TDBGrid)
@@ -21,25 +22,20 @@ type
 
 type
   TFormMain = class(TForm)
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
+    PageControlMain: TPageControl;
+    TabSheetForms: TTabSheet;
+    TabSheetOrganization: TTabSheet;
     MainMenu1: TMainMenu;
     N1: TMenuItem;
     N2: TMenuItem;
     PanelForms: TPanel;
     EditFormsFind: TEdit;
     ScrollBoxForms: TScrollBox;
-    LabelFormName: TLabel;
     LabelFormFullName: TLabel;
-    EditFormFullName: TEdit;
     LabelFormPeriod: TLabel;
     LabelFormOKUD: TLabel;
     LabelFormSrok: TLabel;
-    EditFormFill: TEdit;
-    LinkLabelFormVersion: TLinkLabel;
     LinkLabelFormFill: TLinkLabel;
-    EditFormYtv: TEdit;
     LinkLabelFormYtv: TLinkLabel;
     IdServerIOHandlerSSLOpenSSL1: TIdServerIOHandlerSSLOpenSSL;
     PanelFormDownload: TPanel;
@@ -91,6 +87,42 @@ type
     PopupMenuSort: TPopupMenu;
     NUnsort: TMenuItem;
     MemoUpdateMsg: TMemo;
+    Splitter2: TSplitter;
+    PanelUpdateMain: TPanel;
+    LabelUpdateActualCount: TLabel;
+    StringGridActualForms: TStringGrid;
+    PageControlUpdate: TPageControl;
+    TabSheetFormList: TTabSheet;
+    TabSheetNewFormGrid: TTabSheet;
+    PanelUpdateGrid: TPanel;
+    ActionList1: TActionList;
+    TabNextTab1: TNextTab;
+    PanelActualControl: TPanel;
+    ButtonUpdateUnactual: TButton;
+    ButtonUpdateBack: TButton;
+    TabPreviousTab1: TPreviousTab;
+    ButtonUpdateNext: TButton;
+    PopupMenuClearMsg: TPopupMenu;
+    NClearMsg: TMenuItem;
+    GroupBoxFormMainLink: TGroupBox;
+    DBEditFormXmlDate: TDBEdit;
+    GroupBoxFormGovernmLinks: TGroupBox;
+    DBEditFormFill: TDBEdit;
+    DBEditFormYtv: TDBEdit;
+    ScrollBoxFormPreview: TScrollBox;
+    DBTextFormName: TDBText;
+    DBEditFormXmlLink: TDBEdit;
+    DBEditFormDocLink: TDBEdit;
+    DBEditFormPdfLink: TDBEdit;
+    LabelFormPreview: TLabel;
+    TabSheetDirectory: TTabSheet;
+    ImageListUsefulFiles: TImageList;
+    TreeViewUsefulFiles: TTreeView;
+    GroupBoxUsefulFiles: TGroupBox;
+    PageControlFormContent: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
     procedure NLinksCopyToClipboardClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonUpdateFormsClick(Sender: TObject);
@@ -112,12 +144,27 @@ type
     procedure CheckBoxSelectAllFormsClick(Sender: TObject);
     procedure DBGridFormsTitleClick(Column: TColumn);
     procedure NUnsortClick(Sender: TObject);
+    procedure ButtonUpdateBackClick(Sender: TObject);
+    procedure ButtonUpdateNextClick(Sender: TObject);
+    procedure NClearMsgClick(Sender: TObject);
+    procedure DBEditFormXmlLinkChange(Sender: TObject);
+    procedure DBEditFormDocLinkChange(Sender: TObject);
+    procedure DBEditFormPdfLinkChange(Sender: TObject);
+    procedure ScrollBoxFormPreviewMouseWheelDown(Sender: TObject;
+      Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure ScrollBoxFormPreviewMouseWheelUp(Sender: TObject;
+      Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure LabelFormPreviewClick(Sender: TObject);
+    procedure LabelFormPreviewMouseEnter(Sender: TObject);
+    procedure LabelFormPreviewMouseLeave(Sender: TObject);
   private
     { Private declarations }
-    var okuds: array of String;
-        findRecordsInUpdate: array of Integer;
+    //var okuds: array of String;
+    var findRecordsInUpdate: array of Integer;
         fSortColumn: string;
         fSortDirection: boolean;
+        arrStringGridFormPreview: array of TStringGrid;
+        arrLabelFormPreview: array of TLabel;
     procedure loadForms();
     procedure printData(shortName, longName, XMLLink, DOCLink, PDFLink, period, srok, DateYtv: String);
     procedure SplitByMultipleSpaces(const Input: string; List: TStringList);
@@ -126,6 +173,8 @@ type
     procedure clearDB();
     procedure writeToDB(shortName, longName, period, Okud, srok, dateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink: String);
     function parseXML(fileLink: string): String;
+    function checkVersionForm(formLink: string): String;
+    procedure xmlPreview(xmlLink: string);
   public
     { Public declarations }
   end;
@@ -218,14 +267,24 @@ begin
   DBGridForms.Columns[10].Visible := false;
   DBGridForms.Columns[11].Visible := false;
 
+  DBTextFormName.DataField := 'shortName';
   DBMemoFormFullName.DataField := 'fullName';
   DBEditFormPeriod.DataField := 'period';
   DBEditFormOKUD.DataField := 'okud';
   DBMemoFormSrok.DataField := 'srok';
+  DBEditFormXmlDate.DataField := 'xmlDate';
+  DBEditFormYtv.DataField := 'ytvDate';
+  DBEditFormXmlLink.DataField := 'xmlLink';
+  DBEditFormDocLink.DataField := 'docLink';
+  DBEditFormPdfLink.DataField := 'pdfLink';
 
   PanelUpdate.Left := (screen.width - PanelUpdate.Width) div 2;
   PanelUpdate.Top := (screen.height - PanelUpdate.Height) div 3;
 
+  StringGridActualForms.Cells[0,0] := 'Форма';
+  StringGridActualForms.Cells[1,0] := 'ОКУД';
+  StringGridActualForms.Cells[2,0] := 'Старая версия';
+  StringGridActualForms.Cells[3,0] := 'Новая версия';
 end;
 
 // Выбрать все формы
@@ -246,11 +305,63 @@ begin
   EditFormYtv.Text := DateYtv; }
 end;
 
+// Присваивание ссылки в подсказку
+procedure TFormMain.DBEditFormXmlLinkChange(Sender: TObject);
+begin
+  if Assigned(arrStringGridFormPreview) then begin
+    for var i := 0 to Length(arrStringGridFormPreview)-1 do begin
+      freeAndNil(arrStringGridFormPreview[i]);
+      freeAndNil(arrLabelFormPreview[i]);
+    end;
+    setLength(arrStringGridFormPreview, 0);
+    setLength(arrLabelFormPreview, 0);
+  end;
+
+  if length(DBEditFormXmlLink.Text) > 0 then begin
+    LabelFormXML.Enabled := true;
+    ShapeFormXml.Pen.Color := clWhite;
+    LabelFormXML.Hint := DBEditFormXmlLink.text;
+  end
+  else begin
+    LabelFormXML.Enabled := false;
+    ShapeFormXml.Pen.Color := clGray;
+    LabelFormXml.Hint := '';
+  end;
+end;
+
+procedure TFormMain.DBEditFormDocLinkChange(Sender: TObject);
+begin
+  if length(DBEditFormDocLink.Text) > 0 then begin
+    LabelFormDoc.Enabled := true;
+    ShapeFormDoc.Pen.Color := clWhite;
+    LabelFormDoc.Hint := DBEditFormDocLink.text;
+  end
+  else begin
+    LabelFormDoc.Enabled := false;
+    ShapeFormDoc.Pen.Color := clGray;
+    LabelFormDoc.Hint := '';
+  end;
+end;
+
+procedure TFormMain.DBEditFormPdfLinkChange(Sender: TObject);
+begin
+  if length(DBEditFormPdfLink.Text) > 0 then begin
+    LabelFormPdf.Enabled := true;
+    ShapeFormPdf.Pen.Color := clWhite;
+    LabelFormPdf.Hint := DBEditFormPdfLink.text;
+  end
+  else begin
+    LabelFormPdf.Enabled := false;
+    ShapeFormPdf.Pen.Color := clGray;
+    LabelFormPdf.Hint := '';
+  end;
+end;
+
 // Выбор формы из списка
 procedure TFormMain.DBGridFormsCellClick(Column: TColumn);
 var shortName: string;
 begin
-  LabelFormName.Caption := DBGridForms.Fields[0].AsString;
+  //LabelFormName.Caption := DBGridForms.Fields[0].AsString;
 end;
 
 // Сортировка таблицы форм
@@ -299,6 +410,120 @@ begin
   end;
 end;
 
+// Вызов процедуры предпросмотра
+procedure TFormMain.LabelFormPreviewClick(Sender: TObject);
+begin
+  if not(Assigned(arrStringGridFormPreview)) then xmlPreview(DBEditFormXmlLink.Text);
+end;
+
+// Предпросмотр формы
+procedure TFormMain.xmlPreview(xmlLink: string);
+var HTTP: TIdHTTP;
+    SSL:TIdSSLIOHandlerSocketOpenSSL;
+    XMLDoc: IXMLDocument;
+    metaFormNode, sections, section, columns, rows: IXMLNode;
+    xmlFile: TFileStream;
+    sectionCount, colCount, rowCount: Integer;
+begin
+  HTTP := TIdHTTP.Create(nil);
+  HTTP.HandleRedirects:=True;
+  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
+  HTTP.IOHandler := SSL;
+  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
+  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
+  XMLDoc := TXMLDocument.Create(nil);
+  xmlFile := TFileStream.Create('a.xml', fmCreate);
+  try
+    HTTP.Get(xmlLink, xmlFile);
+    XMLDoc.LoadFromStream(xmlFile);
+    metaFormNode := xmlDoc.DocumentElement;
+    sections := metaFormNode.ChildNodes['sections'];
+    sectionCount := sections.ChildNodes.Count;
+    for var i := 0 to sectionCount-1 do begin
+      setLength(arrStringGridFormPreview, i+1);
+      setLength(arrLabelFormPreview, i+1);
+
+      section := sections.ChildNodes[i];
+      columns := section.ChildNodes['columns'];
+      rows := section.ChildNodes['rows'];
+
+      colCount := columns.ChildNodes.Count;
+      rowCount := rows.ChildNodes.Count + 2;
+
+      arrLabelFormPreview[i] := TLabel.Create(ScrollBoxFormPreview);
+      arrLabelFormPreview[i].parent := ScrollBoxFormPreview;
+      arrLabelFormPreview[i].Height := 25;
+      if i = 0 then arrLabelFormPreview[i].Top := LabelFormPreview.Height + 15
+      else arrLabelFormPreview[i].Top := arrStringGridFormPreview[i-1].Top + arrStringGridFormPreview[i-1].Height + 15;
+      arrLabelFormPreview[i].Caption := section.Attributes['name'];
+      arrLabelFormPreview[i].Font.Name := 'Montserrat';
+
+      arrStringGridFormPreview[i] := TStringGrid.Create(ScrollBoxFormPreview);
+      arrStringGridFormPreview[i].Parent := ScrollBoxFormPreview;
+      arrStringGridFormPreview[i].Font.Size := 8;
+      arrStringGridFormPreview[i].top := arrLabelFormPreview[i].Top + 25;
+      arrStringGridFormPreview[i].left := 10;
+      arrStringGridFormPreview[i].ColCount := colCount;
+      arrStringGridFormPreview[i].RowCount := rowCount;
+      arrStringGridFormPreview[i].FixedCols := 0;
+      arrStringGridFormPreview[i].FixedRows := 2;
+      arrStringGridFormPreview[i].Width := ScrollBoxFormPreview.Width - arrStringGridFormPreview[i].left - 20;
+      arrStringGridFormPreview[i].Height := rowCount * 26;
+      arrStringGridFormPreview[i].Options := [goColSizing];
+      arrStringGridFormPreview[i].OnMouseWheelDown := ScrollBoxFormPreviewMouseWheelDown;
+      arrStringGridFormPreview[i].OnMouseWheelUp := ScrollBoxFormPreviewMouseWheelUp;
+      arrStringGridFormPreview[i].Options := arrStringGridFormPreview[i].Options + [goColSizing] + [goVertLine] + [goHorzLine] + [goFixedVertLine] + [goFixedHorzLine];
+      arrStringGridFormPreview[i].Anchors := arrStringGridFormPreview[i].Anchors + [akRight];
+
+      for var col := 0 to colCount-1 do begin
+        arrStringGridFormPreview[i].Cells[col, 0] := columns.ChildNodes[col].Attributes['name'];
+        arrStringGridFormPreview[i].Cells[col, 1] := columns.ChildNodes[col].Attributes['code'];
+        arrStringGridFormPreview[i].ColWidths[col] := arrStringGridFormPreview[i].Canvas.TextWidth(arrStringGridFormPreview[i].Cells[col, 0]) + 20;
+      end;
+
+      var maxColSize := 0;
+      for var row := 0 to rowCount-3 do begin
+        arrStringGridFormPreview[i].Cells[0, row+2] := rows.ChildNodes[row].Attributes['name'];
+        arrStringGridFormPreview[i].Cells[1, row+2] := rows.ChildNodes[row].Attributes['code'];
+        if arrStringGridFormPreview[i].Canvas.TextWidth(arrStringGridFormPreview[i].Cells[0, row+2]) > maxColSize then maxColSize := arrStringGridFormPreview[i].Canvas.TextWidth(arrStringGridFormPreview[i].Cells[0, row+2]);
+      end;
+      arrStringGridFormPreview[i].ColWidths[0] := maxColSize + 40;
+    end;
+    LabelFormPreview.Align := alBottom;
+  LabelFormPreview.Align := alTop;
+  finally
+    xmlFile.Free;
+    SSL.Free;
+    HTTP.Free;
+  end;
+end;
+
+// Подчеркивание при наведении на label "Предпросмотр формы"
+procedure TFormMain.LabelFormPreviewMouseEnter(Sender: TObject);
+begin
+  LabelFormPreview.Font.Style := LabelFormPreview.Font.Style + [fsUnderline];
+end;
+
+procedure TFormMain.LabelFormPreviewMouseLeave(Sender: TObject);
+begin
+  LabelFormPreview.Font.Style := LabelFormPreview.Font.Style - [fsUnderline];
+end;
+
+// Прокрутка окна предпросмотра формы
+procedure TFormMain.ScrollBoxFormPreviewMouseWheelDown(Sender: TObject;
+  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  ScrollBoxFormPreview.VertScrollBar.Position := ScrollBoxFormPreview.VertScrollBar.Position + ScrollBoxFormPreview.VertScrollBar.Increment + 15;
+  Handled := True;
+end;
+
+procedure TFormMain.ScrollBoxFormPreviewMouseWheelUp(Sender: TObject;
+  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  ScrollBoxFormPreview.VertScrollBar.Position := ScrollBoxFormPreview.VertScrollBar.Position - ScrollBoxFormPreview.VertScrollBar.Increment - 15;
+  Handled := True;
+end;
+
 //======================= НАСТРОЙКИ =====================================
 
 // Вызов панели настроек
@@ -332,6 +557,11 @@ end;
 //======================= ОБНОВЛЕНИЕ =====================================
 
 // Кнопка запуска мастера обновления форм
+procedure TFormMain.ButtonUpdateBackClick(Sender: TObject);
+begin
+  PageControlUpdate.SelectNextPage(true, false);
+end;
+
 procedure TFormMain.ButtonUpdateFormsClick(Sender: TObject);
 begin
   NUnsortClick(Sender);
@@ -341,20 +571,26 @@ begin
 
   PanelUpdate.SetFocus;
   if CheckListBoxFormsUpdate.Count <= 0 then begin
-    setlength(okuds, DataModule1.FDTableForms.RecordCount);
     var i := 0;
 
     DataModule1.FDQueryForms.SQL.Text := 'select * from Forms';
     DataModule1.FDQueryForms.Open();
     CheckListBoxFormsUpdate.Items.BeginUpdate;
     while not DataModule1.FDQueryForms.Eof do begin
-      okuds[i] := DataModule1.FDQueryForms.FieldByName('okud').AsString;
       CheckListBoxFormsUpdate.Items.Add(DataModule1.FDQueryForms.FieldByName('shortName').AsString);
       DataModule1.FDQueryForms.Next;
       inc(i);
     end;
     CheckListBoxFormsUpdate.Items.EndUpdate;
+    DataModule1.FDQueryForms.Close;
   end;
+  PageControlUpdate.ActivePageIndex := -1;
+  PageControlUpdate.SelectNextPage(true, false);
+end;
+
+procedure TFormMain.ButtonUpdateNextClick(Sender: TObject);
+begin
+  PageControlUpdate.SelectNextPage(true, false);
 end;
 
 // Закрытие панели Мастера обновления
@@ -399,8 +635,6 @@ begin
     setLength(findRecordsInUpdate, 0);
     for var i := 0 to CheckListBoxFormsUpdate.Count-1 do begin
       if Pos(EditFormFindUpdate.Text, CheckListBoxFormsUpdate.Items[i]) > 0 then begin
-        //CheckListBoxFormsUpdate.Selected[i] := true;
-        //break;
         setLength(findRecordsInUpdate, Length(findRecordsInUpdate)+1);
         findRecordsInUpdate[Length(findRecordsInUpdate)-1] := i;
       end;
@@ -450,10 +684,91 @@ end;
 
 // Проверка актуальности выбранных форм
 procedure TFormMain.ButtonCheckFormsClick(Sender: TObject);
+var okud, oldVersion, newVersion: string;
+    findCounter: integer;
 begin
+  StringGridActualForms.RowCount := 2;
+  StringGridActualForms.Cells[0,1] := '';
+  StringGridActualForms.Cells[1,1] := '';
+  StringGridActualForms.Cells[2,1] := '';
+  StringGridActualForms.Cells[3,1] := '';
+
   PanelUpdate.SetFocus;
   if Application.MessageBox(pChar('Проверить отмеченные формы?'), 'Проверка актуальности', MB_YESNO) = idYes then begin
-    //pass
+    PageControlUpdate.SelectNextPage(true, false);
+    findCounter := 0;
+    MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + 'Начало проверки актуальности');
+    for var i := 0 to CheckListBoxFormsUpdate.Count-1 do begin
+      if CheckListBoxFormsUpdate.Checked[i] then begin
+        DataModule1.FDQueryForms.SQL.Text := 'Select okud, xmlDate from Forms where shortName = ' + '''' + CheckListBoxFormsUpdate.Items[i] + '''';
+        MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + 'Проверяется ' + CheckListBoxFormsUpdate.Items[i] + '...');
+        DataModule1.FDQueryForms.Open;
+        okud := DataModule1.FDQueryForms.FieldByName('okud').AsString;
+        oldVersion := DataModule1.FDQueryForms.FieldByName('xmlDate').AsString;
+        newVersion := checkVersionForm('https://rosstat.gov.ru/monitoring/getPage?query='+ okud +'&heading=&year=2024&page=1');
+
+        if (length(oldVersion) > 0) and (length(newVersion) > 0) then begin
+          if StrToDate(newVersion) > StrToDate(oldVersion) then begin
+            MemoUpdateMsg.Lines[MemoUpdateMsg.Lines.Count-1] := MemoUpdateMsg.Lines[MemoUpdateMsg.Lines.Count-1] + ' Требуется обновление';
+            inc(findCounter);
+            StringGridActualForms.Cells[0, StringGridActualForms.RowCount-1] := CheckListBoxFormsUpdate.Items[i];
+            StringGridActualForms.Cells[1, StringGridActualForms.RowCount-1] := okud;
+            StringGridActualForms.Cells[2, StringGridActualForms.RowCount-1] := oldVersion;
+            StringGridActualForms.Cells[3, StringGridActualForms.RowCount-1] := newVersion;
+            StringGridActualForms.RowCount := StringGridActualForms.RowCount + 1;
+          end else MemoUpdateMsg.Lines[MemoUpdateMsg.Lines.Count-1] := MemoUpdateMsg.Lines[MemoUpdateMsg.Lines.Count-1] + ' Актуальна';
+        end;
+      end;
+    end;
+    MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + 'Актуальность форм проверена');
+    if findCounter > 0 then begin
+      StringGridActualForms.RowCount := StringGridActualForms.RowCount - 1;
+      ButtonUpdateNext.Visible := True;
+      LabelUpdateActualCount.Caption := 'Найдено форм к обновлению: ' + IntToStr(findCounter);
+    end;
+  end;
+end;
+
+function TFormMain.checkVersionForm(formLink: string): String;
+var HTTP: TIdHTTP;
+    SSL:TIdSSLIOHandlerSocketOpenSSL;
+    JSONPage: TJSONObject;
+    pageRosstat, htmlDoc, XMLLink: string;
+    Parts: TStringList;
+    XMLPos: integer;
+begin
+  HTTP := TIdHTTP.Create(nil);
+  HTTP.HandleRedirects:=True;
+  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
+  HTTP.IOHandler := SSL;
+  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
+  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
+  try
+    try
+      pageRosstat := HTTP.Get(formLink);
+      JSONPage :=TJSONObject.Create;
+      JSONPage.Parse(TEncoding.UTF8.GetBytes(pageRosstat),0);
+      JSONPage.TryGetValue('html', htmlDoc);
+      htmlDoc := JSONUnescape(htmlDoc);
+      htmlDoc := TRegEx.Replace(htmlDoc, '\s{2,3}', ' ');
+      Parts := TStringList.Create;
+      SplitByMultipleSpaces(htmlDoc, Parts);
+      XMLPos:= 0;
+      for var i := 0 to Parts.Count-1 do begin
+        if (AnsiPos('<a class="btn btn-icon btn-white btn-br"', Parts[i]) > 0) and (AnsiPos('.xml', Parts[i]) > 0) then begin
+          XMLPos := i;
+          break;
+        end;
+      end;
+      if XMLPos > 0 then XMLLink := formatText(Parts[XMLPos], '<a class="btn btn-icon btn-white btn-br" href="', '" download>');
+
+      checkVersionForm := parseXML('https://rosstat.gov.ru' + XMLLink);
+    except on e:Exception do showMessage('hui');
+
+    end;
+  finally
+    SSL.Free;
+    HTTP.Free;
   end;
 end;
 
@@ -617,6 +932,13 @@ begin
   end else DataModule1.DataSource1.DataSet := DataModule1.FDTableForms;
 end;
 
+// Очистка поля с логами
+procedure TFormMain.NClearMsgClick(Sender: TObject);
+begin
+  (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TMemo).Lines.Clear;
+end;
+
+// Копирование подсказки из label (содержит ссылку)
 procedure TFormMain.NLinksCopyToClipboardClick(Sender: TObject);
 begin
   Clipboard.AsText := (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TLabel).hint;
@@ -638,8 +960,6 @@ begin
   HTTP.IOHandler := SSL;
   SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
   SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
-  //HTTP.ConnectTimeout := 5000;
-  //HTTP.ReadTimeout := 5000;
   XMLDoc := TXMLDocument.Create(nil);
   xmlFile := TMemoryStream.Create();
   try
@@ -648,7 +968,8 @@ begin
       XMLDoc.LoadFromStream(xmlFile);
       XMLDoc.Active := True;
       version := XMLDoc.ChildNodes['metaForm'].AttributeNodes['version'].Text;
-      StringReplace(version, '-', '.' , [rfReplaceAll]);
+      version := StringReplace(version, '-', '.' , [rfReplaceAll]);
+      parseXML := version;
     except on e: Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + ']' + e.Message);
     end;
   finally
