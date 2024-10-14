@@ -51,6 +51,7 @@ object FormMain: TFormMain
         Height = 692
         Align = alLeft
         TabOrder = 0
+        ExplicitHeight = 684
         object EditFormsFind: TEdit
           Left = 1
           Top = 42
@@ -72,6 +73,7 @@ object FormMain: TFormMain
           Padding.Right = 5
           Padding.Bottom = 5
           TabOrder = 1
+          ExplicitTop = 622
           object LabelFormCounter: TLabel
             Left = 6
             Top = 6
@@ -225,6 +227,8 @@ object FormMain: TFormMain
         Align = alClient
         TabOrder = 1
         StyleName = 'Glossy'
+        ExplicitWidth = 684
+        ExplicitHeight = 684
         object PanelFormDownload: TPanel
           Left = 0
           Top = 0
@@ -232,6 +236,7 @@ object FormMain: TFormMain
           Height = 63
           Align = alTop
           TabOrder = 0
+          ExplicitWidth = 680
           DesignSize = (
             682
             63)
@@ -325,6 +330,8 @@ object FormMain: TFormMain
           Padding.Right = 5
           Padding.Bottom = 5
           TabOrder = 1
+          ExplicitWidth = 680
+          ExplicitHeight = 617
           DesignSize = (
             682
             625)
@@ -399,6 +406,7 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 0
             StyleName = 'Glossy'
+            ExplicitWidth = 448
           end
           object EditFormFullName: TEdit
             AlignWithMargins = True
@@ -414,6 +422,7 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 1
             StyleName = 'Glossy'
+            ExplicitWidth = 448
           end
           object EditFormYtv: TEdit
             AlignWithMargins = True
@@ -429,6 +438,7 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 2
             StyleName = 'Glossy'
+            ExplicitWidth = 448
           end
           object LinkLabelFormFill: TLinkLabel
             Left = 3
@@ -500,6 +510,7 @@ object FormMain: TFormMain
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 6
+            ExplicitWidth = 448
           end
           object DBEditFormPeriod: TDBEdit
             Left = 217
@@ -510,6 +521,7 @@ object FormMain: TFormMain
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 7
+            ExplicitWidth = 448
           end
           object DBEditFormOKUD: TDBEdit
             Left = 217
@@ -520,6 +532,7 @@ object FormMain: TFormMain
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 8
+            ExplicitWidth = 448
           end
           object DBMemoFormSrok: TDBMemo
             Left = 217
@@ -530,6 +543,7 @@ object FormMain: TFormMain
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 9
+            ExplicitWidth = 448
           end
         end
       end
@@ -555,8 +569,6 @@ object FormMain: TFormMain
           Padding.Right = 5
           Padding.Bottom = 10
           TabOrder = 0
-          ExplicitTop = 388
-          ExplicitWidth = 330
           DesignSize = (
             322
             136)
@@ -603,7 +615,6 @@ object FormMain: TFormMain
             Caption = #1055#1088#1080#1085#1091#1076#1080#1090#1077#1083#1100#1085#1086#1077' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077
             TabOrder = 0
             OnClick = CheckBoxForceUpdateClick
-            ExplicitWidth = 235
           end
           object ButtonCheckForms: TButton
             Left = 6
@@ -615,7 +626,6 @@ object FormMain: TFormMain
             TabOrder = 1
             WordWrap = True
             OnClick = ButtonCheckFormsClick
-            ExplicitWidth = 283
           end
           object ButtonBeginUpdateForms: TButton
             Left = 6
@@ -631,7 +641,6 @@ object FormMain: TFormMain
             TabOrder = 2
             WordWrap = True
             OnClick = ButtonBeginUpdateFormsClick
-            ExplicitWidth = 283
           end
         end
         object PanelUpdateHeader: TPanel
@@ -656,7 +665,6 @@ object FormMain: TFormMain
           TabOrder = 1
           StyleName = 'Windows'
           OnMouseDown = PanelUpdateHeaderMouseDown
-          ExplicitWidth = 330
           object ImageUpdateClose: TImage
             Left = 288
             Top = 0
@@ -708,8 +716,6 @@ object FormMain: TFormMain
           Padding.Right = 5
           Padding.Bottom = 5
           TabOrder = 2
-          ExplicitWidth = 330
-          ExplicitHeight = 347
           object GroupBoxFormsUpdate: TGroupBox
             Left = 6
             Top = 54
@@ -718,9 +724,6 @@ object FormMain: TFormMain
             Align = alClient
             Caption = #1057#1087#1080#1089#1086#1082' '#1092#1086#1088#1084' '#1082' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1102
             TabOrder = 0
-            ExplicitTop = 28
-            ExplicitWidth = 318
-            ExplicitHeight = 313
             object CheckListBoxFormsUpdate: TCheckListBox
               Left = 1
               Top = 19
@@ -729,8 +732,6 @@ object FormMain: TFormMain
               Align = alClient
               ItemHeight = 18
               TabOrder = 0
-              ExplicitWidth = 316
-              ExplicitHeight = 293
             end
           end
           object CheckBoxSelectAllForms: TCheckBox
@@ -742,7 +743,6 @@ object FormMain: TFormMain
             Caption = #1042#1099#1073#1088#1072#1090#1100' '#1074#1089#1077' '#1092#1086#1088#1084#1099
             TabOrder = 1
             OnClick = CheckBoxSelectAllFormsClick
-            ExplicitWidth = 318
           end
           object PanelFormFindUpdate: TPanel
             Left = 6
@@ -753,7 +753,6 @@ object FormMain: TFormMain
             Padding.Left = 5
             Padding.Right = 15
             TabOrder = 2
-            ExplicitWidth = 318
             object LabelRecordCountUpdate: TLabel
               Left = 221
               Top = 1
@@ -804,9 +803,6 @@ object FormMain: TFormMain
                 800000808000008080000080800000808000}
               OnDownClick = SpinButtonChangeRecordUpdateDownClick
               OnUpClick = SpinButtonChangeRecordUpdateUpClick
-              ExplicitLeft = 272
-              ExplicitTop = 8
-              ExplicitHeight = 25
             end
           end
         end
