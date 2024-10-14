@@ -16,6 +16,7 @@ type
     FDConRosstatForm: TFDConnection;
     FDTableForms: TFDTable;
     FDQueryForms: TFDQuery;
+    DataSource1: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
