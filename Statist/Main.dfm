@@ -30,6 +30,8 @@ object FormMain: TFormMain
     TabOrder = 0
     TabWidth = 170
     StyleName = 'Glossy'
+    ExplicitWidth = 1091
+    ExplicitHeight = 724
     object TabSheet1: TTabSheet
       Caption = #1057#1074#1077#1076#1077#1085#1080#1103' '#1087#1086' '#1092#1086#1088#1084#1072#1084
       object Splitter1: TSplitter
