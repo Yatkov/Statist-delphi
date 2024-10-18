@@ -11,7 +11,7 @@ uses
   System.Actions, Vcl.ActnList, Vcl.StdActns, clipbrd, JSON, System.RegularExpressions, XmlIntf, XmlDoc,
   Data.DB, Vcl.Grids, Vcl.DBGrids, System.ImageList, Vcl.ImgList, Vcl.CheckLst,
   Vcl.Buttons, Vcl.DBCtrls, Vcl.Mask, Vcl.Imaging.pngimage, Vcl.Samples.Spin,
-  Vcl.ExtActns;
+  Vcl.ExtActns, shellApi, NetEncoding;
 
 type
   TDBGrid = class(Vcl.DBGrids.TDBGrid)
@@ -123,6 +123,9 @@ type
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
+    ListBoxFormPreviewSection: TListBox;
+    NViewInFolder: TMenuItem;
+    SSL: TIdSSLIOHandlerSocketOpenSSL;
     procedure NLinksCopyToClipboardClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonUpdateFormsClick(Sender: TObject);
@@ -157,6 +160,9 @@ type
     procedure LabelFormPreviewClick(Sender: TObject);
     procedure LabelFormPreviewMouseEnter(Sender: TObject);
     procedure LabelFormPreviewMouseLeave(Sender: TObject);
+    procedure ListBoxFormPreviewSectionClick(Sender: TObject);
+    procedure NViewInFolderClick(Sender: TObject);
+    procedure LabelFormDocClick(Sender: TObject);
   private
     { Private declarations }
     //var okuds: array of String;
@@ -175,6 +181,7 @@ type
     function parseXML(fileLink: string): String;
     function checkVersionForm(formLink: string): String;
     procedure xmlPreview(xmlLink: string);
+    procedure downloadFile(const url, destPath, fileName, formatFile: string);
   public
     { Public declarations }
   end;
@@ -185,7 +192,7 @@ implementation
 
 {$R *.dfm}
 
-uses DM;
+uses DM, TGBot;
 
 // Перерисовка Таблицы для троеточия
 procedure TDBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer;
@@ -315,6 +322,7 @@ begin
     end;
     setLength(arrStringGridFormPreview, 0);
     setLength(arrLabelFormPreview, 0);
+    ListBoxFormPreviewSection.Clear;
   end;
 
   if length(DBEditFormXmlLink.Text) > 0 then begin
@@ -410,7 +418,27 @@ begin
   end;
 end;
 
+procedure TFormMain.NViewInFolderClick(Sender: TObject);
+var fileName, labelCaption: string;
+begin
+  labelCaption := (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TLabel).Caption;
+  fileName := 'files\' + lowerCase(labelCaption) + '\' + DBTextFormName.Caption + '.' + lowerCase(labelCaption);
+  ShellExecute(0, 'open', 'explorer.exe', pChar('/select, "' + ExtractFilePath(Application.ExeName)+fileName + '"'), nil, SW_ShowNormal);
+end;
+
 // Вызов процедуры предпросмотра
+procedure TFormMain.LabelFormDocClick(Sender: TObject);
+var chatId: TStringList;
+    listSymbol, breakSymbol, msg: string;
+begin
+  listSymbol := '%E2%96%8E';
+  breakSymbol := '%0A';
+  msg := '*' + TNetEncoding.URL.Encode(DBTextFormName.Caption) + '*' + breakSymbol + breakSymbol + listSymbol + '%D0%92%D0%B5%D1%80%D1%81%D0%B8%D1%8F%20xml: ' + DBEditFormXmlDate.Text + '&parse_mode=markdown';
+  chatId := TGBot.getChatData;
+  for var i := 0 to chatId.Count-1 do
+    TGBot.sendMsg(msg, chatId[i]);
+end;
+
 procedure TFormMain.LabelFormPreviewClick(Sender: TObject);
 begin
   if not(Assigned(arrStringGridFormPreview)) then xmlPreview(DBEditFormXmlLink.Text);
@@ -419,7 +447,6 @@ end;
 // Предпросмотр формы
 procedure TFormMain.xmlPreview(xmlLink: string);
 var HTTP: TIdHTTP;
-    SSL:TIdSSLIOHandlerSocketOpenSSL;
     XMLDoc: IXMLDocument;
     metaFormNode, sections, section, columns, rows: IXMLNode;
     xmlFile: TFileStream;
@@ -427,10 +454,7 @@ var HTTP: TIdHTTP;
 begin
   HTTP := TIdHTTP.Create(nil);
   HTTP.HandleRedirects:=True;
-  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
   HTTP.IOHandler := SSL;
-  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
-  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
   XMLDoc := TXMLDocument.Create(nil);
   xmlFile := TFileStream.Create('a.xml', fmCreate);
   try
@@ -458,6 +482,8 @@ begin
       arrLabelFormPreview[i].Caption := section.Attributes['name'];
       arrLabelFormPreview[i].Font.Name := 'Montserrat';
 
+      ListBoxFormPreviewSection.Items.Add(arrLabelFormPreview[i].Caption);
+
       arrStringGridFormPreview[i] := TStringGrid.Create(ScrollBoxFormPreview);
       arrStringGridFormPreview[i].Parent := ScrollBoxFormPreview;
       arrStringGridFormPreview[i].Font.Size := 8;
@@ -468,12 +494,21 @@ begin
       arrStringGridFormPreview[i].FixedCols := 0;
       arrStringGridFormPreview[i].FixedRows := 2;
       arrStringGridFormPreview[i].Width := ScrollBoxFormPreview.Width - arrStringGridFormPreview[i].left - 20;
-      arrStringGridFormPreview[i].Height := rowCount * 26;
+      arrStringGridFormPreview[i].Height := rowCount * 31;
       arrStringGridFormPreview[i].Options := [goColSizing];
       arrStringGridFormPreview[i].OnMouseWheelDown := ScrollBoxFormPreviewMouseWheelDown;
       arrStringGridFormPreview[i].OnMouseWheelUp := ScrollBoxFormPreviewMouseWheelUp;
       arrStringGridFormPreview[i].Options := arrStringGridFormPreview[i].Options + [goColSizing] + [goVertLine] + [goHorzLine] + [goFixedVertLine] + [goFixedHorzLine];
       arrStringGridFormPreview[i].Anchors := arrStringGridFormPreview[i].Anchors + [akRight];
+      arrStringGridFormPreview[i].StyleName := 'Windows';
+      arrStringGridFormPreview[i].DrawingStyle := gdsGradient;
+      arrStringGridFormPreview[i].Color := $00202020;
+      arrStringGridFormPreview[i].FixedColor := $002B2B2B;
+      arrStringGridFormPreview[i].GradientStartColor := $002C2C2C;
+      arrStringGridFormPreview[i].GradientEndColor := $00242424;
+      arrStringGridFormPreview[i].Font.Color := clWhite;
+      arrStringGridFormPreview[i].BorderStyle := bsNone;
+
 
       for var col := 0 to colCount-1 do begin
         arrStringGridFormPreview[i].Cells[col, 0] := columns.ChildNodes[col].Attributes['name'];
@@ -489,11 +524,8 @@ begin
       end;
       arrStringGridFormPreview[i].ColWidths[0] := maxColSize + 40;
     end;
-    LabelFormPreview.Align := alBottom;
-  LabelFormPreview.Align := alTop;
   finally
     xmlFile.Free;
-    SSL.Free;
     HTTP.Free;
   end;
 end;
@@ -507,6 +539,18 @@ end;
 procedure TFormMain.LabelFormPreviewMouseLeave(Sender: TObject);
 begin
   LabelFormPreview.Font.Style := LabelFormPreview.Font.Style - [fsUnderline];
+end;
+
+procedure TFormMain.ListBoxFormPreviewSectionClick(Sender: TObject);
+var top, height: Integer;
+begin
+  if ListBoxFormPreviewSection.ItemIndex >= 0 then begin
+    top := arrLabelFormPreview[ListBoxFormPreviewSection.ItemIndex].Top + ScrollBoxFormPreview.VertScrollBar.Position;
+    height := arrLabelFormPreview[ListBoxFormPreviewSection.ItemIndex].Height;
+
+    if top < 0 then ScrollBoxFormPreview.VertScrollBar.Position := 0
+    else if top + ScrollBoxFormPreview.Height > ScrollBoxFormPreview.ClientHeight then ScrollBoxFormPreview.VertScrollBar.Position := top - ScrollBoxFormPreview.ClientHeight + ScrollBoxFormPreview.Height;
+  end;
 end;
 
 // Прокрутка окна предпросмотра формы
@@ -731,7 +775,6 @@ end;
 
 function TFormMain.checkVersionForm(formLink: string): String;
 var HTTP: TIdHTTP;
-    SSL:TIdSSLIOHandlerSocketOpenSSL;
     JSONPage: TJSONObject;
     pageRosstat, htmlDoc, XMLLink: string;
     Parts: TStringList;
@@ -739,10 +782,7 @@ var HTTP: TIdHTTP;
 begin
   HTTP := TIdHTTP.Create(nil);
   HTTP.HandleRedirects:=True;
-  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
   HTTP.IOHandler := SSL;
-  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
-  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
   try
     try
       pageRosstat := HTTP.Get(formLink);
@@ -767,7 +807,6 @@ begin
 
     end;
   finally
-    SSL.Free;
     HTTP.Free;
   end;
 end;
@@ -775,15 +814,11 @@ end;
 // Принудительнное обновление
 procedure TFormMain.ButtonBeginUpdateFormsClick(Sender: TObject);
 var HTTP: TIdHTTP;
-    SSL:TIdSSLIOHandlerSocketOpenSSL;
 begin
   if Application.MessageBox(pChar('Обновить все формы принудительно? Данные базы данных очистяться!'), 'Обновление форм', MB_YESNO) = idYes then begin
       HTTP := TIdHTTP.Create(nil);
       HTTP.HandleRedirects:=True;
-      SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
       HTTP.IOHandler := SSL;
-      SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
-      SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
       try
         try
           HTTP.Get('https://rosstat.gov.ru/monitoring/getPage?page=1&query=&year=2024&heading=');
@@ -799,7 +834,6 @@ begin
                 on e: Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + e.Message);
         end;
       finally
-        SSL.Free;
         HTTP.Free;
       end;
   end;
@@ -823,16 +857,10 @@ var pageCount, temp, formsCounter: Integer;
     XMLPos, DOCPos, PDFPos, shortNamePos, longNamePos, periodPos, srokPos, OkudPos, DateYtvPos: Integer;
 
     HTTP: TIdHTTP;
-    SSL:TIdSSLIOHandlerSocketOpenSSL;
 begin
   HTTP := TIdHTTP.Create(nil);
   HTTP.HandleRedirects:=True;
-  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
   HTTP.IOHandler := SSL;
-  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
-  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
-  //HTTP.ConnectTimeout := 5000;
-  //HTTP.ReadTimeout := 5000;
   pageCount := 0;
   try
   try
@@ -906,6 +934,7 @@ begin
         MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Обработка формы ' + shortName + '...');
         Application.ProcessMessages;
         writeToDB(shortName, longName, period, Okud, srok, DateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink);
+        downloadFile('https://rosstat.gov.ru'+XMLLink, ExtractFilePath(Application.ExeName) + 'files\xml\', shortName, '.xml');
       end;
       JSONPage.Free;
       //printData(shortName, longName, XMLLink, DOCLink, PDFLink, period, srok, DateYtv);
@@ -914,12 +943,34 @@ begin
 
   end;
   finally
-    SSL.Free;
     HTTP.Free;
   end;
 
   //test := HTTP.Get('https://rosstat.gov.ru/monitoring/getPage?page=1&query=&year=2024&heading=');
   //showMessage(IntToStr(Http.ResponseCode));
+end;
+
+// Скачивание файла
+procedure TFormMain.downloadFile(const url, destPath, fileName, formatFile: string);
+var HTTP: TIdHTTP;
+    myFile: TFileStream;
+begin
+    MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Скачивание формы ' + fileName + '...');
+    HTTP := TIdHTTP.Create(nil);
+    HTTP.HandleRedirects:=True;
+    HTTP.IOHandler := SSL;
+
+    myFile := TFileStream.Create(destPath + fileName + formatFile, fmCreate);
+    try
+      try
+      HTTP.Get(url, myFile);
+      except on E:EIdHTTPProtocolException do showMessage('Ошибка при скачивании');
+             on E: Exception do showMessage('Ошибка при скачивании');
+      end;
+    finally
+      HTTP.Free;
+      FreeAndNil(myFile);
+    end;
 end;
 
 // Поиск по формам
@@ -952,14 +1003,10 @@ var XMLDoc: IXMLDocument;
     version: string;
 
     HTTP: TIdHTTP;
-    SSL:TIdSSLIOHandlerSocketOpenSSL;
 begin
   HTTP := TIdHTTP.Create(nil);
   HTTP.HandleRedirects:=True;
-  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
   HTTP.IOHandler := SSL;
-  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
-  SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
   XMLDoc := TXMLDocument.Create(nil);
   xmlFile := TMemoryStream.Create();
   try
@@ -974,7 +1021,6 @@ begin
     end;
   finally
     xmlFile.Free;
-    SSL.Free;
     HTTP.Free;
   end;
 end;

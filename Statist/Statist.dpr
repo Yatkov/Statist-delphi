@@ -5,7 +5,8 @@ uses
   Main in 'Main.pas' {FormMain},
   Vcl.Themes,
   Vcl.Styles,
-  DM in 'DM.pas' {DataModule1: TDataModule};
+  DM in 'DM.pas' {DataModule1: TDataModule},
+  TGBot in 'TGBot.pas';
 
 {$R *.res}
 

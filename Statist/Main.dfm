@@ -30,11 +30,12 @@ object FormMain: TFormMain
     TabOrder = 0
     TabWidth = 170
     StyleName = 'Glossy'
-    ExplicitWidth = 1093
+    ExplicitWidth = 1207
+    ExplicitHeight = 724
     object TabSheetForms: TTabSheet
       Caption = #1057#1074#1077#1076#1077#1085#1080#1103' '#1087#1086' '#1092#1086#1088#1084#1072#1084
       object Splitter1: TSplitter
-        Left = 389
+        Left = 313
         Top = 0
         Width = 10
         Height = 692
@@ -46,14 +47,15 @@ object FormMain: TFormMain
       object PanelForms: TPanel
         Left = 0
         Top = 0
-        Width = 389
+        Width = 313
         Height = 692
         Align = alLeft
         TabOrder = 0
+        ExplicitHeight = 684
         object EditFormsFind: TEdit
           Left = 1
           Top = 42
-          Width = 387
+          Width = 311
           Height = 26
           Align = alTop
           TabOrder = 0
@@ -63,7 +65,7 @@ object FormMain: TFormMain
         object PanelFormControl: TPanel
           Left = 1
           Top = 648
-          Width = 387
+          Width = 311
           Height = 43
           Align = alBottom
           Padding.Left = 5
@@ -71,10 +73,11 @@ object FormMain: TFormMain
           Padding.Right = 5
           Padding.Bottom = 5
           TabOrder = 1
+          ExplicitTop = 640
           object LabelFormCounter: TLabel
             Left = 6
             Top = 6
-            Width = 375
+            Width = 299
             Height = 18
             Align = alTop
             ExplicitWidth = 3
@@ -83,7 +86,7 @@ object FormMain: TFormMain
         object DBGridForms: TDBGrid
           Left = 1
           Top = 68
-          Width = 387
+          Width = 311
           Height = 580
           Align = alClient
           DataSource = DataModule1.DataSource1
@@ -186,7 +189,7 @@ object FormMain: TFormMain
         object PanelFormsSettingsButton: TPanel
           Left = 1
           Top = 1
-          Width = 387
+          Width = 311
           Height = 41
           Align = alTop
           Padding.Left = 5
@@ -216,23 +219,24 @@ object FormMain: TFormMain
         end
       end
       object ScrollBoxForms: TScrollBox
-        Left = 399
+        Left = 323
         Top = 0
-        Width = 802
+        Width = 878
         Height = 692
         VertScrollBar.Smooth = True
         Align = alClient
         TabOrder = 1
         StyleName = 'Glossy'
-        ExplicitWidth = 686
+        ExplicitWidth = 876
+        ExplicitHeight = 684
         object PanelFormDownload: TPanel
           Left = 0
           Top = 0
-          Width = 798
+          Width = 874
           Height = 169
           Align = alTop
           TabOrder = 0
-          ExplicitWidth = 682
+          ExplicitWidth = 872
           object GroupBoxUsefulFiles: TGroupBox
             Left = 561
             Top = 1
@@ -257,7 +261,6 @@ object FormMain: TFormMain
                 070100000009540054007200650065004E006F00640065003B00000000000000
                 00000000FFFFFFFFFFFFFFFF00000000000000000000000000010E1004320442
                 043E04370430043F043E043B043D0435043D0438043504}
-              ExplicitWidth = 183
             end
           end
           object GroupBoxFormGovernmLinks: TGroupBox
@@ -322,7 +325,6 @@ object FormMain: TFormMain
               DataSource = DataModule1.DataSource1
               ReadOnly = True
               TabOrder = 2
-              ExplicitWidth = 138
             end
             object DBEditFormYtv: TDBEdit
               Left = 206
@@ -333,7 +335,6 @@ object FormMain: TFormMain
               DataSource = DataModule1.DataSource1
               ReadOnly = True
               TabOrder = 3
-              ExplicitWidth = 139
             end
           end
           object GroupBoxFormMainLink: TGroupBox
@@ -422,6 +423,7 @@ object FormMain: TFormMain
               PopupMenu = PopupMenuLinks
               ShowHint = True
               Layout = tlCenter
+              OnClick = LabelFormDocClick
             end
             object DBEditFormXmlDate: TDBEdit
               Left = 111
@@ -451,18 +453,18 @@ object FormMain: TFormMain
         object PanelFormContent: TPanel
           Left = 0
           Top = 169
-          Width = 798
-          Height = 248
+          Width = 874
+          Height = 224
           Align = alTop
           Padding.Left = 5
           Padding.Top = 5
           Padding.Right = 5
           Padding.Bottom = 5
           TabOrder = 1
-          ExplicitWidth = 682
+          ExplicitWidth = 872
           DesignSize = (
-            798
-            248)
+            874
+            224)
           object LabelFormFullName: TLabel
             AlignWithMargins = True
             Left = 3
@@ -530,7 +532,7 @@ object FormMain: TFormMain
           object DBTextFormName: TDBText
             Left = 6
             Top = 6
-            Width = 786
+            Width = 862
             Height = 25
             Align = alTop
             DataSource = DataModule1.DataSource1
@@ -546,7 +548,7 @@ object FormMain: TFormMain
           object DBMemoFormFullName: TDBMemo
             Left = 217
             Top = 51
-            Width = 566
+            Width = 642
             Height = 62
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -563,12 +565,12 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 0
             StyleName = 'Windows'
-            ExplicitWidth = 450
+            ExplicitWidth = 640
           end
           object DBEditFormPeriod: TDBEdit
             Left = 496
             Top = 127
-            Width = 286
+            Width = 362
             Height = 26
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -585,7 +587,7 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 1
             StyleName = 'Windows'
-            ExplicitWidth = 170
+            ExplicitWidth = 360
           end
           object DBEditFormOKUD: TDBEdit
             Left = 217
@@ -610,8 +612,8 @@ object FormMain: TFormMain
           object DBMemoFormSrok: TDBMemo
             Left = 217
             Top = 164
-            Width = 566
-            Height = 70
+            Width = 642
+            Height = 53
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
             BevelOuter = bvNone
@@ -627,7 +629,7 @@ object FormMain: TFormMain
             ReadOnly = True
             TabOrder = 3
             StyleName = 'Windows'
-            ExplicitWidth = 450
+            ExplicitWidth = 640
           end
           object DBEditFormXmlLink: TDBEdit
             Left = 4
@@ -665,23 +667,21 @@ object FormMain: TFormMain
         end
         object PageControlFormContent: TPageControl
           Left = 0
-          Top = 417
-          Width = 798
-          Height = 271
+          Top = 393
+          Width = 874
+          Height = 295
           ActivePage = TabSheet1
           Align = alClient
           TabOrder = 2
-          ExplicitLeft = 168
-          ExplicitTop = 29
-          ExplicitWidth = 577
-          ExplicitHeight = 193
+          ExplicitWidth = 872
+          ExplicitHeight = 287
           object TabSheet1: TTabSheet
             Caption = #1055#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088
             object ScrollBoxFormPreview: TScrollBox
               Left = 0
               Top = 0
-              Width = 790
-              Height = 238
+              Width = 672
+              Height = 262
               Align = alClient
               BorderStyle = bsNone
               Padding.Top = 5
@@ -689,12 +689,12 @@ object FormMain: TFormMain
               TabOrder = 0
               OnMouseWheelDown = ScrollBoxFormPreviewMouseWheelDown
               OnMouseWheelUp = ScrollBoxFormPreviewMouseWheelUp
-              ExplicitWidth = 569
-              ExplicitHeight = 160
+              ExplicitWidth = 670
+              ExplicitHeight = 254
               object LabelFormPreview: TLabel
                 Left = 0
                 Top = 5
-                Width = 790
+                Width = 672
                 Height = 21
                 Cursor = crHandPoint
                 Align = alTop
@@ -710,6 +710,18 @@ object FormMain: TFormMain
                 OnMouseLeave = LabelFormPreviewMouseLeave
                 ExplicitWidth = 179
               end
+            end
+            object ListBoxFormPreviewSection: TListBox
+              Left = 672
+              Top = 0
+              Width = 194
+              Height = 262
+              Align = alRight
+              ItemHeight = 18
+              TabOrder = 1
+              OnClick = ListBoxFormPreviewSectionClick
+              ExplicitLeft = 670
+              ExplicitHeight = 254
             end
           end
           object TabSheet2: TTabSheet
@@ -1158,6 +1170,10 @@ object FormMain: TFormMain
       Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100' '#1089#1089#1099#1083#1082#1091
       OnClick = NLinksCopyToClipboardClick
     end
+    object NViewInFolder: TMenuItem
+      Caption = #1055#1086#1082#1072#1079#1072#1090#1100' '#1087#1072#1087#1082#1077
+      OnClick = NViewInFolderClick
+    end
   end
   object ImageList1: TImageList
     Height = 20
@@ -1554,5 +1570,17 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000}
+  end
+  object SSL: TIdSSLIOHandlerSocketOpenSSL
+    MaxLineAction = maException
+    Port = 0
+    DefaultPort = 0
+    SSLOptions.Method = sslvTLSv1_2
+    SSLOptions.SSLVersions = [sslvTLSv1_2]
+    SSLOptions.Mode = sslmUnassigned
+    SSLOptions.VerifyMode = []
+    SSLOptions.VerifyDepth = 0
+    Left = 218
+    Top = 472
   end
 end
