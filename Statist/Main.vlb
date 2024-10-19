@@ -20,7 +20,7 @@ Coordinates=349,10,131,58
 Coordinates=10,212,105,36
 
 []
-Coordinates=1268,644,135,58
+Coordinates=714,478,121,58
 Visible=True
 
 [LabelFormOKUD]
@@ -126,9 +126,6 @@ Coordinates=715,382,162,58
 [ImageUpdateClose]
 Coordinates=658,78,124,58
 
-[LabelUpdateHelp2]
-Coordinates=259,382,121,58
-
 [PanelFormFindUpdate]
 Coordinates=1198,155,144,58
 
@@ -167,9 +164,6 @@ Coordinates=658,155,124,58
 
 [DBMemoFormSrok]
 Coordinates=1050,493,124,36
-
-[LabelUpdateHelp1]
-Coordinates=714,478,121,58
 
 [PanelUpdateControl]
 Coordinates=141,240,130,58

@@ -149,6 +149,10 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="TGBot.pas"/>
+        <DCCReference Include="UnitUpdate.pas">
+            <Form>FormUpdate</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
