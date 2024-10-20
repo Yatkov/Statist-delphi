@@ -3,7 +3,7 @@ object FormMain: TFormMain
   Top = 0
   Caption = #1057#1090#1072#1090#1080#1089#1090
   ClientHeight = 729
-  ClientWidth = 1215
+  ClientWidth = 1106
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -15,12 +15,12 @@ object FormMain: TFormMain
   WindowState = wsMaximized
   StyleName = 'Windows10 Dark'
   OnCreate = FormCreate
-  TextHeight = 16
+  TextHeight = 18
   object PageControlMain: TPageControl
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 1209
+    Width = 1100
     Height = 723
     ActivePage = TabSheetForms
     Align = alClient
@@ -53,7 +53,7 @@ object FormMain: TFormMain
           Left = 1
           Top = 42
           Width = 311
-          Height = 24
+          Height = 26
           Align = alTop
           TabOrder = 0
           TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1086#1088#1084#1072#1084'...'
@@ -74,16 +74,16 @@ object FormMain: TFormMain
             Left = 6
             Top = 6
             Width = 299
-            Height = 16
+            Height = 18
             Align = alTop
-            ExplicitWidth = 4
+            ExplicitWidth = 3
           end
         end
         object DBGridForms: TDBGrid
           Left = 1
-          Top = 66
+          Top = 68
           Width = 311
-          Height = 573
+          Height = 571
           Align = alClient
           DataSource = DataModule1.DataSource1
           Options = [dgTitles, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -120,15 +120,16 @@ object FormMain: TFormMain
             TabOrder = 0
             object CheckListBoxFormsFields: TCheckListBox
               Left = 7
-              Top = 35
+              Top = 37
               Width = 232
-              Height = 228
+              Height = 226
               Align = alClient
+              ItemHeight = 18
               TabOrder = 0
             end
             object CheckBoxFormsFieldsAll: TCheckBox
               Left = 7
-              Top = 18
+              Top = 20
               Width = 232
               Height = 17
               Align = alTop
@@ -215,7 +216,7 @@ object FormMain: TFormMain
       object ScrollBoxForms: TScrollBox
         Left = 323
         Top = 0
-        Width = 878
+        Width = 769
         Height = 683
         VertScrollBar.Smooth = True
         Align = alClient
@@ -224,7 +225,7 @@ object FormMain: TFormMain
         object PanelFormDownload: TPanel
           Left = 0
           Top = 0
-          Width = 874
+          Width = 765
           Height = 169
           Align = alTop
           TabOrder = 0
@@ -238,9 +239,9 @@ object FormMain: TFormMain
             TabOrder = 0
             object TreeViewUsefulFiles: TTreeView
               Left = 2
-              Top = 18
+              Top = 20
               Width = 228
-              Height = 147
+              Height = 145
               Align = alClient
               Images = ImageListUsefulFiles
               Indent = 19
@@ -311,7 +312,7 @@ object FormMain: TFormMain
               Left = 207
               Top = 34
               Width = 134
-              Height = 24
+              Height = 26
               Anchors = [akLeft, akTop, akRight]
               DataSource = DataModule1.DataSource1
               ReadOnly = True
@@ -321,7 +322,7 @@ object FormMain: TFormMain
               Left = 206
               Top = 77
               Width = 135
-              Height = 24
+              Height = 26
               Anchors = [akLeft, akTop, akRight]
               DataSource = DataModule1.DataSource1
               ReadOnly = True
@@ -444,7 +445,7 @@ object FormMain: TFormMain
         object PanelFormContent: TPanel
           Left = 0
           Top = 169
-          Width = 874
+          Width = 765
           Height = 224
           Align = alTop
           Padding.Left = 5
@@ -453,7 +454,7 @@ object FormMain: TFormMain
           Padding.Bottom = 5
           TabOrder = 1
           DesignSize = (
-            874
+            765
             224)
           object LabelFormFullName: TLabel
             AlignWithMargins = True
@@ -522,7 +523,7 @@ object FormMain: TFormMain
           object DBTextFormName: TDBText
             Left = 6
             Top = 6
-            Width = 862
+            Width = 753
             Height = 25
             Align = alTop
             DataSource = DataModule1.DataSource1
@@ -538,7 +539,7 @@ object FormMain: TFormMain
           object DBMemoFormFullName: TDBMemo
             Left = 217
             Top = 51
-            Width = 642
+            Width = 533
             Height = 62
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -559,7 +560,7 @@ object FormMain: TFormMain
           object DBEditFormPeriod: TDBEdit
             Left = 496
             Top = 127
-            Width = 362
+            Width = 253
             Height = 26
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -600,7 +601,7 @@ object FormMain: TFormMain
           object DBMemoFormSrok: TDBMemo
             Left = 217
             Top = 164
-            Width = 642
+            Width = 533
             Height = 53
             Anchors = [akLeft, akTop, akRight]
             BevelInner = bvNone
@@ -622,7 +623,7 @@ object FormMain: TFormMain
             Left = 4
             Top = 195
             Width = 53
-            Height = 24
+            Height = 26
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 4
@@ -633,7 +634,7 @@ object FormMain: TFormMain
             Left = 72
             Top = 195
             Width = 49
-            Height = 24
+            Height = 26
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 5
@@ -644,7 +645,7 @@ object FormMain: TFormMain
             Left = 136
             Top = 195
             Width = 49
-            Height = 24
+            Height = 26
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 6
@@ -655,7 +656,7 @@ object FormMain: TFormMain
         object PageControlFormContent: TPageControl
           Left = 0
           Top = 393
-          Width = 874
+          Width = 765
           Height = 286
           ActivePage = TabSheet1
           Align = alClient
@@ -665,8 +666,8 @@ object FormMain: TFormMain
             object ScrollBoxFormPreview: TScrollBox
               Left = 0
               Top = 0
-              Width = 672
-              Height = 255
+              Width = 563
+              Height = 253
               Align = alClient
               BorderStyle = bsNone
               Padding.Top = 5
@@ -677,8 +678,8 @@ object FormMain: TFormMain
               object LabelFormPreview: TLabel
                 Left = 0
                 Top = 5
-                Width = 672
-                Height = 18
+                Width = 563
+                Height = 21
                 Cursor = crHandPoint
                 Align = alTop
                 Caption = #1055#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088' '#1092#1086#1088#1084#1099
@@ -691,15 +692,16 @@ object FormMain: TFormMain
                 OnClick = LabelFormPreviewClick
                 OnMouseEnter = LabelFormPreviewMouseEnter
                 OnMouseLeave = LabelFormPreviewMouseLeave
-                ExplicitWidth = 169
+                ExplicitWidth = 179
               end
             end
             object ListBoxFormPreviewSection: TListBox
-              Left = 672
+              Left = 563
               Top = 0
               Width = 194
-              Height = 255
+              Height = 253
               Align = alRight
+              ItemHeight = 18
               TabOrder = 1
               OnClick = ListBoxFormPreviewSectionClick
             end
@@ -870,7 +872,6 @@ object FormMain: TFormMain
                   Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1072#1082#1090#1091#1072#1083#1100#1085#1086#1089#1090#1100' '#1092#1086#1088#1084
                   TabOrder = 1
                   WordWrap = True
-                  OnClick = ButtonCheckFormsClick
                 end
                 object ButtonBeginUpdateForms: TButton
                   Left = 6
@@ -918,10 +919,11 @@ object FormMain: TFormMain
                   TabOrder = 0
                   object CheckListBoxFormsUpdate: TCheckListBox
                     Left = 1
-                    Top = 17
+                    Top = 19
                     Width = 431
-                    Height = 274
+                    Height = 272
                     Align = alClient
+                    ItemHeight = 18
                     TabOrder = 0
                   end
                 end
@@ -951,8 +953,8 @@ object FormMain: TFormMain
                     Height = 26
                     Align = alClient
                     Layout = tlCenter
-                    ExplicitWidth = 4
-                    ExplicitHeight = 16
+                    ExplicitWidth = 3
+                    ExplicitHeight = 18
                   end
                   object EditFormFindUpdate: TEdit
                     Left = 5
@@ -962,8 +964,7 @@ object FormMain: TFormMain
                     Align = alLeft
                     TabOrder = 0
                     TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1086#1088#1084#1072#1084'...'
-                    ExplicitLeft = 1
-                    ExplicitTop = 6
+                    ExplicitHeight = 24
                   end
                   object SpinButtonChangeRecordUpdate: TSpinButton
                     Left = 200
@@ -1086,14 +1087,14 @@ object FormMain: TFormMain
       object Label1: TLabel
         Left = 11
         Top = 56
-        Width = 206
-        Height = 16
+        Width = 42
+        Height = 18
         Caption = 'Label1'
       end
       object PanelOrgFind: TPanel
         Left = 0
         Top = 0
-        Width = 1201
+        Width = 1092
         Height = 33
         Align = alTop
         Padding.Left = 10
@@ -1109,9 +1110,6 @@ object FormMain: TFormMain
           Caption = #1053#1072#1081#1090#1080
           TabOrder = 0
           OnClick = ButtonOrgFindClick
-          ExplicitLeft = 169
-          ExplicitTop = 1
-          ExplicitHeight = 31
         end
         object EditOrgINN: TEdit
           Left = 11
@@ -1121,9 +1119,7 @@ object FormMain: TFormMain
           Align = alLeft
           TabOrder = 1
           TextHint = #1048#1053#1053
-          ExplicitLeft = 1
-          ExplicitTop = 1
-          ExplicitHeight = 31
+          ExplicitHeight = 26
         end
       end
     end

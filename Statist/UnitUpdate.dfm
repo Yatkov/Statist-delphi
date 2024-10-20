@@ -4,8 +4,8 @@ object FormUpdate: TFormUpdate
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = #1054#1073#1085#1086#1074#1083#1077#1085#1080#1077' '#1092#1086#1088#1084
-  ClientHeight = 578
-  ClientWidth = 462
+  ClientHeight = 517
+  ClientWidth = 453
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,28 +18,27 @@ object FormUpdate: TFormUpdate
   object PageControlUpdate: TPageControl
     Left = 0
     Top = 0
-    Width = 462
-    Height = 489
-    ActivePage = TabSheet1
+    Width = 453
+    Height = 428
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 352
     object TabSheet1: TTabSheet
       Caption = #1057#1087#1080#1089#1086#1082' '#1092#1086#1088#1084
       object PanelControl: TPanel
         Left = 0
-        Top = 352
-        Width = 454
+        Top = 291
+        Width = 445
         Height = 107
         Align = alBottom
         TabOrder = 0
         DesignSize = (
-          454
+          445
           107)
         object LabelUpdateHelp1: TLabel
           Left = 223
           Top = 6
-          Width = 35
+          Width = 26
           Height = 35
           Cursor = crHelp
           Hint = 
@@ -52,11 +51,12 @@ object FormUpdate: TFormUpdate
           ParentShowHint = False
           ShowHint = True
           Layout = tlCenter
+          ExplicitWidth = 35
         end
         object Label1: TLabel
           Left = 223
           Top = 47
-          Width = 35
+          Width = 26
           Height = 17
           Cursor = crHelp
           Hint = #1042#1099#1087#1086#1083#1085#1103#1077#1090#1089#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077' '#1086#1090#1084#1077#1095#1077#1085#1085#1099#1093' '#1092#1086#1088#1084' '#1073#1077#1079' '#1087#1088#1086#1074#1077#1088#1082#1080
@@ -67,11 +67,12 @@ object FormUpdate: TFormUpdate
           ParentShowHint = False
           ShowHint = True
           Layout = tlCenter
+          ExplicitWidth = 35
         end
         object ButtonCheckActual: TButton
           Left = 3
           Top = 6
-          Width = 214
+          Width = 205
           Height = 35
           Anchors = [akLeft, akTop, akRight]
           Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1072#1082#1090#1091#1072#1083#1100#1085#1086#1089#1090#1100' '#1092#1086#1088#1084
@@ -80,7 +81,7 @@ object FormUpdate: TFormUpdate
         object ButtonForceUpdate: TButton
           Left = 3
           Top = 70
-          Width = 214
+          Width = 205
           Height = 35
           Anchors = [akLeft, akTop, akRight]
           Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1092#1086#1088#1084#1099
@@ -90,7 +91,7 @@ object FormUpdate: TFormUpdate
         object CheckBoxForceUpdate: TCheckBox
           Left = 3
           Top = 47
-          Width = 214
+          Width = 205
           Height = 17
           Anchors = [akLeft, akTop, akRight]
           Caption = #1055#1088#1080#1085#1091#1076#1080#1090#1077#1083#1100#1085#1086#1077' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077
@@ -110,51 +111,39 @@ object FormUpdate: TFormUpdate
       object PanelForms: TPanel
         Left = 0
         Top = 0
-        Width = 454
-        Height = 352
+        Width = 445
+        Height = 291
         Align = alClient
         TabOrder = 1
-        ExplicitLeft = 96
-        ExplicitTop = 136
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object GroupBoxForms: TGroupBox
           Left = 1
-          Top = 57
-          Width = 452
-          Height = 294
+          Top = 51
+          Width = 443
+          Height = 239
           Align = alClient
           Caption = #1042#1099#1073#1086#1088' '#1092#1086#1088#1084' '#1085#1072' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077
           TabOrder = 0
-          ExplicitLeft = 88
-          ExplicitTop = 176
-          ExplicitWidth = 185
-          ExplicitHeight = 105
           object CheckListBoxForms: TCheckListBox
             Left = 2
             Top = 17
-            Width = 448
-            Height = 275
+            Width = 439
+            Height = 220
             Align = alClient
             TabOrder = 0
-            ExplicitLeft = 264
-            ExplicitTop = 152
-            ExplicitWidth = 121
-            ExplicitHeight = 97
           end
         end
         object PanelFormsHeader: TPanel
           Left = 1
           Top = 1
-          Width = 452
-          Height = 56
+          Width = 443
+          Height = 50
           Align = alTop
           TabOrder = 1
           object LabelRecordCount: TLabel
-            Left = 165
+            Left = 205
             Top = 25
-            Width = 286
-            Height = 30
+            Width = 237
+            Height = 24
             Align = alClient
             Layout = tlCenter
             ExplicitWidth = 3
@@ -163,7 +152,7 @@ object FormUpdate: TFormUpdate
           object CheckBoxSelectAllForms: TCheckBox
             Left = 1
             Top = 1
-            Width = 450
+            Width = 441
             Height = 24
             Align = alTop
             Caption = #1042#1099#1073#1088#1072#1090#1100' '#1074#1089#1077' '#1092#1086#1088#1084#1099
@@ -173,20 +162,19 @@ object FormUpdate: TFormUpdate
           object EditFindForm: TEdit
             Left = 1
             Top = 25
-            Width = 144
-            Height = 30
+            Width = 184
+            Height = 24
             Align = alLeft
             TabOrder = 1
             TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1086#1088#1084#1072#1084'...'
             OnChange = EditFindFormChange
-            ExplicitLeft = -5
-            ExplicitTop = 20
+            ExplicitHeight = 23
           end
           object SpinButtonChangeRecord: TSpinButton
-            Left = 145
+            Left = 185
             Top = 25
             Width = 20
-            Height = 30
+            Height = 24
             Align = alLeft
             DownGlyph.Data = {
               0E010000424D0E01000000000000360000002800000009000000060000000100
@@ -211,9 +199,6 @@ object FormUpdate: TFormUpdate
               800000808000008080000080800000808000}
             OnDownClick = SpinButtonChangeRecordDownClick
             OnUpClick = SpinButtonChangeRecordUpClick
-            ExplicitLeft = 151
-            ExplicitTop = 24
-            ExplicitHeight = 25
           end
         end
       end
@@ -224,36 +209,28 @@ object FormUpdate: TFormUpdate
       object PanelActual: TPanel
         Left = 0
         Top = 0
-        Width = 454
-        Height = 459
+        Width = 445
+        Height = 398
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 168
-        ExplicitTop = 176
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object LabelActualCount: TLabel
           Left = 1
           Top = 1
-          Width = 452
+          Width = 443
           Height = 15
           Align = alTop
           Caption = #1053#1072#1081#1076#1077#1085#1086' '#1092#1086#1088#1084' '#1082' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1102':'
-          ExplicitWidth = 171
+          ExplicitWidth = 169
         end
         object StringGridActualForms: TStringGrid
           Left = 1
           Top = 16
-          Width = 452
-          Height = 360
+          Width = 443
+          Height = 299
           Align = alClient
           ColCount = 4
           FixedCols = 0
           TabOrder = 0
-          ExplicitLeft = 168
-          ExplicitTop = 128
-          ExplicitWidth = 320
-          ExplicitHeight = 120
           ColWidths = (
             121
             99
@@ -262,18 +239,18 @@ object FormUpdate: TFormUpdate
         end
         object PanelActualControl: TPanel
           Left = 1
-          Top = 376
-          Width = 452
+          Top = 315
+          Width = 443
           Height = 82
           Align = alBottom
           TabOrder = 1
           DesignSize = (
-            452
+            443
             82)
           object ButtonUpdate: TButton
             Left = 8
             Top = 6
-            Width = 225
+            Width = 216
             Height = 35
             Anchors = [akLeft, akTop, akRight]
             Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1085#1077#1072#1082#1090#1091#1072#1083#1100#1085#1099#1077
@@ -282,7 +259,7 @@ object FormUpdate: TFormUpdate
           object ButtonBack: TButton
             Left = 8
             Top = 47
-            Width = 97
+            Width = 88
             Height = 25
             Anchors = [akLeft, akTop, akRight]
             Caption = '<< '#1053#1072#1079#1072#1076
@@ -295,11 +272,43 @@ object FormUpdate: TFormUpdate
   end
   object MemoMsg: TMemo
     Left = 0
-    Top = 489
-    Width = 462
+    Top = 428
+    Width = 453
     Height = 89
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 358
+  end
+  object IdHTTP1: TIdHTTP
+    ProxyParams.BasicAuthentication = False
+    ProxyParams.ProxyPort = 0
+    Request.ContentLength = -1
+    Request.ContentRangeEnd = -1
+    Request.ContentRangeStart = -1
+    Request.ContentRangeInstanceLength = -1
+    Request.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    Request.BasicAuthentication = False
+    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
+    Request.Ranges.Units = 'bytes'
+    Request.Ranges = <>
+    HTTPOptions = [hoForceEncodeParams]
+    Left = 44
+    Top = 458
+  end
+  object IdServerIOHandlerSSLOpenSSL1: TIdServerIOHandlerSSLOpenSSL
+    SSLOptions.Mode = sslmUnassigned
+    SSLOptions.VerifyMode = []
+    SSLOptions.VerifyDepth = 0
+    Left = 120
+    Top = 464
+  end
+  object SSL: TIdSSLIOHandlerSocketOpenSSL
+    MaxLineAction = maException
+    Port = 0
+    DefaultPort = 0
+    SSLOptions.Mode = sslmUnassigned
+    SSLOptions.VerifyMode = []
+    SSLOptions.VerifyDepth = 0
+    Left = 208
+    Top = 456
   end
 end

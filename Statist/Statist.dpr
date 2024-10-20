@@ -7,7 +7,9 @@ uses
   Vcl.Styles,
   DM in 'DM.pas' {DataModule1: TDataModule},
   TGBot in 'TGBot.pas',
-  UnitUpdate in 'UnitUpdate.pas' {FormUpdate};
+  UnitUpdate in 'UnitUpdate.pas' {FormUpdate},
+  UnitFormUtils in 'UnitFormUtils.pas',
+  UnitFormPreview in 'UnitFormPreview.pas' {FormPreview};
 
 {$R *.res}
 
@@ -18,6 +20,7 @@ begin
   Application.Title := 'Статист';
   Application.CreateForm(TDataModule1, DataModule1);
   Application.CreateForm(TFormMain, FormMain);
+  Application.CreateForm(TFormPreview, FormPreview);
   //Application.CreateForm(TFormUpdate, FormUpdate);
   Application.Run;
 end.

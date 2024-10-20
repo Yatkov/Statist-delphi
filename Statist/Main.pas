@@ -140,7 +140,6 @@ type
     procedure PanelUpdateHeaderMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure ButtonBeginUpdateFormsClick(Sender: TObject);
-    procedure ButtonCheckFormsClick(Sender: TObject);
     procedure DBGridFormsTitleClick(Column: TColumn);
     procedure NUnsortClick(Sender: TObject);
     procedure ButtonUpdateBackClick(Sender: TObject);
@@ -166,12 +165,7 @@ type
         arrStringGridFormPreview: array of TStringGrid;
         arrLabelFormPreview: array of TLabel;
     procedure loadForms();
-    procedure SplitByMultipleSpaces(const Input: string; List: TStringList);
-    function formatText(inputText, firstPos, lastPos: String):String;
-    function JSONUnescape(const Source: string; CRLF: string = #13#10): string;
     procedure clearDB();
-    function parseXML(fileLink: string): String;
-    function checkVersionForm(formLink: string): String;
     procedure xmlPreview(xmlLink: string);
     procedure downloadFile(const url, destPath, fileName, formatFile: string);
   public
@@ -184,7 +178,7 @@ implementation
 
 {$R *.dfm}
 
-uses DM, TGBot;
+uses DM, TGBot, UnitFormUtils, UnitFormPreview;
 
 // Перерисовка Таблицы для троеточия
 procedure TDBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer;
@@ -380,7 +374,9 @@ end;
 // Вызов процедуры предпросмотра
 procedure TFormMain.LabelFormPreviewClick(Sender: TObject);
 begin
-  if not(Assigned(arrStringGridFormPreview)) then xmlPreview(DBEditFormXmlLink.Text);
+  //if not(Assigned(arrStringGridFormPreview)) then xmlPreview(DBEditFormXmlLink.Text);
+  FormPreview.Show;
+  FormPreview.xmlPreview(DBEditFormXmlLink.Text);
 end;
 
 // Создание предпросмотра
@@ -587,89 +583,7 @@ begin
 end;
 
 // Проверка актуальности выбранных форм
-procedure TFormMain.ButtonCheckFormsClick(Sender: TObject);
-var okud, oldVersion, newVersion: string;
-    findCounter: integer;
-begin
-  StringGridActualForms.RowCount := 2;
-  StringGridActualForms.Cells[0,1] := '';
-  StringGridActualForms.Cells[1,1] := '';
-  StringGridActualForms.Cells[2,1] := '';
-  StringGridActualForms.Cells[3,1] := '';
 
-  PanelUpdate.SetFocus;
-  if Application.MessageBox(pChar('Проверить отмеченные формы?'), 'Проверка актуальности', MB_YESNO) = idYes then begin
-    PageControlUpdate.SelectNextPage(true, false);
-    findCounter := 0;
-    MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + 'Начало проверки актуальности');
-    for var i := 0 to CheckListBoxFormsUpdate.Count-1 do begin
-      if CheckListBoxFormsUpdate.Checked[i] then begin
-        DataModule1.FDQueryForms.SQL.Text := 'Select okud, xmlDate from Forms where shortName = ' + '''' + CheckListBoxFormsUpdate.Items[i] + '''';
-        MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + 'Проверяется ' + CheckListBoxFormsUpdate.Items[i] + '...');
-        DataModule1.FDQueryForms.Open;
-        okud := DataModule1.FDQueryForms.FieldByName('okud').AsString;
-        oldVersion := DataModule1.FDQueryForms.FieldByName('xmlDate').AsString;
-        newVersion := checkVersionForm('https://rosstat.gov.ru/monitoring/getPage?query='+ okud +'&heading=&year=2024&page=1');
-
-        if (length(oldVersion) > 0) and (length(newVersion) > 0) then begin
-          if StrToDate(newVersion) > StrToDate(oldVersion) then begin
-            MemoUpdateMsg.Lines[MemoUpdateMsg.Lines.Count-1] := MemoUpdateMsg.Lines[MemoUpdateMsg.Lines.Count-1] + ' Требуется обновление';
-            inc(findCounter);
-            StringGridActualForms.Cells[0, StringGridActualForms.RowCount-1] := CheckListBoxFormsUpdate.Items[i];
-            StringGridActualForms.Cells[1, StringGridActualForms.RowCount-1] := okud;
-            StringGridActualForms.Cells[2, StringGridActualForms.RowCount-1] := oldVersion;
-            StringGridActualForms.Cells[3, StringGridActualForms.RowCount-1] := newVersion;
-            StringGridActualForms.RowCount := StringGridActualForms.RowCount + 1;
-          end else MemoUpdateMsg.Lines[MemoUpdateMsg.Lines.Count-1] := MemoUpdateMsg.Lines[MemoUpdateMsg.Lines.Count-1] + ' Актуальна';
-        end;
-      end;
-    end;
-    MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + 'Актуальность форм проверена');
-    if findCounter > 0 then begin
-      StringGridActualForms.RowCount := StringGridActualForms.RowCount - 1;
-      ButtonUpdateNext.Visible := True;
-      LabelUpdateActualCount.Caption := 'Найдено форм к обновлению: ' + IntToStr(findCounter);
-    end;
-  end;
-end;
-
-function TFormMain.checkVersionForm(formLink: string): String;
-var HTTP: TIdHTTP;
-    JSONPage: TJSONObject;
-    pageRosstat, htmlDoc, XMLLink: string;
-    Parts: TStringList;
-    XMLPos: integer;
-begin
-  HTTP := TIdHTTP.Create(nil);
-  HTTP.HandleRedirects:=True;
-  HTTP.IOHandler := SSL;
-  try
-    try
-      pageRosstat := HTTP.Get(formLink);
-      JSONPage :=TJSONObject.Create;
-      JSONPage.Parse(TEncoding.UTF8.GetBytes(pageRosstat),0);
-      JSONPage.TryGetValue('html', htmlDoc);
-      htmlDoc := JSONUnescape(htmlDoc);
-      htmlDoc := TRegEx.Replace(htmlDoc, '\s{2,3}', ' ');
-      Parts := TStringList.Create;
-      SplitByMultipleSpaces(htmlDoc, Parts);
-      XMLPos:= 0;
-      for var i := 0 to Parts.Count-1 do begin
-        if (AnsiPos('<a class="btn btn-icon btn-white btn-br"', Parts[i]) > 0) and (AnsiPos('.xml', Parts[i]) > 0) then begin
-          XMLPos := i;
-          break;
-        end;
-      end;
-      if XMLPos > 0 then XMLLink := formatText(Parts[XMLPos], '<a class="btn btn-icon btn-white btn-br" href="', '" download>');
-
-      checkVersionForm := parseXML('https://rosstat.gov.ru' + XMLLink);
-    except on e:Exception do showMessage('hui');
-
-    end;
-  finally
-    HTTP.Free;
-  end;
-end;
 
 // Принудительнное обновление
 procedure TFormMain.ButtonOrgFindClick(Sender: TObject);
@@ -758,7 +672,7 @@ begin
       JSONPage.TryGetValue('currentPage', currentPage);
       JSONPage.TryGetValue('html', htmlDoc);
 
-      htmlDoc := JSONUnescape(htmlDoc);
+      htmlDoc := UnitFormUtils.JSONUnescape(htmlDoc);
       htmlDoc := TRegEx.Replace(htmlDoc, '\s{2,3}', ' ');
 
       Parts := TStringList.Create;
@@ -811,7 +725,6 @@ begin
           DateYtv := formatText(forms[i].Strings[DateYtvPos], RegExDateYtv.Match(DateYtv).Groups[0].value, '</a>');
         end;
         if OkudPos > 0 then Okud := formatText(forms[i].Strings[OkudPos], '<div>', '</div>');
-        // createRecord(shortName, XMLLink, DOCLink, PDFLink, longName, DateYtv);
         MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Обработка формы ' + shortName + '...');
         Application.ProcessMessages;
         try
@@ -821,7 +734,6 @@ begin
         downloadFile('https://rosstat.gov.ru'+XMLLink, ExtractFilePath(Application.ExeName) + 'files\xml\', shortName, '.xml');
       end;
       JSONPage.Free;
-      //printData(shortName, longName, XMLLink, DOCLink, PDFLink, period, srok, DateYtv);
     end;
   except on e:Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + ']' + e.Message);
 
@@ -877,118 +789,6 @@ end;
 procedure TFormMain.NLinksCopyToClipboardClick(Sender: TObject);
 begin
   Clipboard.AsText := (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TLabel).hint;
-end;
-
-// Парсинг .xml
-function TFormMain.parseXML(fileLink: string): String;
-var XMLDoc: IXMLDocument;
-    XMLNode: IXMLNode;
-    xmlFile: TMemoryStream;
-    version: string;
-
-    HTTP: TIdHTTP;
-begin
-  HTTP := TIdHTTP.Create(nil);
-  HTTP.HandleRedirects:=True;
-  HTTP.IOHandler := SSL;
-  XMLDoc := TXMLDocument.Create(nil);
-  xmlFile := TMemoryStream.Create();
-  try
-    try
-      HTTP.Get(fileLink, xmlFile);
-      XMLDoc.LoadFromStream(xmlFile);
-      XMLDoc.Active := True;
-      version := XMLDoc.ChildNodes['metaForm'].AttributeNodes['version'].Text;
-      version := StringReplace(version, '-', '.' , [rfReplaceAll]);
-      parseXML := version;
-    except on e: Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + ']' + e.Message);
-    end;
-  finally
-    xmlFile.Free;
-    HTTP.Free;
-  end;
-end;
-
-// Удаление пробелов и перенос строк
-procedure TFormMain.SplitByMultipleSpaces(const Input: string; List: TStringList);
-var
-  Matches: TMatchCollection;
-  Match: TMatch;
-  LastIndex, StartIndex: Integer;
-begin
-  List.Clear;
-  Matches := TRegEx.Matches(Input, '\s{2,}'); // Ищем последовательности из двух или более пробелов
-  LastIndex := 1;
-  for Match in Matches do
-  begin
-    StartIndex := Match.Index;
-    List.Add(Copy(Input, LastIndex, StartIndex - LastIndex));
-    LastIndex := StartIndex + Match.Length;
-  end;
-  if LastIndex <= Length(Input) then
-    List.Add(Copy(Input, LastIndex, MaxInt));
-end;
-
-// Форматирование данных их HTML
-function TFormMain.formatText(inputText, firstPos, lastPos: String):String;
-var text: String;
-    firstPosCount: Integer;
-begin
-  text:= inputText;
-  Delete(text, 1, Length(firstPos));
-  firstPosCount := AnsiPos(lastPos, text);
-  Delete(text, firstPosCount, Length(text)-1);
-  formatText := text;
-end;
-
-// Юникод декодер
-function TFormMain.JSONUnescape(const Source: string; CRLF: string = #13#10): string;
-const
-  ESCAPE_CHAR = '\';
-  QUOTE_CHAR = '"';
-  EXCEPTION_FMT = 'Invalid escape at position %d';
-var
-  EscapeCharPos, TempPos: Integer;
-  Temp: string;
-  IsQuotedString: Boolean;
-begin
-  result := '';
-  IsQuotedString := (Source[1] = QUOTE_CHAR) and
-    (Source[Length(Source)] = QUOTE_CHAR);
-  EscapeCharPos := Pos(ESCAPE_CHAR, Source);
-  TempPos := 1;
-  while EscapeCharPos > 0 do
-  begin
-    result := result + Copy(Source, TempPos, EscapeCharPos - TempPos);
-    TempPos := EscapeCharPos;
-    if EscapeCharPos < Length(Source) - Integer(IsQuotedString) then
-      case Source[EscapeCharPos + 1] of
-        't':
-          Temp := #9;
-        'n':
-          Temp := CRLF;
-        '\':
-          Temp := '\';
-        '"':
-          Temp := '"';
-        'u':
-          begin
-            if EscapeCharPos + 4 < Length(Source) - Integer(IsQuotedString) then
-              Temp := Chr(StrToInt('$' + Copy(Source, EscapeCharPos + 2, 4)))
-            else
-              raise Exception.Create(Format(EXCEPTION_FMT, [EscapeCharPos]));
-            Inc(TempPos, 4);
-          end;
-      else
-        raise Exception.Create(Format(EXCEPTION_FMT, [EscapeCharPos]));
-      end
-    else
-      raise Exception.Create(Format(EXCEPTION_FMT, [EscapeCharPos]));
-    Inc(TempPos, 2);
-    result := result + Temp;
-    EscapeCharPos := Pos(ESCAPE_CHAR, Source, TempPos);
-  end;
-  result := result + Copy(Source, TempPos, Length(Source) - TempPos + 1);
 end;
 
 end.
