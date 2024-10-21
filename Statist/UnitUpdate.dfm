@@ -142,12 +142,10 @@ object FormUpdate: TFormUpdate
           object LabelRecordCount: TLabel
             Left = 205
             Top = 25
-            Width = 237
-            Height = 24
+            Width = 3
+            Height = 15
             Align = alClient
             Layout = tlCenter
-            ExplicitWidth = 3
-            ExplicitHeight = 15
           end
           object CheckBoxSelectAllForms: TCheckBox
             Left = 1
@@ -220,7 +218,7 @@ object FormUpdate: TFormUpdate
           Height = 15
           Align = alTop
           Caption = #1053#1072#1081#1076#1077#1085#1086' '#1092#1086#1088#1084' '#1082' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1102':'
-          ExplicitWidth = 169
+          ExplicitWidth = 171
         end
         object StringGridActualForms: TStringGrid
           Left = 1

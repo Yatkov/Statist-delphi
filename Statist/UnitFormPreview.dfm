@@ -11,6 +11,7 @@ object FormPreview: TFormPreview
   Font.Name = 'Segoe UI'
   Font.Style = []
   WindowState = wsMaximized
+  StyleName = 'Windows10 Dark'
   TextHeight = 15
   object PageControlPreview: TPageControl
     Left = 217
@@ -20,8 +21,7 @@ object FormPreview: TFormPreview
     ActivePage = TabSheetPreview
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 0
-    ExplicitWidth = 1093
+    StyleName = 'Glossy'
     object TabSheetPreview: TTabSheet
       Caption = #1060#1086#1088#1084#1072
       PopupMenu = PopupMenu
@@ -32,11 +32,9 @@ object FormPreview: TFormPreview
         Height = 699
         Align = alClient
         TabOrder = 0
-        UseWheelForScrolling = True
-        ExplicitLeft = 288
-        ExplicitTop = 248
-        ExplicitWidth = 185
-        ExplicitHeight = 41
+        OnMouseWheelDown = ScrollBoxPreviewMouseWheelDown
+        OnMouseWheelUp = ScrollBoxPreviewMouseWheelUp
+        ExplicitLeft = 2
       end
     end
   end
@@ -48,6 +46,9 @@ object FormPreview: TFormPreview
     Align = alLeft
     ItemHeight = 15
     TabOrder = 1
+    StyleName = 'Glossy'
+    OnClick = ListBoxSectionsClick
+    ExplicitLeft = -2
   end
   object PopupMenu: TPopupMenu
     Left = 36

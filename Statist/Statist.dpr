@@ -9,7 +9,8 @@ uses
   TGBot in 'TGBot.pas',
   UnitUpdate in 'UnitUpdate.pas' {FormUpdate},
   UnitFormUtils in 'UnitFormUtils.pas',
-  UnitFormPreview in 'UnitFormPreview.pas' {FormPreview};
+  UnitFormPreview in 'UnitFormPreview.pas' {FormPreview},
+  UnitCheckOrg in 'UnitCheckOrg.pas' {FormCheckOrg};
 
 {$R *.res}
 
@@ -21,6 +22,7 @@ begin
   Application.CreateForm(TDataModule1, DataModule1);
   Application.CreateForm(TFormMain, FormMain);
   Application.CreateForm(TFormPreview, FormPreview);
+  Application.CreateForm(TFormCheckOrg, FormCheckOrg);
   //Application.CreateForm(TFormUpdate, FormUpdate);
   Application.Run;
 end.

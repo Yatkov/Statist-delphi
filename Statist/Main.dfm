@@ -15,14 +15,14 @@ object FormMain: TFormMain
   WindowState = wsMaximized
   StyleName = 'Windows10 Dark'
   OnCreate = FormCreate
-  TextHeight = 18
+  TextHeight = 16
   object PageControlMain: TPageControl
     AlignWithMargins = True
     Left = 3
     Top = 3
     Width = 1100
     Height = 723
-    ActivePage = TabSheetForms
+    ActivePage = TabSheetOrganization
     Align = alClient
     MultiLine = True
     ScrollOpposite = True
@@ -53,7 +53,7 @@ object FormMain: TFormMain
           Left = 1
           Top = 42
           Width = 311
-          Height = 26
+          Height = 24
           Align = alTop
           TabOrder = 0
           TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1086#1088#1084#1072#1084'...'
@@ -74,16 +74,16 @@ object FormMain: TFormMain
             Left = 6
             Top = 6
             Width = 299
-            Height = 18
+            Height = 16
             Align = alTop
-            ExplicitWidth = 3
+            ExplicitWidth = 4
           end
         end
         object DBGridForms: TDBGrid
           Left = 1
-          Top = 68
+          Top = 66
           Width = 311
-          Height = 571
+          Height = 573
           Align = alClient
           DataSource = DataModule1.DataSource1
           Options = [dgTitles, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -120,16 +120,15 @@ object FormMain: TFormMain
             TabOrder = 0
             object CheckListBoxFormsFields: TCheckListBox
               Left = 7
-              Top = 37
+              Top = 35
               Width = 232
-              Height = 226
+              Height = 228
               Align = alClient
-              ItemHeight = 18
               TabOrder = 0
             end
             object CheckBoxFormsFieldsAll: TCheckBox
               Left = 7
-              Top = 20
+              Top = 18
               Width = 232
               Height = 17
               Align = alTop
@@ -239,9 +238,9 @@ object FormMain: TFormMain
             TabOrder = 0
             object TreeViewUsefulFiles: TTreeView
               Left = 2
-              Top = 20
+              Top = 18
               Width = 228
-              Height = 145
+              Height = 147
               Align = alClient
               Images = ImageListUsefulFiles
               Indent = 19
@@ -312,7 +311,7 @@ object FormMain: TFormMain
               Left = 207
               Top = 34
               Width = 134
-              Height = 26
+              Height = 24
               Anchors = [akLeft, akTop, akRight]
               DataSource = DataModule1.DataSource1
               ReadOnly = True
@@ -322,7 +321,7 @@ object FormMain: TFormMain
               Left = 206
               Top = 77
               Width = 135
-              Height = 26
+              Height = 24
               Anchors = [akLeft, akTop, akRight]
               DataSource = DataModule1.DataSource1
               ReadOnly = True
@@ -623,7 +622,7 @@ object FormMain: TFormMain
             Left = 4
             Top = 195
             Width = 53
-            Height = 26
+            Height = 24
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 4
@@ -634,7 +633,7 @@ object FormMain: TFormMain
             Left = 72
             Top = 195
             Width = 49
-            Height = 26
+            Height = 24
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 5
@@ -645,7 +644,7 @@ object FormMain: TFormMain
             Left = 136
             Top = 195
             Width = 49
-            Height = 26
+            Height = 24
             DataSource = DataModule1.DataSource1
             ReadOnly = True
             TabOrder = 6
@@ -667,19 +666,17 @@ object FormMain: TFormMain
               Left = 0
               Top = 0
               Width = 563
-              Height = 253
+              Height = 255
               Align = alClient
               BorderStyle = bsNone
               Padding.Top = 5
               Padding.Bottom = 10
               TabOrder = 0
-              OnMouseWheelDown = ScrollBoxFormPreviewMouseWheelDown
-              OnMouseWheelUp = ScrollBoxFormPreviewMouseWheelUp
               object LabelFormPreview: TLabel
                 Left = 0
                 Top = 5
                 Width = 563
-                Height = 21
+                Height = 18
                 Cursor = crHandPoint
                 Align = alTop
                 Caption = #1055#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088' '#1092#1086#1088#1084#1099
@@ -690,20 +687,16 @@ object FormMain: TFormMain
                 Font.Style = [fsBold]
                 ParentFont = False
                 OnClick = LabelFormPreviewClick
-                OnMouseEnter = LabelFormPreviewMouseEnter
-                OnMouseLeave = LabelFormPreviewMouseLeave
-                ExplicitWidth = 179
+                ExplicitWidth = 169
               end
             end
             object ListBoxFormPreviewSection: TListBox
               Left = 563
               Top = 0
               Width = 194
-              Height = 253
+              Height = 255
               Align = alRight
-              ItemHeight = 18
               TabOrder = 1
-              OnClick = ListBoxFormPreviewSectionClick
             end
           end
           object TabSheet2: TTabSheet
@@ -919,11 +912,10 @@ object FormMain: TFormMain
                   TabOrder = 0
                   object CheckListBoxFormsUpdate: TCheckListBox
                     Left = 1
-                    Top = 19
+                    Top = 17
                     Width = 431
-                    Height = 272
+                    Height = 274
                     Align = alClient
-                    ItemHeight = 18
                     TabOrder = 0
                   end
                 end
@@ -953,8 +945,8 @@ object FormMain: TFormMain
                     Height = 26
                     Align = alClient
                     Layout = tlCenter
-                    ExplicitWidth = 3
-                    ExplicitHeight = 18
+                    ExplicitWidth = 4
+                    ExplicitHeight = 16
                   end
                   object EditFormFindUpdate: TEdit
                     Left = 5
@@ -964,7 +956,7 @@ object FormMain: TFormMain
                     Align = alLeft
                     TabOrder = 0
                     TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1086#1088#1084#1072#1084'...'
-                    ExplicitHeight = 24
+                    ExplicitHeight = 22
                   end
                   object SpinButtonChangeRecordUpdate: TSpinButton
                     Left = 200
@@ -1084,13 +1076,6 @@ object FormMain: TFormMain
     object TabSheetOrganization: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1088#1082#1072' '#1086#1088#1075#1072#1085#1080#1079#1072#1094#1080#1080
       ImageIndex = 1
-      object Label1: TLabel
-        Left = 11
-        Top = 56
-        Width = 42
-        Height = 18
-        Caption = 'Label1'
-      end
       object PanelOrgFind: TPanel
         Left = 0
         Top = 0
@@ -1101,26 +1086,39 @@ object FormMain: TFormMain
         Padding.Top = 3
         Padding.Bottom = 3
         TabOrder = 0
-        object ButtonOrgFind: TButton
-          Left = 179
+        object LabelFindOrgMsg: TLabel
+          Left = 177
           Top = 4
-          Width = 112
+          Width = 4
           Height = 25
           Align = alLeft
-          Caption = #1053#1072#1081#1090#1080
-          TabOrder = 0
-          OnClick = ButtonOrgFindClick
+          Layout = tlCenter
+          ExplicitHeight = 16
         end
-        object EditOrgINN: TEdit
+        object SearchBoxOrgInn: TSearchBox
           Left = 11
           Top = 4
-          Width = 168
+          Width = 166
           Height = 25
           Align = alLeft
-          TabOrder = 1
+          TabOrder = 0
           TextHint = #1048#1053#1053
-          ExplicitHeight = 26
+          OnInvokeSearch = SearchBoxOrgInnInvokeSearch
         end
+      end
+      object Panel1: TPanel
+        Left = 0
+        Top = 33
+        Width = 1092
+        Height = 650
+        Align = alClient
+        Caption = 'Panel1'
+        DockSite = True
+        TabOrder = 1
+        ExplicitLeft = 296
+        ExplicitTop = 136
+        ExplicitWidth = 185
+        ExplicitHeight = 41
       end
     end
     object TabSheetDirectory: TTabSheet
@@ -1562,7 +1560,7 @@ object FormMain: TFormMain
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 218
-    Top = 472
+    Left = 690
+    Top = 8
   end
 end

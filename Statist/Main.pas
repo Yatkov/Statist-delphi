@@ -11,7 +11,7 @@ uses
   System.Actions, Vcl.ActnList, Vcl.StdActns, clipbrd, JSON, System.RegularExpressions, XmlIntf, XmlDoc,
   Data.DB, Vcl.Grids, Vcl.DBGrids, System.ImageList, Vcl.ImgList, Vcl.CheckLst,
   Vcl.Buttons, Vcl.DBCtrls, Vcl.Mask, Vcl.Imaging.pngimage, Vcl.Samples.Spin,
-  Vcl.ExtActns, shellApi, NetEncoding;
+  Vcl.ExtActns, shellApi, NetEncoding, Vcl.WinXCtrls;
 
 type
   TDBGrid = class(Vcl.DBGrids.TDBGrid)
@@ -124,10 +124,10 @@ type
     ListBoxFormPreviewSection: TListBox;
     NViewInFolder: TMenuItem;
     SSL: TIdSSLIOHandlerSocketOpenSSL;
-    EditOrgINN: TEdit;
-    ButtonOrgFind: TButton;
     PanelOrgFind: TPanel;
-    Label1: TLabel;
+    SearchBoxOrgInn: TSearchBox;
+    LabelFindOrgMsg: TLabel;
+    Panel1: TPanel;
     procedure NLinksCopyToClipboardClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonUpdateFormsClick(Sender: TObject);
@@ -147,17 +147,10 @@ type
     procedure DBEditFormXmlLinkChange(Sender: TObject);
     procedure DBEditFormDocLinkChange(Sender: TObject);
     procedure DBEditFormPdfLinkChange(Sender: TObject);
-    procedure ScrollBoxFormPreviewMouseWheelDown(Sender: TObject;
-      Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
-    procedure ScrollBoxFormPreviewMouseWheelUp(Sender: TObject;
-      Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
     procedure LabelFormPreviewClick(Sender: TObject);
-    procedure LabelFormPreviewMouseEnter(Sender: TObject);
-    procedure LabelFormPreviewMouseLeave(Sender: TObject);
-    procedure ListBoxFormPreviewSectionClick(Sender: TObject);
     procedure NViewInFolderClick(Sender: TObject);
     procedure LabelFormDocClick(Sender: TObject);
-    procedure ButtonOrgFindClick(Sender: TObject);
+    procedure SearchBoxOrgInnInvokeSearch(Sender: TObject);
   private
     { Private declarations }
     //var okuds: array of String;
@@ -166,7 +159,6 @@ type
         arrLabelFormPreview: array of TLabel;
     procedure loadForms();
     procedure clearDB();
-    procedure xmlPreview(xmlLink: string);
     procedure downloadFile(const url, destPath, fileName, formatFile: string);
   public
     { Public declarations }
@@ -178,7 +170,7 @@ implementation
 
 {$R *.dfm}
 
-uses DM, TGBot, UnitFormUtils, UnitFormPreview;
+uses DM, TGBot, UnitFormUtils, UnitFormPreview, UnitCheckOrg;
 
 // Перерисовка Таблицы для троеточия
 procedure TDBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer;
@@ -188,19 +180,12 @@ var
   TextWidth: Integer;
   MaxWidth: Integer;
 begin
-  // Получаем текст из текущей ячейки
   CellText := Column.Field.AsString;
-
-  // Вычисляем ширину текста
   TextWidth := Canvas.TextWidth(CellText);
+  MaxWidth := Rect.Right - Rect.Left - 10;
 
-  // Максимальная ширина ячейки
-  MaxWidth := Rect.Right - Rect.Left - 10; // Учитываем небольшой отступ
-
-  // Если текст шире, чем ячейка, добавляем троеточие
   if TextWidth > MaxWidth then
   begin
-    // Убираем часть текста и добавляем троеточие
     while (TextWidth > MaxWidth) and (Length(CellText) > 0) do
     begin
       CellText := Copy(CellText, 1, Length(CellText) - 1);
@@ -209,10 +194,8 @@ begin
     CellText := CellText + '...';
   end;
 
-  // Рисуем ячейку с нужным текстом
   inherited DrawColumnCell(Rect, DataCol, Column, State);
 
-  // Рисуем текст в ячейке
   Canvas.FillRect(Rect);
   TextOut(Canvas.Handle, Rect.Left + 2, Rect.Top + (Rect.Height div 2) - (Canvas.TextHeight(CellText) div 2), PChar(CellText), Length(CellText));
 end;
@@ -379,130 +362,6 @@ begin
   FormPreview.xmlPreview(DBEditFormXmlLink.Text);
 end;
 
-// Создание предпросмотра
-procedure TFormMain.xmlPreview(xmlLink: string);
-var HTTP: TIdHTTP;
-    XMLDoc: IXMLDocument;
-    metaFormNode, sections, section, columns, rows: IXMLNode;
-    xmlFile: TFileStream;
-    sectionCount, colCount, rowCount: Integer;
-begin
-  HTTP := TIdHTTP.Create(nil);
-  HTTP.HandleRedirects:=True;
-  HTTP.IOHandler := SSL;
-  XMLDoc := TXMLDocument.Create(nil);
-  xmlFile := TFileStream.Create('a.xml', fmCreate);
-  try
-    HTTP.Get(xmlLink, xmlFile);
-    XMLDoc.LoadFromStream(xmlFile);
-    metaFormNode := xmlDoc.DocumentElement;
-    sections := metaFormNode.ChildNodes['sections'];
-    sectionCount := sections.ChildNodes.Count;
-    for var i := 0 to sectionCount-1 do begin
-      setLength(arrStringGridFormPreview, i+1);
-      setLength(arrLabelFormPreview, i+1);
-
-      section := sections.ChildNodes[i];
-      columns := section.ChildNodes['columns'];
-      rows := section.ChildNodes['rows'];
-
-      colCount := columns.ChildNodes.Count;
-      rowCount := rows.ChildNodes.Count + 2;
-
-      arrLabelFormPreview[i] := TLabel.Create(ScrollBoxFormPreview);
-      arrLabelFormPreview[i].parent := ScrollBoxFormPreview;
-      arrLabelFormPreview[i].Height := 25;
-      if i = 0 then arrLabelFormPreview[i].Top := LabelFormPreview.Height + 15
-      else arrLabelFormPreview[i].Top := arrStringGridFormPreview[i-1].Top + arrStringGridFormPreview[i-1].Height + 15;
-      arrLabelFormPreview[i].Caption := section.Attributes['name'];
-      arrLabelFormPreview[i].Font.Name := 'Montserrat';
-
-      ListBoxFormPreviewSection.Items.Add(arrLabelFormPreview[i].Caption);
-
-      arrStringGridFormPreview[i] := TStringGrid.Create(ScrollBoxFormPreview);
-      arrStringGridFormPreview[i].Parent := ScrollBoxFormPreview;
-      arrStringGridFormPreview[i].Font.Size := 8;
-      arrStringGridFormPreview[i].top := arrLabelFormPreview[i].Top + 25;
-      arrStringGridFormPreview[i].left := 10;
-      arrStringGridFormPreview[i].ColCount := colCount;
-      arrStringGridFormPreview[i].RowCount := rowCount;
-      arrStringGridFormPreview[i].FixedCols := 0;
-      arrStringGridFormPreview[i].FixedRows := 2;
-      arrStringGridFormPreview[i].Width := ScrollBoxFormPreview.Width - arrStringGridFormPreview[i].left - 20;
-      arrStringGridFormPreview[i].Height := rowCount * 31;
-      arrStringGridFormPreview[i].Options := [goColSizing];
-      arrStringGridFormPreview[i].OnMouseWheelDown := ScrollBoxFormPreviewMouseWheelDown;
-      arrStringGridFormPreview[i].OnMouseWheelUp := ScrollBoxFormPreviewMouseWheelUp;
-      arrStringGridFormPreview[i].Options := arrStringGridFormPreview[i].Options + [goColSizing] + [goVertLine] + [goHorzLine] + [goFixedVertLine] + [goFixedHorzLine];
-      arrStringGridFormPreview[i].Anchors := arrStringGridFormPreview[i].Anchors + [akRight];
-      arrStringGridFormPreview[i].StyleName := 'Windows';
-      arrStringGridFormPreview[i].DrawingStyle := gdsGradient;
-      arrStringGridFormPreview[i].Color := $00202020;
-      arrStringGridFormPreview[i].FixedColor := $002B2B2B;
-      arrStringGridFormPreview[i].GradientStartColor := $002C2C2C;
-      arrStringGridFormPreview[i].GradientEndColor := $00242424;
-      arrStringGridFormPreview[i].Font.Color := clWhite;
-      arrStringGridFormPreview[i].BorderStyle := bsNone;
-
-      for var col := 0 to colCount-1 do begin
-        arrStringGridFormPreview[i].Cells[col, 0] := columns.ChildNodes[col].Attributes['name'];
-        arrStringGridFormPreview[i].Cells[col, 1] := columns.ChildNodes[col].Attributes['code'];
-        arrStringGridFormPreview[i].ColWidths[col] := arrStringGridFormPreview[i].Canvas.TextWidth(arrStringGridFormPreview[i].Cells[col, 0]) + 20;
-      end;
-
-      var maxColSize := 0;
-      for var row := 0 to rowCount-3 do begin
-        arrStringGridFormPreview[i].Cells[0, row+2] := rows.ChildNodes[row].Attributes['name'];
-        arrStringGridFormPreview[i].Cells[1, row+2] := rows.ChildNodes[row].Attributes['code'];
-        if arrStringGridFormPreview[i].Canvas.TextWidth(arrStringGridFormPreview[i].Cells[0, row+2]) > maxColSize then maxColSize := arrStringGridFormPreview[i].Canvas.TextWidth(arrStringGridFormPreview[i].Cells[0, row+2]);
-      end;
-      arrStringGridFormPreview[i].ColWidths[0] := maxColSize + 40;
-    end;
-  finally
-    xmlFile.Free;
-    HTTP.Free;
-  end;
-end;
-
-// Подчеркивание при наведении на label "Предпросмотр формы"
-procedure TFormMain.LabelFormPreviewMouseEnter(Sender: TObject);
-begin
-  LabelFormPreview.Font.Style := LabelFormPreview.Font.Style + [fsUnderline];
-end;
-
-procedure TFormMain.LabelFormPreviewMouseLeave(Sender: TObject);
-begin
-  LabelFormPreview.Font.Style := LabelFormPreview.Font.Style - [fsUnderline];
-end;
-
-//Переход по разделам формы при предпросмотре
-procedure TFormMain.ListBoxFormPreviewSectionClick(Sender: TObject);
-var top, height: Integer;
-begin
-  if ListBoxFormPreviewSection.ItemIndex >= 0 then begin
-    top := arrLabelFormPreview[ListBoxFormPreviewSection.ItemIndex].Top + ScrollBoxFormPreview.VertScrollBar.Position;
-    height := arrLabelFormPreview[ListBoxFormPreviewSection.ItemIndex].Height;
-
-    if top < 0 then ScrollBoxFormPreview.VertScrollBar.Position := 0
-    else if top + ScrollBoxFormPreview.Height > ScrollBoxFormPreview.ClientHeight then ScrollBoxFormPreview.VertScrollBar.Position := top - ScrollBoxFormPreview.ClientHeight + ScrollBoxFormPreview.Height;
-  end;
-end;
-
-// Прокрутка окна предпросмотра формы
-procedure TFormMain.ScrollBoxFormPreviewMouseWheelDown(Sender: TObject;
-  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
-begin
-  ScrollBoxFormPreview.VertScrollBar.Position := ScrollBoxFormPreview.VertScrollBar.Position + ScrollBoxFormPreview.VertScrollBar.Increment + 15;
-  Handled := True;
-end;
-
-procedure TFormMain.ScrollBoxFormPreviewMouseWheelUp(Sender: TObject;
-  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
-begin
-  ScrollBoxFormPreview.VertScrollBar.Position := ScrollBoxFormPreview.VertScrollBar.Position - ScrollBoxFormPreview.VertScrollBar.Increment - 15;
-  Handled := True;
-end;
-
 //======================= НАСТРОЙКИ =====================================
 // Вызов панели настроек
 procedure TFormMain.ButtonFormsSettingsClick(Sender: TObject);
@@ -582,31 +441,46 @@ begin
    PanelUpdate.Perform(WM_SysCommand, SC_DragMove, 0);
 end;
 
-// Проверка актуальности выбранных форм
-
-
-// Принудительнное обновление
-procedure TFormMain.ButtonOrgFindClick(Sender: TObject);
+procedure TFormMain.SearchBoxOrgInnInvokeSearch(Sender: TObject);
 var data: TStringStream;
     HTTP: TIdHTTP;
-    url, url2: string;
+    urlInn, urlOrg, orgsList, orgID, orgInfo: string;
+    shortName: string;
+    orgsArray, innArray: TJSONArray;
+    org, orgForm: TJSONObject;
 begin
+  FormCheckOrg.Show();
+
   HTTP := TIdHTTP.Create(nil);
   HTTP.HandleRedirects:=True;
   HTTP.IOHandler := SSL;
   HTTP.Request.ContentType := 'application/json';
   data := TStringStream.Create(
-  '{"inn":"' + EditOrgInn.Text +'",' +
+  '{"inn":"' + SearchBoxOrgInn.Text +'",' +
   '"ogrn": "",' +
   '"okpo":""}');
-  url := 'https://websbor.rosstat.gov.ru/webstat/api/gs/organizations';
+  urlInn := 'https://websbor.rosstat.gov.ru/webstat/api/gs/organizations';
   try
-    //Memo1.Text := HTTP.Post(url,data);
+    orgsList := HTTP.Post(urlInn,data);
+    orgsArray := TJSONObject.ParseJSONValue(orgsList) as TJSONArray;
+    for var orgs := 0 to orgsArray.Count-1 do begin
+      org := orgsArray.Items[orgs] as TJSONObject;
+      org.TryGetValue('id', orgID);
+
+      urlOrg := 'https://websbor.rosstat.gov.ru/webstat/api/gs//organizations/'+orgID+'/forms';
+      orgInfo := HTTP.Get(urlOrg);
+      innArray := TJSONObject.ParseJSONValue(orgInfo) as TJSONArray;
+      for var forms := 0 to innArray.Count-1 do begin
+        orgForm := innArray.Items[forms] as TJSONObject;
+        orgForm.TryGetValue('index', shortName);
+      end;
+    end;
   finally
 
   end;
 end;
 
+// Принудительнное обновление
 procedure TFormMain.ButtonBeginUpdateFormsClick(Sender: TObject);
 var HTTP: TIdHTTP;
 begin
