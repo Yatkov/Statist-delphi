@@ -5,6 +5,7 @@ interface
 uses IdHTTP, IdSSL, IdSSLOpenSSL, Classes, Json, System.Generics.Collections, System.RegularExpressions,
      sysUtils, XmlIntf, XmlDoc;
 
+procedure downloadFile(const url, destPath, fileName, formatFile: string);
 function parseXML(fileLink: string; key: TStringList): TDictionary<String, String>;
 procedure SplitByMultipleSpaces(const Input: string; List: TStringList);
 function formatText(inputText, firstPos, lastPos: String):String;
@@ -12,6 +13,27 @@ function JSONUnescape(const Source: string; CRLF: string = #13#10): string;
 function downloadXML(fileLink: string): TMemoryStream;
 
 implementation
+
+procedure downloadFile(const url, destPath, fileName, formatFile: string);
+var HTTP: TIdHTTP;
+    SSL:TIdSSLIOHandlerSocketOpenSSL;
+    myFile: TFileStream;
+begin
+    HTTP := TIdHTTP.Create(nil);
+    HTTP.HandleRedirects:=True;
+    SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
+    HTTP.IOHandler := SSL;
+    SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions - [sslvTLSv1];
+    SSL.SSLOptions.SSLVersions:= SSL.SSLOptions.SSLVersions + [sslvTLSv1_2];
+
+    myFile := TFileStream.Create(destPath + fileName + formatFile, fmCreate);
+    try
+      HTTP.Get(url, myFile);
+    finally
+      HTTP.Free;
+      FreeAndNil(myFile);
+    end;
+end;
 
 // Скачивание .xml
 function downloadXML(fileLink: string): TMemoryStream;

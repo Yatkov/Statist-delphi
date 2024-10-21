@@ -10,11 +10,15 @@ uses
 type
   TFormPreview = class(TForm)
     PageControlPreview: TPageControl;
-    TabSheetPreview: TTabSheet;
+    TabSheetForm: TTabSheet;
     PopupMenu: TPopupMenu;
     NClosePage: TMenuItem;
     ListBoxSections: TListBox;
     ScrollBoxPreview: TScrollBox;
+    PageControlForm: TPageControl;
+    TabSheetPreview: TTabSheet;
+    TabSheetVerification: TTabSheet;
+    TabSheetStuff: TTabSheet;
     procedure NClosePageClick(Sender: TObject);
     procedure StringGridPreviewDrawCell(Sender: TObject; ACol, ARow: LongInt;
       Rect: TRect; State: TGridDrawState);

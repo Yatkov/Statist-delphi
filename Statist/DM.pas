@@ -26,8 +26,10 @@ type
   public
     { Public declarations }
     procedure writeToDB(shortName, longName, period, Okud, srok, dateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink: String);
+    procedure clearDB();
     procedure columnSort(Column: TColumn);
     procedure columnUnsort();
+    procedure FormsFind(query: string);
   end;
 
 var
@@ -89,6 +91,12 @@ begin
   end;
 end;
 
+procedure TDataModule1.clearDB();
+begin
+  FDQueryForms.SQL.Text := 'delete from Forms';
+  FDQueryForms.ExecSQL;
+end;
+
 procedure TDataModule1.columnSort(Column: TColumn);
 var sortOrder: string;
     columnIntex: integer;
@@ -132,6 +140,15 @@ begin
       break;
     end;
   end;
+end;
+
+procedure TDataModule1.FormsFind(query: string);
+begin
+  if Length(query) > 0 then begin
+    DataSource1.DataSet := DataModule1.FDQueryForms;
+    FDQueryForms.SQL.Text := 'select * from Forms where shortName like ' + '''' + query + '''';
+    FDQueryForms.Open();
+  end else DataSource1.DataSet := FDTableForms;
 end;
 
 end.

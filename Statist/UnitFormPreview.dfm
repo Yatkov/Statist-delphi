@@ -5,50 +5,78 @@ object FormPreview: TFormPreview
   ClientHeight = 729
   ClientWidth = 1093
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'Segoe UI'
-  Font.Style = []
+  Font.Name = 'Montserrat Medium'
+  Font.Style = [fsBold]
+  Position = poScreenCenter
   WindowState = wsMaximized
   StyleName = 'Windows10 Dark'
-  TextHeight = 15
+  TextHeight = 16
   object PageControlPreview: TPageControl
-    Left = 217
+    Left = 0
     Top = 0
-    Width = 876
+    Width = 1093
     Height = 729
-    ActivePage = TabSheetPreview
+    ActivePage = TabSheetForm
     Align = alClient
     TabOrder = 0
     StyleName = 'Glossy'
-    object TabSheetPreview: TTabSheet
+    ExplicitLeft = 217
+    ExplicitWidth = 876
+    object TabSheetForm: TTabSheet
       Caption = #1060#1086#1088#1084#1072
       PopupMenu = PopupMenu
-      object ScrollBoxPreview: TScrollBox
+      object PageControlForm: TPageControl
         Left = 0
         Top = 0
-        Width = 868
-        Height = 699
+        Width = 1085
+        Height = 698
+        ActivePage = TabSheetPreview
         Align = alClient
         TabOrder = 0
-        OnMouseWheelDown = ScrollBoxPreviewMouseWheelDown
-        OnMouseWheelUp = ScrollBoxPreviewMouseWheelUp
-        ExplicitLeft = 2
+        ExplicitLeft = 144
+        ExplicitTop = 224
+        ExplicitWidth = 577
+        ExplicitHeight = 249
+        object TabSheetPreview: TTabSheet
+          Caption = #1055#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088
+          object ListBoxSections: TListBox
+            Left = 0
+            Top = 0
+            Width = 217
+            Height = 667
+            Align = alLeft
+            TabOrder = 0
+            StyleName = 'Glossy'
+            OnClick = ListBoxSectionsClick
+            ExplicitHeight = 729
+          end
+          object ScrollBoxPreview: TScrollBox
+            Left = 217
+            Top = 0
+            Width = 860
+            Height = 667
+            Align = alClient
+            TabOrder = 1
+            OnMouseWheelDown = ScrollBoxPreviewMouseWheelDown
+            OnMouseWheelUp = ScrollBoxPreviewMouseWheelUp
+            ExplicitLeft = 0
+            ExplicitWidth = 1085
+            ExplicitHeight = 698
+          end
+        end
+        object TabSheetVerification: TTabSheet
+          Caption = #1042#1085#1091#1090#1088#1080#1092#1086#1088#1084#1077#1085#1085#1099#1081' '#1082#1086#1085#1090#1088#1086#1083#1100
+          ImageIndex = 1
+        end
+        object TabSheetStuff: TTabSheet
+          Caption = #1052#1072#1090#1077#1088#1080#1072#1083
+          ImageIndex = 2
+        end
       end
     end
-  end
-  object ListBoxSections: TListBox
-    Left = 0
-    Top = 0
-    Width = 217
-    Height = 729
-    Align = alLeft
-    ItemHeight = 15
-    TabOrder = 1
-    StyleName = 'Glossy'
-    OnClick = ListBoxSectionsClick
-    ExplicitLeft = -2
   end
   object PopupMenu: TPopupMenu
     Left = 36

@@ -11,7 +11,7 @@ uses
   System.Actions, Vcl.ActnList, Vcl.StdActns, clipbrd, JSON, System.RegularExpressions, XmlIntf, XmlDoc,
   Data.DB, Vcl.Grids, Vcl.DBGrids, System.ImageList, Vcl.ImgList, Vcl.CheckLst,
   Vcl.Buttons, Vcl.DBCtrls, Vcl.Mask, Vcl.Imaging.pngimage, Vcl.Samples.Spin,
-  Vcl.ExtActns, shellApi, NetEncoding, Vcl.WinXCtrls;
+  Vcl.ExtActns, shellApi, NetEncoding, Vcl.WinXCtrls, Vcl.WinXCalendars, System.IOUtils, System.Types;
 
 type
   TDBGrid = class(Vcl.DBGrids.TDBGrid)
@@ -47,7 +47,7 @@ type
     ShapeFormPdf: TShape;
     PopupMenuLinks: TPopupMenu;
     NLinksCopyToClipboard: TMenuItem;
-    PanelFormContent: TPanel;
+    PanelFormInfo: TPanel;
     PanelFormControl: TPanel;
     ButtonUpdateForms: TButton;
     LabelFormCounter: TLabel;
@@ -67,39 +67,11 @@ type
     DBEditFormPeriod: TDBEdit;
     DBEditFormOKUD: TDBEdit;
     DBMemoFormSrok: TDBMemo;
-    PanelUpdate: TPanel;
-    GroupBoxFormsUpdate: TGroupBox;
-    CheckBoxForceUpdate: TCheckBox;
-    PanelUpdateControl: TPanel;
-    PanelUpdateHeader: TPanel;
-    PanelUpdateForms: TPanel;
-    CheckBoxSelectAllForms: TCheckBox;
-    ImageUpdateClose: TImage;
-    ButtonCheckForms: TButton;
-    ButtonBeginUpdateForms: TButton;
-    CheckListBoxFormsUpdate: TCheckListBox;
-    EditFormFindUpdate: TEdit;
-    PanelFormFindUpdate: TPanel;
-    LabelRecordCountUpdate: TLabel;
-    SpinButtonChangeRecordUpdate: TSpinButton;
     PopupMenuSort: TPopupMenu;
     NUnsort: TMenuItem;
-    MemoUpdateMsg: TMemo;
-    Splitter2: TSplitter;
-    PanelUpdateMain: TPanel;
-    LabelUpdateActualCount: TLabel;
-    StringGridActualForms: TStringGrid;
-    PageControlUpdate: TPageControl;
-    TabSheetFormList: TTabSheet;
-    TabSheetNewFormGrid: TTabSheet;
-    PanelUpdateGrid: TPanel;
     ActionList1: TActionList;
     TabNextTab1: TNextTab;
-    PanelActualControl: TPanel;
-    ButtonUpdateUnactual: TButton;
-    ButtonUpdateBack: TButton;
     TabPreviousTab1: TPreviousTab;
-    ButtonUpdateNext: TButton;
     PopupMenuClearMsg: TPopupMenu;
     NClearMsg: TMenuItem;
     GroupBoxFormMainLink: TGroupBox;
@@ -107,27 +79,31 @@ type
     GroupBoxFormGovernmLinks: TGroupBox;
     DBEditFormFill: TDBEdit;
     DBEditFormYtv: TDBEdit;
-    ScrollBoxFormPreview: TScrollBox;
     DBTextFormName: TDBText;
     DBEditFormXmlLink: TDBEdit;
     DBEditFormDocLink: TDBEdit;
     DBEditFormPdfLink: TDBEdit;
-    LabelFormPreview: TLabel;
     TabSheetDirectory: TTabSheet;
     ImageListUsefulFiles: TImageList;
     TreeViewUsefulFiles: TTreeView;
     GroupBoxUsefulFiles: TGroupBox;
-    PageControlFormContent: TPageControl;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
-    TabSheet3: TTabSheet;
-    ListBoxFormPreviewSection: TListBox;
     NViewInFolder: TMenuItem;
     SSL: TIdSSLIOHandlerSocketOpenSSL;
     PanelOrgFind: TPanel;
     SearchBoxOrgInn: TSearchBox;
     LabelFindOrgMsg: TLabel;
-    Panel1: TPanel;
+    PanelCheckOrg: TPanel;
+    ButtonFormPreview: TButton;
+    PanelFormName: TPanel;
+    Bevel1: TBevel;
+    PanelFormCalendar: TPanel;
+    PanelCalendar: TPanel;
+    CalendarForms: TCalendarView;
+    ListBoxFormCalendar: TListBox;
+    ButtonResetCaldendar: TButton;
+    LabelCalendarCount: TLabel;
+    PanelContent: TPanel;
+    ButtonUpdateDir: TButton;
     procedure NLinksCopyToClipboardClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonUpdateFormsClick(Sender: TObject);
@@ -136,30 +112,26 @@ type
     procedure BitBtnCheckBoxCancelClick(Sender: TObject);
     procedure BitBtnCheckBoxOkClick(Sender: TObject);
     procedure EditFormsFindChange(Sender: TObject);
-    procedure ImageUpdateCloseClick(Sender: TObject);
-    procedure PanelUpdateHeaderMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure ButtonBeginUpdateFormsClick(Sender: TObject);
     procedure DBGridFormsTitleClick(Column: TColumn);
     procedure NUnsortClick(Sender: TObject);
-    procedure ButtonUpdateBackClick(Sender: TObject);
     procedure NClearMsgClick(Sender: TObject);
     procedure DBEditFormXmlLinkChange(Sender: TObject);
     procedure DBEditFormDocLinkChange(Sender: TObject);
     procedure DBEditFormPdfLinkChange(Sender: TObject);
-    procedure LabelFormPreviewClick(Sender: TObject);
+    procedure ButtonFormPreviewClick(Sender: TObject);
     procedure NViewInFolderClick(Sender: TObject);
     procedure LabelFormDocClick(Sender: TObject);
     procedure SearchBoxOrgInnInvokeSearch(Sender: TObject);
+    procedure CalendarFormsChange(Sender: TObject);
+    procedure ListBoxFormCalendarDblClick(Sender: TObject);
+    procedure ButtonResetCaldendarClick(Sender: TObject);
+    procedure ButtonUpdateDirClick(Sender: TObject);
+    procedure TreeViewUsefulFilesDblClick(Sender: TObject);
   private
     { Private declarations }
     //var okuds: array of String;
     var findRecordsInUpdate: array of Integer;
-        arrStringGridFormPreview: array of TStringGrid;
-        arrLabelFormPreview: array of TLabel;
-    procedure loadForms();
-    procedure clearDB();
-    procedure downloadFile(const url, destPath, fileName, formatFile: string);
+    procedure FillTreeView(const APath: string; ANode: TTreeNode);
   public
     { Public declarations }
   end;
@@ -170,7 +142,7 @@ implementation
 
 {$R *.dfm}
 
-uses DM, TGBot, UnitFormUtils, UnitFormPreview, UnitCheckOrg;
+uses DM, TGBot, UnitFormUtils, UnitFormPreview, UnitCheckOrg, UnitUpdate;
 
 // Перерисовка Таблицы для троеточия
 procedure TDBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer;
@@ -205,8 +177,6 @@ procedure TFormMain.FormCreate(Sender: TObject);
 var fCaption:array[0..11] of String;
     fSize: array[0..11] of Integer;
 begin
-  Self.Position := poScreenCenter;
-
   DataModule1.FDConRosstatForm.Open();
   DataModule1.FDTableForms.Open();
 
@@ -253,6 +223,105 @@ begin
   DBEditFormXmlLink.DataField := 'xmlLink';
   DBEditFormDocLink.DataField := 'docLink';
   DBEditFormPdfLink.DataField := 'pdfLink';
+
+  ButtonUpdateDirClick(self);
+end;
+
+//======================= КАЛЕНДАРЬ ФОРМ =====================================
+// Календарь форм - выбор дня
+procedure TFormMain.CalendarFormsChange(Sender: TObject);
+var HTTP: TIdHTTP;
+    calendarPage, formIndex: string;
+    Parts: TStringList;
+begin
+  HTTP := TIdHTTP.Create(nil);
+  HTTP.HandleRedirects:=True;
+  HTTP.IOHandler := SSL;
+  ListBoxFormCalendar.Clear;
+  try
+    try
+      calendarPage := HTTP.Get('https://rosstat.gov.ru/statlender/items?date=' + DateToStr(CalendarForms.Date));
+      calendarPage := TRegEx.Replace(calendarPage, '\s{2,3}', ' ');
+      Parts := TStringList.Create;
+      UnitFormUtils.SplitByMultipleSpaces(calendarPage, Parts);
+      for var i := 0 to Parts.Count-1 do begin
+        if ansiPos('<div>Индекс формы</div>', Parts[i]) > 0 then begin
+          formIndex := Parts[i+1];
+          formIndex := StringReplace(formIndex, '<div>', '', []);
+          formIndex := StringReplace(formIndex, '</div>', '', []);
+          ListBoxFormCalendar.Items.Add(formIndex);
+        end;
+      end;
+      if ListBoxFormCalendar.Count > 0 then
+        LabelCalendarCount.Caption := 'Всего форм за ' + DateToStr(CalendarForms.Date) + ': ' + IntToStr(ListBoxFormCalendar.Count)
+      else LabelCalendarCount.Caption := 'Нет форм за ' + DateToStr(CalendarForms.Date);
+    except on e:Exception do showMessage(e.ToString);
+    end;
+  finally
+    HTTP.Free;
+  end;
+end;
+
+// Выбор формы из списка календаря
+procedure TFormMain.ListBoxFormCalendarDblClick(Sender: TObject);
+begin
+  if ListBoxFormCalendar.ItemIndex > -1 then
+    //DataModule1.FormsFind(ListBoxFormCalendar.Items[ListBoxFormCalendar.ItemIndex]);
+    DataModule1.FDTableForms.locate('shortName', ListBoxFormCalendar.Items[ListBoxFormCalendar.ItemIndex], []);
+end;
+
+// Сброс календаря
+procedure TFormMain.ButtonResetCaldendarClick(Sender: TObject);
+begin
+  CalendarForms.Date := Now;
+  LabelCalendarCount.Caption := '';
+  ListBoxFormCalendar.Clear;
+end;
+
+//======================= СПИСОК ФОРМ СТАТИСТИКИ =====================================
+// Сортировка таблицы форм
+procedure TFormMain.DBGridFormsTitleClick(Column: TColumn);
+var sortOrder: string;
+    columnIntex: integer;
+begin
+  DataModule1.columnSort(Column);
+  NUnsort.Enabled := true;
+end;
+
+// Отмена сортировки
+procedure TFormMain.NUnsortClick(Sender: TObject);
+var sortingRecord: string;
+begin
+  DataModule1.columnUnsort();
+  NUnsort.Enabled := false;
+end;
+
+// Поиск по формам
+procedure TFormMain.EditFormsFindChange(Sender: TObject);
+begin
+  DataModule1.FormsFind('%' + EditFormsFind.Text + '%');
+end;
+
+//======================= ПРЕДПРОСМОТР ФОРМЫ =====================================
+// Вызов процедуры предпросмотра
+procedure TFormMain.ButtonFormPreviewClick(Sender: TObject);
+begin
+  //if not(Assigned(arrStringGridFormPreview)) then xmlPreview(DBEditFormXmlLink.Text);
+  FormPreview.Show;
+  FormPreview.xmlPreview(DBEditFormXmlLink.Text);
+end;
+
+//======================= НАСТРОЙКИ =====================================
+// Вызов панели настроек
+procedure TFormMain.ButtonFormsSettingsClick(Sender: TObject);
+begin
+    PanelFormsSettings.Visible := not(PanelFormsSettings.Visible);
+    PanelFormsSettingsButton.SetFocus;
+
+    for var i := 0 to DataModule1.FDTableForms.FieldCount-1 do
+      if DBGridForms.Columns[i].Visible then
+        CheckListBoxFormsFields.Checked[i] := True
+      else CheckListBoxFormsFields.Checked[i] := False;
 end;
 
 // Выбрать все формы
@@ -261,19 +330,142 @@ begin
   CheckListBoxFormsFields.CheckAll(CheckBoxFormsFieldsAll.State);
 end;
 
+// ОК - Показать отмеченные поля форм
+procedure TFormMain.BitBtnCheckBoxOkClick(Sender: TObject);
+begin
+  for var i := 0 to DataModule1.FDTableForms.FieldCount-1 do
+      if CheckListBoxFormsFields.Checked[i] then
+        DBGridForms.Columns[i].Visible := True
+      else DBGridForms.Columns[i].Visible := False;
+  PanelFormsSettings.Visible := False;
+end;
+
+// Отмена - закрытие окна настроек
+procedure TFormMain.BitBtnCheckBoxCancelClick(Sender: TObject);
+begin
+  PanelFormsSettings.Visible := False;
+end;
+
+//======================= ПОЛЕЗНЫЕ ФАЙЛЫ =====================================
+procedure TFormMain.ButtonUpdateDirClick(Sender: TObject);
+var usefulFilesDir: string;
+begin
+  usefulFilesDir := ExtractFilePath(Application.ExeName) + 'files\!USEFUL';
+  TreeViewUsefulFiles.Items.Clear;
+  if DirectoryExists(usefulFilesDir) then
+  begin
+    // Заполняем TreeView содержимым папки
+    FillTreeView(usefulFilesDir, nil);
+  end
+  else
+  begin
+    ShowMessage('Папка USEFUL не найдена.');
+  end;
+  TreeViewUsefulFiles.FullExpand;
+end;
+
+procedure TFormMain.FillTreeView(const APath: string; ANode: TTreeNode);
+var
+  Folders: TStringDynArray;
+  Files: TStringDynArray;
+  FolderNode: TTreeNode;
+  FileNode: TTreeNode;
+  I: Integer;
+begin
+  // Получаем список папок и файлов
+  Folders := TDirectory.GetDirectories(APath);
+  Files := TDirectory.GetFiles(APath);
+
+  // Добавляем файлы в TreeView
+  for I := Low(Files) to High(Files) do
+  begin
+    FileNode := TreeViewUsefulFiles.Items.AddChild(ANode, TPath.GetFileName(Files[I]));
+    FileNode.ImageIndex := 0; // Установите индекс изображения для файла, если используете иконки
+    FileNode.SelectedIndex := 0;
+  end;
+
+  // Добавляем папки в TreeView
+  for I := Low(Folders) to High(Folders) do
+  begin
+    FolderNode := TreeViewUsefulFiles.Items.AddChild(ANode, TPath.GetFileName(Folders[I]));
+    FolderNode.ImageIndex := 1; // Установите индекс изображения для папки
+    FolderNode.SelectedIndex := 1;
+
+    // Рекурсивно заполняем папки
+    FillTreeView(Folders[I], FolderNode);
+  end;
+end;
+
+//======================= ОБНОВЛЕНИЕ =====================================
+
+// Кнопка запуска мастера обновления форм
+procedure TFormMain.ButtonUpdateFormsClick(Sender: TObject);
+begin
+  NUnsortClick(Sender);
+  PanelFormsSettings.Visible := False;
+  if not Assigned(FormUpdate) then Application.CreateForm(TFormUpdate, FormUpdate);
+  FormUpdate.show();
+end;
+
+//======================= Поиск в ФСГС =====================================
+// Поиск организации в ФСГС
+procedure TFormMain.SearchBoxOrgInnInvokeSearch(Sender: TObject);
+begin
+  if SearchBoxOrgInn.Text <> '' then begin
+  FormCheckOrg.ManualDock(self.PanelCheckOrg);
+  FormCheckOrg.Show();
+  FormCheckOrg.checkOrg(SearchBoxOrgInn.Text);
+  end;
+end;
+
+procedure TFormMain.TreeViewUsefulFilesDblClick(Sender: TObject);
+var parentNode, selectedNode: TTreeNode;
+    fullPath: string;
+begin
+  selectedNode := TreeViewUsefulFiles.Selected;
+  if Assigned(SelectedNode) then begin
+    parentNode := selectedNode.Parent;
+    if Assigned(parentNode) then begin
+      FullPath := ExtractFilePath(Application.ExeName) + 'files\!USEFUL\' + ParentNode.Text + '\' + SelectedNode.Text;
+      ShellExecute(0, 'open', 'explorer.exe', pChar('/select, "' + fullPath + '"'), nil, SW_ShowNormal);
+    end;
+  end;
+end;
+
+//======================= ТГ-БОТ =====================================
+// Отправка сообщения в ТГ бота
+procedure TFormMain.LabelFormDocClick(Sender: TObject);
+var chatId: TStringList;
+    listSymbol, breakSymbol, msg: string;
+begin
+  listSymbol := '%E2%96%8E';
+  breakSymbol := '%0A';
+  msg := '*' + TNetEncoding.URL.Encode(DBTextFormName.Caption) + '*' + breakSymbol + breakSymbol + listSymbol + '%D0%92%D0%B5%D1%80%D1%81%D0%B8%D1%8F%20xml: ' + DBEditFormXmlDate.Text + '&parse_mode=markdown';
+  chatId := TGBot.getChatData;
+  for var i := 0 to chatId.Count-1 do
+    TGBot.sendMsg(msg, chatId[i]);
+end;
+
+
+
+// Просмотреть в папке
+procedure TFormMain.NViewInFolderClick(Sender: TObject);
+var fileName, labelCaption: string;
+begin
+  labelCaption := (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TLabel).Caption;
+  fileName := 'files\' + lowerCase(labelCaption) + '\' + DBTextFormName.Caption + '.' + lowerCase(labelCaption);
+  ShellExecute(0, 'open', 'explorer.exe', pChar('/select, "' + ExtractFilePath(Application.ExeName)+fileName + '"'), nil, SW_ShowNormal);
+end;
+
+// Копирование подсказки из label (содержит ссылку)
+procedure TFormMain.NLinksCopyToClipboardClick(Sender: TObject);
+begin
+  Clipboard.AsText := (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TLabel).hint;
+end;
+
 // Присваивание ссылки в подсказку
 procedure TFormMain.DBEditFormXmlLinkChange(Sender: TObject);
 begin
-  if Assigned(arrStringGridFormPreview) then begin
-    for var i := 0 to Length(arrStringGridFormPreview)-1 do begin
-      freeAndNil(arrStringGridFormPreview[i]);
-      freeAndNil(arrLabelFormPreview[i]);
-    end;
-    setLength(arrStringGridFormPreview, 0);
-    setLength(arrLabelFormPreview, 0);
-    ListBoxFormPreviewSection.Clear;
-  end;
-
   if length(DBEditFormXmlLink.Text) > 0 then begin
     LabelFormXML.Enabled := true;
     ShapeFormXml.Pen.Color := clWhite;
@@ -314,355 +506,10 @@ begin
   end;
 end;
 
-// Сортировка таблицы форм
-procedure TFormMain.DBGridFormsTitleClick(Column: TColumn);
-var sortOrder: string;
-    columnIntex: integer;
-begin
-  DataModule1.columnSort(Column);
-  NUnsort.Enabled := true;
-end;
-
-// Отмена сортировки
-procedure TFormMain.NUnsortClick(Sender: TObject);
-var sortingRecord: string;
-begin
-  DataModule1.columnUnsort();
-  NUnsort.Enabled := false;
-end;
-
-// Просмотреть в папке
-procedure TFormMain.NViewInFolderClick(Sender: TObject);
-var fileName, labelCaption: string;
-begin
-  labelCaption := (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TLabel).Caption;
-  fileName := 'files\' + lowerCase(labelCaption) + '\' + DBTextFormName.Caption + '.' + lowerCase(labelCaption);
-  ShellExecute(0, 'open', 'explorer.exe', pChar('/select, "' + ExtractFilePath(Application.ExeName)+fileName + '"'), nil, SW_ShowNormal);
-end;
-
-// Отправка сообщения в ТГ бота
-procedure TFormMain.LabelFormDocClick(Sender: TObject);
-var chatId: TStringList;
-    listSymbol, breakSymbol, msg: string;
-begin
-  listSymbol := '%E2%96%8E';
-  breakSymbol := '%0A';
-  msg := '*' + TNetEncoding.URL.Encode(DBTextFormName.Caption) + '*' + breakSymbol + breakSymbol + listSymbol + '%D0%92%D0%B5%D1%80%D1%81%D0%B8%D1%8F%20xml: ' + DBEditFormXmlDate.Text + '&parse_mode=markdown';
-  chatId := TGBot.getChatData;
-  for var i := 0 to chatId.Count-1 do
-    TGBot.sendMsg(msg, chatId[i]);
-end;
-
-//======================= ПРЕДПРОСМОТР ФОРМЫ =====================================
-// Вызов процедуры предпросмотра
-procedure TFormMain.LabelFormPreviewClick(Sender: TObject);
-begin
-  //if not(Assigned(arrStringGridFormPreview)) then xmlPreview(DBEditFormXmlLink.Text);
-  FormPreview.Show;
-  FormPreview.xmlPreview(DBEditFormXmlLink.Text);
-end;
-
-//======================= НАСТРОЙКИ =====================================
-// Вызов панели настроек
-procedure TFormMain.ButtonFormsSettingsClick(Sender: TObject);
-begin
-    PanelFormsSettings.Visible := not(PanelFormsSettings.Visible);
-    PanelFormsSettingsButton.SetFocus;
-
-    for var i := 0 to DataModule1.FDTableForms.FieldCount-1 do
-      if DBGridForms.Columns[i].Visible then
-        CheckListBoxFormsFields.Checked[i] := True
-      else CheckListBoxFormsFields.Checked[i] := False;
-end;
-
-// ОК - Показать отмеченные поля форм
-procedure TFormMain.BitBtnCheckBoxOkClick(Sender: TObject);
-begin
-  for var i := 0 to DataModule1.FDTableForms.FieldCount-1 do
-      if CheckListBoxFormsFields.Checked[i] then
-        DBGridForms.Columns[i].Visible := True
-      else DBGridForms.Columns[i].Visible := False;
-  PanelFormsSettings.Visible := False;
-end;
-
-// Отмена - закрытие окна настроек
-procedure TFormMain.BitBtnCheckBoxCancelClick(Sender: TObject);
-begin
-  PanelFormsSettings.Visible := False;
-end;
-
-//======================= ОБНОВЛЕНИЕ =====================================
-
-// Кнопка запуска мастера обновления форм
-procedure TFormMain.ButtonUpdateBackClick(Sender: TObject);
-begin
-  PageControlUpdate.SelectNextPage(true, false);
-end;
-
-procedure TFormMain.ButtonUpdateFormsClick(Sender: TObject);
-begin
-  NUnsortClick(Sender);
-  PanelForms.Enabled := false;
-  PanelFormsSettings.Visible := False;
-  PanelUpdate.Visible := True;
-
-  PanelUpdate.SetFocus;
-  if CheckListBoxFormsUpdate.Count <= 0 then begin
-    var i := 0;
-
-    DataModule1.FDQueryForms.SQL.Text := 'select * from Forms';
-    DataModule1.FDQueryForms.Open();
-    CheckListBoxFormsUpdate.Items.BeginUpdate;
-    while not DataModule1.FDQueryForms.Eof do begin
-      CheckListBoxFormsUpdate.Items.Add(DataModule1.FDQueryForms.FieldByName('shortName').AsString);
-      DataModule1.FDQueryForms.Next;
-      inc(i);
-    end;
-    CheckListBoxFormsUpdate.Items.EndUpdate;
-    DataModule1.FDQueryForms.Close;
-  end;
-  PageControlUpdate.ActivePageIndex := -1;
-  PageControlUpdate.SelectNextPage(true, false);
-end;
-
-// Закрытие панели Мастера обновления
-procedure TFormMain.ImageUpdateCloseClick(Sender: TObject);
-begin
-  PanelUpdate.Visible := False;
-  PanelForms.Enabled := true;
-end;
-
-// Перемещение панели обновления
-procedure TFormMain.PanelUpdateHeaderMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-const SC_DragMove = $F012;
-begin
-   ReleaseCapture;
-   PanelUpdate.Perform(WM_SysCommand, SC_DragMove, 0);
-end;
-
-procedure TFormMain.SearchBoxOrgInnInvokeSearch(Sender: TObject);
-var data: TStringStream;
-    HTTP: TIdHTTP;
-    urlInn, urlOrg, orgsList, orgID, orgInfo: string;
-    shortName: string;
-    orgsArray, innArray: TJSONArray;
-    org, orgForm: TJSONObject;
-begin
-  FormCheckOrg.Show();
-
-  HTTP := TIdHTTP.Create(nil);
-  HTTP.HandleRedirects:=True;
-  HTTP.IOHandler := SSL;
-  HTTP.Request.ContentType := 'application/json';
-  data := TStringStream.Create(
-  '{"inn":"' + SearchBoxOrgInn.Text +'",' +
-  '"ogrn": "",' +
-  '"okpo":""}');
-  urlInn := 'https://websbor.rosstat.gov.ru/webstat/api/gs/organizations';
-  try
-    orgsList := HTTP.Post(urlInn,data);
-    orgsArray := TJSONObject.ParseJSONValue(orgsList) as TJSONArray;
-    for var orgs := 0 to orgsArray.Count-1 do begin
-      org := orgsArray.Items[orgs] as TJSONObject;
-      org.TryGetValue('id', orgID);
-
-      urlOrg := 'https://websbor.rosstat.gov.ru/webstat/api/gs//organizations/'+orgID+'/forms';
-      orgInfo := HTTP.Get(urlOrg);
-      innArray := TJSONObject.ParseJSONValue(orgInfo) as TJSONArray;
-      for var forms := 0 to innArray.Count-1 do begin
-        orgForm := innArray.Items[forms] as TJSONObject;
-        orgForm.TryGetValue('index', shortName);
-      end;
-    end;
-  finally
-
-  end;
-end;
-
-// Принудительнное обновление
-procedure TFormMain.ButtonBeginUpdateFormsClick(Sender: TObject);
-var HTTP: TIdHTTP;
-begin
-  if Application.MessageBox(pChar('Обновить все формы принудительно? Данные базы данных очистяться!'), 'Обновление форм', MB_YESNO) = idYes then begin
-      HTTP := TIdHTTP.Create(nil);
-      HTTP.HandleRedirects:=True;
-      HTTP.IOHandler := SSL;
-      try
-        try
-          HTTP.Get('https://rosstat.gov.ru/monitoring/getPage?page=1&query=&year=2024&heading=');
-          if HTTP.ResponseCode = 200 then begin
-            DataModule1.FDTableForms.Close();
-            MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Начало обновления');
-            clearDB;
-            loadForms;
-            DataModule1.FDTableForms.Open();
-            MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Обновление завершено');
-          end;
-        except  on e: EIdHTTPProtocolException do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] [HTTP code ' + intToStr(HTTP.ResponseCode) + '] ' + e.Message);
-                on e: Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] ' + e.Message);
-        end;
-      finally
-        HTTP.Free;
-      end;
-  end;
-end;
-
-procedure TFormMain.clearDB();
-begin
-  DataModule1.FDQueryForms.SQL.Text := 'delete from Forms';
-  DataModule1.FDQueryForms.ExecSQL;
-end;
-
-// Загрузка форм
-procedure TFormMain.loadForms();
-var pageCount, temp, formsCounter: Integer;
-    pageRosstat, currentPage, nextPage, htmlDoc: String;
-    RegExDateYtv, RegExDateYtvLink: TRegEx;
-    JSONPage: TJSONObject;
-    Parts: TStringList;
-    forms: array of TStringList;
-    XMLLink, DOCLink, PDFLink, shortName, longName, period, srok, Okud, DateYtv, DateYtvLink: String;
-    XMLPos, DOCPos, PDFPos, shortNamePos, longNamePos, periodPos, srokPos, OkudPos, DateYtvPos: Integer;
-
-    HTTP: TIdHTTP;
-begin
-  HTTP := TIdHTTP.Create(nil);
-  HTTP.HandleRedirects:=True;
-  HTTP.IOHandler := SSL;
-  pageCount := 0;
-  try
-  try
-    nextPage := '0';
-    RegExDateYtv := TRegEx.Create('\<a href\=\".*?\>');
-    RegExDateYtvLink := TRegEx.Create('\/storage.*\"');
-
-    while TryStrToInt(nextPage, temp) do begin
-      inc(pageCount);
-      pageRosstat := HTTP.Get('https://rosstat.gov.ru/monitoring/getPage?page='+IntToStr(pageCount)+'&query=&year=2024&heading=');
-      JSONPage :=TJSONObject.Create;
-      JSONPage.Parse(TEncoding.UTF8.GetBytes(pageRosstat),0);
-      JSONPage.TryGetValue('nextPage', nextPage);
-      JSONPage.TryGetValue('currentPage', currentPage);
-      JSONPage.TryGetValue('html', htmlDoc);
-
-      htmlDoc := UnitFormUtils.JSONUnescape(htmlDoc);
-      htmlDoc := TRegEx.Replace(htmlDoc, '\s{2,3}', ' ');
-
-      Parts := TStringList.Create;
-      SplitByMultipleSpaces(htmlDoc, Parts);
-      formsCounter := 0;
-      for var i := 0 to Parts.Count - 1 do begin
-        if Parts[i] = '<div class="list__item">' then begin
-          inc(formsCounter);
-          setLength(forms,formsCounter);
-          forms[formsCounter-1] := TStringList.Create;
-        end;
-        forms[formsCounter-1].Add(Parts[i]);
-      end;
-
-      for var i := 0 to formsCounter-1 do begin
-        longName := ''; XMLLink := ''; DOCLink := ''; PDFLink := ''; shortName := ''; Okud := ''; DateYtv := ''; DateYtvLink := '';
-        longNamePos := 0;
-        XMLPos := 0;
-        DOCPos := 0;
-        PDFPos := 0;
-        shortNamePos := 0;
-        longNamePos := 0;
-        periodPos := 0;
-        srokPos := 0;
-        OkudPos := 0;
-        DateYtvPos := 0;
-
-        for var j := 0 to forms[i].Count-1 do begin
-          if AnsiPos('<div class="toggle-card__title">', forms[i].Strings[j]) > 0 then longNamePos := j;
-          if (AnsiPos('<a class="btn btn-icon btn-white btn-br"', forms[i].Strings[j]) > 0) and (AnsiPos('.xml', forms[i].Strings[j]) > 0) then XMLPos := j;
-          if (AnsiPos('<a class="btn btn-icon btn-white btn-br"', forms[i].Strings[j]) > 0) and (AnsiPos('.doc', forms[i].Strings[j]) > 0) then DOCPos := j;
-          if (AnsiPos('<a class="btn btn-icon btn-white btn-br"', forms[i].Strings[j]) > 0) and (AnsiPos('.pdf', forms[i].Strings[j]) > 0) then PDFPos := j;
-          if AnsiPos('<div>Индекс формы</div>', forms[i].Strings[j]) > 0 then shortNamePos := j+1;
-          if AnsiPos('<div>Периодичность</div>', forms[i].Strings[j]) > 0 then periodPos := j+1;
-          if AnsiPos('<div>Срок сдачи формы</div>', forms[i].Strings[j]) > 0 then srokPos := j+1;
-          if AnsiPos('<div>Дата и номер приказа об утверждении формы</div>', forms[i].Strings[j]) > 0 then DateYtvPos := j+2;
-          if AnsiPos('<div>Код формы по ОКУД</div>', forms[i].Strings[j]) > 0 then OkudPos := j+1;
-        end;
-        if longNamePos > 0 then longName := formatText(forms[i].Strings[longNamePos], '<div class="toggle-card__title">', '</div>');
-        if shortNamePos > 0 then shortName := formatText(forms[i].Strings[shortNamePos], '<div>', '</div>');
-        if XMLPos > 0 then XMLLink := formatText(forms[i].Strings[XMLPos], '<a class="btn btn-icon btn-white btn-br" href="', '" download>');
-        if DOCPos > 0 then DOCLink := formatText(forms[i].Strings[DOCPos], '<a class="btn btn-icon btn-white btn-br" href="', '" download>');
-        if PDFPos > 0 then PDFLink := formatText(forms[i].Strings[PDFPos], '<a class="btn btn-icon btn-white btn-br" href="', '" download>');
-        if periodPos > 0 then period := formatText(forms[i].Strings[periodPos], '<div><p>', '</p></div>');
-        if srokPos > 0 then srok := formatText(forms[i].Strings[srokPos], '<div>', '</div>');
-        if DateYtvPos > 0 then begin
-          DateYtv := forms[i].Strings[DateYtvPos];
-          DateYtvLink := RegExDateYtvLink.Match(DateYtv).Groups[0].value;
-          DateYtvLink := Copy(DateYtvLink, 1, Length(DateYtvLink)-1);
-          DateYtv := formatText(forms[i].Strings[DateYtvPos], RegExDateYtv.Match(DateYtv).Groups[0].value, '</a>');
-        end;
-        if OkudPos > 0 then Okud := formatText(forms[i].Strings[OkudPos], '<div>', '</div>');
-        MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Обработка формы ' + shortName + '...');
-        Application.ProcessMessages;
-        try
-          DataModule1.writeToDB(shortName, longName, period, Okud, srok, dateYtv, DateYtvLink, XMLLink, DOCLink, PDFLink);
-        except on e:Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + ']' + e.Message);
-        end;
-        downloadFile('https://rosstat.gov.ru'+XMLLink, ExtractFilePath(Application.ExeName) + 'files\xml\', shortName, '.xml');
-      end;
-      JSONPage.Free;
-    end;
-  except on e:Exception do MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + ']' + e.Message);
-
-  end;
-  finally
-    HTTP.Free;
-  end;
-
-  //test := HTTP.Get('https://rosstat.gov.ru/monitoring/getPage?page=1&query=&year=2024&heading=');
-  //showMessage(IntToStr(Http.ResponseCode));
-end;
-
-// Скачивание файла
-procedure TFormMain.downloadFile(const url, destPath, fileName, formatFile: string);
-var HTTP: TIdHTTP;
-    myFile: TFileStream;
-begin
-    MemoUpdateMsg.Lines.Add('[' + DateTimeToStr(Now) + '] Скачивание формы ' + fileName + '...');
-    HTTP := TIdHTTP.Create(nil);
-    HTTP.HandleRedirects:=True;
-    HTTP.IOHandler := SSL;
-
-    myFile := TFileStream.Create(destPath + fileName + formatFile, fmCreate);
-    try
-      try
-      HTTP.Get(url, myFile);
-      except on E:EIdHTTPProtocolException do showMessage('Ошибка при скачивании');
-             on E: Exception do showMessage('Ошибка при скачивании');
-      end;
-    finally
-      HTTP.Free;
-      FreeAndNil(myFile);
-    end;
-end;
-
-// Поиск по формам
-procedure TFormMain.EditFormsFindChange(Sender: TObject);
-begin
-  if Length(EditFormsFind.Text) > 0 then begin
-    DataModule1.DataSource1.DataSet := DataModule1.FDQueryForms;
-    DataModule1.FDQueryForms.SQL.Text := 'select * from Forms where shortName like ' + '''%' + EditFormsFind.Text + '%''';
-    DataModule1.FDQueryForms.Open();
-  end else DataModule1.DataSource1.DataSet := DataModule1.FDTableForms;
-end;
-
 // Очистка поля с логами
 procedure TFormMain.NClearMsgClick(Sender: TObject);
 begin
   (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TMemo).Lines.Clear;
-end;
-
-// Копирование подсказки из label (содержит ссылку)
-procedure TFormMain.NLinksCopyToClipboardClick(Sender: TObject);
-begin
-  Clipboard.AsText := (((Sender as TMenuItem).GetParentMenu as TPopupMenu).PopupComponent as TLabel).hint;
 end;
 
 end.
