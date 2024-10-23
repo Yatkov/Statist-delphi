@@ -16,11 +16,8 @@ Coordinates=241,10,98,58
 [LabelFormFullName]
 Coordinates=349,10,131,58
 
-[ScrollBoxForms]
-Coordinates=10,212,105,36
-
 []
-Coordinates=1650,78,145,36
+Coordinates=10,212,105,36
 Visible=True
 
 [LabelFormOKUD]

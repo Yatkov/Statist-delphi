@@ -30,7 +30,6 @@ type
     N2: TMenuItem;
     PanelForms: TPanel;
     EditFormsFind: TEdit;
-    ScrollBoxForms: TScrollBox;
     LabelFormFullName: TLabel;
     LabelFormPeriod: TLabel;
     LabelFormOKUD: TLabel;
@@ -104,6 +103,14 @@ type
     LabelCalendarCount: TLabel;
     PanelContent: TPanel;
     ButtonUpdateDir: TButton;
+    PanelMainFormInfo: TPanel;
+    PanelMain: TPanel;
+    GroupBoxCalendarSettings: TGroupBox;
+    CheckBoxCalendarMultiselect: TCheckBox;
+    PanelUsefulFilesExpand: TPanel;
+    ButtonUsefulFilesExpand: TButton;
+    ButtonCollapse: TButton;
+    EditUsefulFilesFind: TEdit;
     procedure NLinksCopyToClipboardClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonUpdateFormsClick(Sender: TObject);
@@ -127,6 +134,8 @@ type
     procedure ButtonResetCaldendarClick(Sender: TObject);
     procedure ButtonUpdateDirClick(Sender: TObject);
     procedure TreeViewUsefulFilesDblClick(Sender: TObject);
+    procedure ButtonUsefulFilesExpandClick(Sender: TObject);
+    procedure ButtonCollapseClick(Sender: TObject);
   private
     { Private declarations }
     //var okuds: array of String;
@@ -134,6 +143,7 @@ type
     procedure FillTreeView(const APath: string; ANode: TTreeNode);
   public
     { Public declarations }
+    procedure findForm(field, value: string);
   end;
 
 var
@@ -227,6 +237,11 @@ begin
   ButtonUpdateDirClick(self);
 end;
 
+procedure TFormMain.findForm(field, value: string);
+begin
+  DataModule1.FDTableForms.locate(field, value, []);
+end;
+
 //======================= КАЛЕНДАРЬ ФОРМ =====================================
 // Календарь форм - выбор дня
 procedure TFormMain.CalendarFormsChange(Sender: TObject);
@@ -266,8 +281,7 @@ end;
 procedure TFormMain.ListBoxFormCalendarDblClick(Sender: TObject);
 begin
   if ListBoxFormCalendar.ItemIndex > -1 then
-    //DataModule1.FormsFind(ListBoxFormCalendar.Items[ListBoxFormCalendar.ItemIndex]);
-    DataModule1.FDTableForms.locate('shortName', ListBoxFormCalendar.Items[ListBoxFormCalendar.ItemIndex], []);
+    findForm('shortName', ListBoxFormCalendar.Items[ListBoxFormCalendar.ItemIndex]);
 end;
 
 // Сброс календаря
@@ -359,11 +373,11 @@ begin
   end
   else
   begin
-    ShowMessage('Папка USEFUL не найдена.');
+    ShowMessage('Папка "!USEFUL" не найдена.');
   end;
-  TreeViewUsefulFiles.FullExpand;
 end;
 
+// Заполнение списка полезных файлов
 procedure TFormMain.FillTreeView(const APath: string; ANode: TTreeNode);
 var
   Folders: TStringDynArray;
@@ -396,6 +410,41 @@ begin
   end;
 end;
 
+// Открытие папки с файлом
+procedure TFormMain.TreeViewUsefulFilesDblClick(Sender: TObject);
+var parentNode, selectedNode: TTreeNode;
+    fullPath, parentFolder: string;
+begin
+  selectedNode := TreeViewUsefulFiles.Selected;
+  if (Assigned(SelectedNode)) and (selectedNode.ImageIndex = 0) then begin
+    parentNode := selectedNode.Parent;
+    parentFolder := ParentNode.Text;
+    while ParentNode.Parent <> nil do begin
+      parentNode := parentNode.Parent;
+      Insert(ParentNode.Text + '\', parentFolder, 1);
+    end;
+
+    if Assigned(parentNode) then begin
+      FullPath := ExtractFilePath(Application.ExeName) + 'files\!USEFUL\' + parentFolder + '\' + SelectedNode.Text;
+      ShellExecute(0, 'open', 'explorer.exe', pChar('/select, "' + fullPath + '"'), nil, SW_ShowNormal);
+    end;
+  end;
+end;
+
+// Развернуть все папки
+procedure TFormMain.ButtonUsefulFilesExpandClick(Sender: TObject);
+begin
+  TreeViewUsefulFiles.FullExpand;
+  GroupBoxUsefulFiles.SetFocus;
+end;
+
+// Свернуть все папки
+procedure TFormMain.ButtonCollapseClick(Sender: TObject);
+begin
+  TreeViewUsefulFiles.FullCollapse;
+  GroupBoxUsefulFiles.SetFocus;
+end;
+
 //======================= ОБНОВЛЕНИЕ =====================================
 
 // Кнопка запуска мастера обновления форм
@@ -415,20 +464,6 @@ begin
   FormCheckOrg.ManualDock(self.PanelCheckOrg);
   FormCheckOrg.Show();
   FormCheckOrg.checkOrg(SearchBoxOrgInn.Text);
-  end;
-end;
-
-procedure TFormMain.TreeViewUsefulFilesDblClick(Sender: TObject);
-var parentNode, selectedNode: TTreeNode;
-    fullPath: string;
-begin
-  selectedNode := TreeViewUsefulFiles.Selected;
-  if Assigned(SelectedNode) then begin
-    parentNode := selectedNode.Parent;
-    if Assigned(parentNode) then begin
-      FullPath := ExtractFilePath(Application.ExeName) + 'files\!USEFUL\' + ParentNode.Text + '\' + SelectedNode.Text;
-      ShellExecute(0, 'open', 'explorer.exe', pChar('/select, "' + fullPath + '"'), nil, SW_ShowNormal);
-    end;
   end;
 end;
 

@@ -2,8 +2,8 @@ object FormMain: TFormMain
   Left = 0
   Top = 0
   Caption = #1057#1090#1072#1090#1080#1089#1090
-  ClientHeight = 832
-  ClientWidth = 1106
+  ClientHeight = 710
+  ClientWidth = 1083
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -20,8 +20,8 @@ object FormMain: TFormMain
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 1100
-    Height = 826
+    Width = 1077
+    Height = 704
     ActivePage = TabSheetForms
     Align = alClient
     MultiLine = True
@@ -30,13 +30,15 @@ object FormMain: TFormMain
     TabOrder = 0
     TabWidth = 170
     StyleName = 'Glossy'
+    ExplicitWidth = 1100
+    ExplicitHeight = 826
     object TabSheetForms: TTabSheet
       Caption = #1057#1074#1077#1076#1077#1085#1080#1103' '#1087#1086' '#1092#1086#1088#1084#1072#1084
       object Splitter1: TSplitter
         Left = 379
         Top = 0
         Width = 10
-        Height = 786
+        Height = 664
         Beveled = True
         ResizeStyle = rsLine
         ExplicitLeft = 393
@@ -46,9 +48,10 @@ object FormMain: TFormMain
         Left = 0
         Top = 0
         Width = 379
-        Height = 786
+        Height = 664
         Align = alLeft
         TabOrder = 0
+        ExplicitHeight = 786
         object EditFormsFind: TEdit
           Left = 1
           Top = 42
@@ -61,7 +64,7 @@ object FormMain: TFormMain
         end
         object PanelFormControl: TPanel
           Left = 1
-          Top = 742
+          Top = 620
           Width = 377
           Height = 43
           Align = alBottom
@@ -70,6 +73,7 @@ object FormMain: TFormMain
           Padding.Right = 5
           Padding.Bottom = 5
           TabOrder = 1
+          ExplicitTop = 742
           object LabelFormCounter: TLabel
             Left = 6
             Top = 6
@@ -83,7 +87,7 @@ object FormMain: TFormMain
           Left = 1
           Top = 68
           Width = 377
-          Height = 674
+          Height = 552
           Align = alClient
           DataSource = DataModule1.DataSource1
           Options = [dgTitles, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -213,45 +217,52 @@ object FormMain: TFormMain
           end
         end
       end
-      object ScrollBoxForms: TScrollBox
+      object PanelMainFormInfo: TPanel
         Left = 389
         Top = 0
-        Width = 703
-        Height = 786
-        VertScrollBar.Smooth = True
+        Width = 680
+        Height = 664
         Align = alClient
         TabOrder = 1
-        StyleName = 'Glossy'
+        ExplicitLeft = 13
+        ExplicitTop = 104
+        ExplicitWidth = 666
+        ExplicitHeight = 553
         object PanelFormCalendar: TPanel
-          Left = 0
-          Top = 329
-          Width = 699
-          Height = 453
-          Align = alBottom
+          Left = 1
+          Top = 395
+          Width = 678
+          Height = 268
+          Align = alClient
           TabOrder = 0
+          ExplicitTop = 99
+          ExplicitWidth = 664
+          ExplicitHeight = 453
           object PanelCalendar: TPanel
             Left = 1
             Top = 1
             Width = 264
-            Height = 451
+            Height = 266
             Align = alLeft
             Padding.Left = 5
             Padding.Top = 5
             Padding.Right = 5
             TabOrder = 0
+            ExplicitHeight = 451
             object LabelCalendarCount: TLabel
               Left = 6
-              Top = 366
+              Top = 340
               Width = 252
               Height = 18
               Align = alTop
+              ExplicitTop = 366
               ExplicitWidth = 3
             end
             object CalendarForms: TCalendarView
               Left = 6
               Top = 6
               Width = 252
-              Height = 320
+              Height = 294
               Align = alTop
               BorderStyle = bsNone
               FirstDayOfWeek = dwMonday
@@ -274,23 +285,25 @@ object FormMain: TFormMain
               ParentFont = False
               SelectionMode = smMultiple
               TabOrder = 0
+              ExplicitTop = 32
             end
             object ButtonResetCaldendar: TButton
               Left = 6
-              Top = 326
+              Top = 300
               Width = 252
               Height = 40
               Align = alTop
               Caption = #1057#1073#1088#1086#1089#1080#1090#1100
               TabOrder = 1
               OnClick = ButtonResetCaldendarClick
+              ExplicitTop = 326
             end
           end
           object ListBoxFormCalendar: TListBox
-            Left = 265
+            Left = 489
             Top = 1
-            Width = 433
-            Height = 450
+            Width = 188
+            Height = 252
             Align = alClient
             BorderStyle = bsNone
             Color = 2105376
@@ -305,227 +318,405 @@ object FormMain: TFormMain
             TabOrder = 1
             StyleName = 'Windows'
             OnDblClick = ListBoxFormCalendarDblClick
+            ExplicitWidth = 211
+            ExplicitHeight = 306
           end
-        end
-        object GroupBoxUsefulFiles: TGroupBox
-          Left = 467
-          Top = 0
-          Width = 232
-          Height = 329
-          Align = alRight
-          Caption = #1055#1086#1083#1077#1079#1085#1099#1077' '#1092#1072#1081#1083#1099
-          TabOrder = 1
-          object TreeViewUsefulFiles: TTreeView
-            Left = 2
-            Top = 49
-            Width = 228
-            Height = 278
-            Align = alClient
-            Images = ImageListUsefulFiles
-            Indent = 19
-            ReadOnly = True
-            ShowRoot = False
-            StateImages = ImageListUsefulFiles
-            TabOrder = 0
-            OnDblClick = TreeViewUsefulFilesDblClick
-          end
-          object ButtonUpdateDir: TButton
-            Left = 2
-            Top = 20
-            Width = 228
-            Height = 29
-            Align = alTop
-            Caption = #1054#1073#1085#1086#1074#1080#1090#1100
-            TabOrder = 1
-            OnClick = ButtonUpdateDirClick
-          end
-        end
-        object PanelContent: TPanel
-          Left = 0
-          Top = 0
-          Width = 467
-          Height = 329
-          Align = alClient
-          TabOrder = 2
-          object PanelFormDownload: TPanel
-            Left = 1
+          object GroupBoxCalendarSettings: TGroupBox
+            Left = 265
             Top = 1
-            Width = 465
-            Height = 169
-            Align = alTop
-            TabOrder = 0
-            object GroupBoxFormGovernmLinks: TGroupBox
-              Left = 209
-              Top = 1
-              Width = 352
-              Height = 167
-              Align = alLeft
-              Caption = #1047#1072#1082#1086#1085#1086#1076#1072#1090#1077#1083#1100#1085#1072#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1103
+            Width = 224
+            Height = 266
+            Align = alLeft
+            Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1082#1072#1083#1077#1085#1076#1072#1088#1103
+            TabOrder = 2
+            ExplicitHeight = 331
+            object CheckBoxCalendarMultiselect: TCheckBox
+              Left = 6
+              Top = 40
+              Width = 155
+              Height = 17
+              Caption = #1052#1091#1083#1100#1090#1080#1074#1099#1076#1077#1083#1077#1085#1080#1077
               TabOrder = 0
-              DesignSize = (
-                352
-                167)
-              object LinkLabelFormFill: TLinkLabel
-                Left = 5
-                Top = 34
-                Width = 188
-                Height = 22
-                Alignment = taRightJustify
-                AutoSize = False
-                Caption = 
-                  '<a href="http://www.somelink.com">'#1059#1082#1072#1079#1072#1085#1080#1103' '#1087#1086' '#1079#1072#1087#1086#1083#1085#1077#1085#1080#1102' '#1092#1086#1088#1084#1099'</' +
-                  'a>'
-                Color = clBtnFace
-                Font.Charset = RUSSIAN_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -19
-                Font.Name = 'Montserrat'
-                Font.Style = [fsBold]
-                ParentColor = False
-                ParentFont = False
+            end
+          end
+        end
+        object PanelMain: TPanel
+          Left = 1
+          Top = 1
+          Width = 678
+          Height = 394
+          Align = alTop
+          TabOrder = 1
+          ExplicitWidth = 916
+          object GroupBoxUsefulFiles: TGroupBox
+            Left = 445
+            Top = 1
+            Width = 232
+            Height = 392
+            Align = alRight
+            Caption = #1055#1086#1083#1077#1079#1085#1099#1077' '#1092#1072#1081#1083#1099
+            TabOrder = 0
+            ExplicitLeft = 470
+            ExplicitHeight = 331
+            object TreeViewUsefulFiles: TTreeView
+              Left = 2
+              Top = 81
+              Width = 228
+              Height = 280
+              Align = alClient
+              Images = ImageListUsefulFiles
+              Indent = 19
+              ReadOnly = True
+              StateImages = ImageListUsefulFiles
+              TabOrder = 0
+              OnDblClick = TreeViewUsefulFilesDblClick
+              ExplicitTop = 49
+            end
+            object ButtonUpdateDir: TButton
+              Left = 2
+              Top = 361
+              Width = 228
+              Height = 29
+              Align = alBottom
+              Caption = #1054#1073#1085#1086#1074#1080#1090#1100
+              TabOrder = 1
+              OnClick = ButtonUpdateDirClick
+              ExplicitTop = 20
+            end
+            object PanelUsefulFilesExpand: TPanel
+              Left = 2
+              Top = 20
+              Width = 228
+              Height = 35
+              Align = alTop
+              TabOrder = 2
+              object ButtonUsefulFilesExpand: TButton
+                Left = 1
+                Top = 1
+                Width = 112
+                Height = 33
+                Align = alLeft
+                Caption = #1056#1072#1079#1074#1077#1088#1085#1091#1090#1100
                 TabOrder = 0
-                UseVisualStyle = True
+                OnClick = ButtonUsefulFilesExpandClick
+                ExplicitHeight = 39
               end
-              object LinkLabelFormYtv: TLinkLabel
-                Left = 5
-                Top = 80
-                Width = 188
-                Height = 22
-                Alignment = taRightJustify
-                AutoSize = False
-                Caption = 
-                  '<a href="http://www.somelink.com">'#1055#1088#1080#1082#1072#1079' '#1086#1073' '#1091#1090#1074#1077#1088#1078#1076#1077#1085#1080#1080' '#1092#1086#1088#1084#1099'</a' +
-                  '>'
-                Color = clBtnFace
-                Font.Charset = RUSSIAN_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -19
-                Font.Name = 'Montserrat'
-                Font.Style = [fsBold]
-                ParentColor = False
-                ParentFont = False
+              object ButtonCollapse: TButton
+                Left = 113
+                Top = 1
+                Width = 114
+                Height = 33
+                Align = alClient
+                Caption = #1057#1074#1077#1088#1085#1091#1090#1100
                 TabOrder = 1
-                UseVisualStyle = True
-              end
-              object DBEditFormFill: TDBEdit
-                Left = 207
-                Top = 34
-                Width = 134
-                Height = 26
-                Anchors = [akLeft, akTop, akRight]
-                DataSource = DataModule1.DataSource1
-                ReadOnly = True
-                TabOrder = 2
-              end
-              object DBEditFormYtv: TDBEdit
-                Left = 206
-                Top = 77
-                Width = 135
-                Height = 26
-                Anchors = [akLeft, akTop, akRight]
-                DataSource = DataModule1.DataSource1
-                ReadOnly = True
-                TabOrder = 3
+                OnClick = ButtonCollapseClick
+                ExplicitLeft = 9
+                ExplicitTop = 2
+                ExplicitWidth = 112
+                ExplicitHeight = 39
               end
             end
-            object GroupBoxFormMainLink: TGroupBox
+            object EditUsefulFilesFind: TEdit
+              Left = 2
+              Top = 55
+              Width = 228
+              Height = 26
+              Align = alTop
+              TabOrder = 3
+              TextHint = #1055#1086#1080#1089#1082' '#1087#1086' '#1092#1072#1081#1083#1072#1084
+              ExplicitLeft = 112
+              ExplicitTop = 240
+              ExplicitWidth = 121
+            end
+          end
+          object PanelContent: TPanel
+            Left = 1
+            Top = 1
+            Width = 444
+            Height = 392
+            Align = alClient
+            TabOrder = 1
+            ExplicitLeft = -516
+            ExplicitWidth = 701
+            ExplicitHeight = 39
+            object PanelFormDownload: TPanel
               Left = 1
               Top = 1
-              Width = 208
-              Height = 167
-              Align = alLeft
-              Caption = #1057#1089#1099#1083#1082#1080' '#1085#1072' '#1086#1089#1085#1086#1074#1085#1099#1077' '#1092#1072#1081#1083#1099
+              Width = 442
+              Height = 152
+              Align = alTop
+              TabOrder = 0
+              ExplicitWidth = 699
+              object GroupBoxFormGovernmLinks: TGroupBox
+                Left = 203
+                Top = 1
+                Width = 352
+                Height = 150
+                Align = alLeft
+                Caption = #1047#1072#1082#1086#1085#1086#1076#1072#1090#1077#1083#1100#1085#1072#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1103
+                TabOrder = 0
+                ExplicitLeft = 209
+                DesignSize = (
+                  352
+                  150)
+                object LinkLabelFormFill: TLinkLabel
+                  Left = 13
+                  Top = 35
+                  Width = 188
+                  Height = 22
+                  AutoSize = False
+                  Caption = 
+                    '<a href="http://www.somelink.com">'#1059#1082#1072#1079#1072#1085#1080#1103' '#1087#1086' '#1079#1072#1087#1086#1083#1085#1077#1085#1080#1102' '#1092#1086#1088#1084#1099'</' +
+                    'a>'
+                  Color = clBtnFace
+                  Font.Charset = RUSSIAN_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -19
+                  Font.Name = 'Montserrat'
+                  Font.Style = [fsBold]
+                  ParentColor = False
+                  ParentFont = False
+                  TabOrder = 0
+                  UseVisualStyle = True
+                end
+                object LinkLabelFormYtv: TLinkLabel
+                  Left = 13
+                  Top = 80
+                  Width = 188
+                  Height = 22
+                  AutoSize = False
+                  Caption = 
+                    '<a href="http://www.somelink.com">'#1055#1088#1080#1082#1072#1079' '#1086#1073' '#1091#1090#1074#1077#1088#1078#1076#1077#1085#1080#1080' '#1092#1086#1088#1084#1099'</a' +
+                    '>'
+                  Color = clBtnFace
+                  Font.Charset = RUSSIAN_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -19
+                  Font.Name = 'Montserrat'
+                  Font.Style = [fsBold]
+                  ParentColor = False
+                  ParentFont = False
+                  TabOrder = 1
+                  UseVisualStyle = True
+                end
+                object DBEditFormFill: TDBEdit
+                  Left = 207
+                  Top = 34
+                  Width = 134
+                  Height = 26
+                  Anchors = [akLeft, akTop, akRight]
+                  DataSource = DataModule1.DataSource1
+                  ReadOnly = True
+                  TabOrder = 2
+                end
+                object DBEditFormYtv: TDBEdit
+                  Left = 206
+                  Top = 77
+                  Width = 135
+                  Height = 26
+                  Anchors = [akLeft, akTop, akRight]
+                  DataSource = DataModule1.DataSource1
+                  ReadOnly = True
+                  TabOrder = 3
+                end
+              end
+              object GroupBoxFormMainLink: TGroupBox
+                Left = 1
+                Top = 1
+                Width = 202
+                Height = 150
+                Align = alLeft
+                Caption = #1054#1089#1085#1086#1074#1085#1099#1077' '#1092#1072#1081#1083#1099
+                TabOrder = 1
+                object ShapeFormDoc: TShape
+                  Left = 16
+                  Top = 70
+                  Width = 70
+                  Height = 26
+                  Cursor = crHandPoint
+                  Brush.Style = bsClear
+                  ParentShowHint = False
+                  Pen.Color = clWhite
+                  Shape = stRoundRect
+                  ShowHint = False
+                end
+                object ShapeFormPdf: TShape
+                  Left = 16
+                  Top = 110
+                  Width = 70
+                  Height = 26
+                  Cursor = crHandPoint
+                  Brush.Style = bsClear
+                  ParentShowHint = False
+                  Pen.Color = clWhite
+                  Shape = stRoundRect
+                  ShowHint = False
+                end
+                object ShapeFormXml: TShape
+                  Left = 16
+                  Top = 30
+                  Width = 70
+                  Height = 26
+                  Cursor = crHandPoint
+                  Brush.Style = bsClear
+                  ParentShowHint = False
+                  Pen.Color = clWhite
+                  Shape = stRoundRect
+                  ShowHint = False
+                end
+                object LabelFormXML: TLabel
+                  Left = 16
+                  Top = 30
+                  Width = 70
+                  Height = 26
+                  Cursor = crHandPoint
+                  Alignment = taCenter
+                  AutoSize = False
+                  Caption = 'XML'
+                  ParentShowHint = False
+                  PopupMenu = PopupMenuLinks
+                  ShowHint = True
+                  Transparent = True
+                  Layout = tlCenter
+                end
+                object LabelFormPdf: TLabel
+                  Left = 16
+                  Top = 110
+                  Width = 70
+                  Height = 26
+                  Cursor = crHandPoint
+                  Alignment = taCenter
+                  AutoSize = False
+                  Caption = 'PDF'
+                  ParentShowHint = False
+                  PopupMenu = PopupMenuLinks
+                  ShowHint = True
+                  Layout = tlCenter
+                end
+                object LabelFormDoc: TLabel
+                  Left = 16
+                  Top = 70
+                  Width = 70
+                  Height = 26
+                  Cursor = crHandPoint
+                  Alignment = taCenter
+                  AutoSize = False
+                  Caption = 'DOC'
+                  ParentShowHint = False
+                  PopupMenu = PopupMenuLinks
+                  ShowHint = True
+                  Layout = tlCenter
+                  OnClick = LabelFormDocClick
+                end
+                object DBEditFormXmlDate: TDBEdit
+                  Left = 100
+                  Top = 31
+                  Width = 90
+                  Height = 26
+                  Hint = #1042#1077#1088#1089#1080#1103' xml'
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  BorderStyle = bsNone
+                  Color = 1973790
+                  DataSource = DataModule1.DataSource1
+                  Font.Charset = RUSSIAN_CHARSET
+                  Font.Color = clWhite
+                  Font.Height = -13
+                  Font.Name = 'Montserrat Medium'
+                  Font.Style = [fsBold]
+                  ParentFont = False
+                  ParentShowHint = False
+                  ReadOnly = True
+                  ShowHint = True
+                  TabOrder = 0
+                  StyleName = 'Windows'
+                end
+              end
+            end
+            object PanelFormInfo: TPanel
+              Left = 1
+              Top = 153
+              Width = 442
+              Height = 238
+              Align = alClient
+              Padding.Left = 5
+              Padding.Top = 5
+              Padding.Right = 5
+              Padding.Bottom = 5
               TabOrder = 1
-              object ShapeFormDoc: TShape
-                Left = 16
-                Top = 80
-                Width = 70
-                Height = 26
-                Cursor = crHandPoint
-                Brush.Style = bsClear
-                ParentShowHint = False
-                Pen.Color = clWhite
-                Shape = stRoundRect
-                ShowHint = False
-              end
-              object ShapeFormPdf: TShape
-                Left = 16
-                Top = 128
-                Width = 70
-                Height = 26
-                Cursor = crHandPoint
-                Brush.Style = bsClear
-                ParentShowHint = False
-                Pen.Color = clWhite
-                Shape = stRoundRect
-                ShowHint = False
-              end
-              object ShapeFormXml: TShape
-                Left = 16
-                Top = 30
-                Width = 70
-                Height = 26
-                Cursor = crHandPoint
-                Brush.Style = bsClear
-                ParentShowHint = False
-                Pen.Color = clWhite
-                Shape = stRoundRect
-                ShowHint = False
-              end
-              object LabelFormXML: TLabel
-                Left = 16
-                Top = 30
-                Width = 70
-                Height = 26
-                Cursor = crHandPoint
-                Alignment = taCenter
+              ExplicitWidth = 699
+              ExplicitHeight = 177
+              DesignSize = (
+                442
+                238)
+              object LabelFormFullName: TLabel
+                AlignWithMargins = True
+                Left = 3
+                Top = 51
+                Width = 190
+                Height = 25
+                Alignment = taRightJustify
                 AutoSize = False
-                Caption = 'XML'
-                ParentShowHint = False
-                PopupMenu = PopupMenuLinks
-                ShowHint = True
-                Transparent = True
-                Layout = tlCenter
+                Caption = #1055#1086#1083#1085#1086#1077' '#1085#1072#1079#1074#1072#1085#1080#1077' '#1092#1086#1088#1084#1099
+                Font.Charset = RUSSIAN_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Montserrat SemiBold'
+                Font.Style = [fsBold]
+                ParentFont = False
               end
-              object LabelFormPdf: TLabel
-                Left = 16
-                Top = 128
-                Width = 70
-                Height = 26
-                Cursor = crHandPoint
-                Alignment = taCenter
-                AutoSize = False
-                Caption = 'PDF'
-                ParentShowHint = False
-                PopupMenu = PopupMenuLinks
-                ShowHint = True
-                Layout = tlCenter
+              object LabelFormOKUD: TLabel
+                AlignWithMargins = True
+                Left = 17
+                Top = 127
+                Width = 40
+                Height = 18
+                Caption = #1054#1050#1059#1044
+                Font.Charset = RUSSIAN_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Montserrat SemiBold'
+                Font.Style = [fsBold]
+                ParentFont = False
               end
-              object LabelFormDoc: TLabel
-                Left = 16
-                Top = 80
-                Width = 70
-                Height = 26
-                Cursor = crHandPoint
-                Alignment = taCenter
-                AutoSize = False
-                Caption = 'DOC'
-                ParentShowHint = False
-                PopupMenu = PopupMenuLinks
-                ShowHint = True
-                Layout = tlCenter
-                OnClick = LabelFormDocClick
+              object LabelFormPeriod: TLabel
+                AlignWithMargins = True
+                Left = 372
+                Top = 131
+                Width = 111
+                Height = 18
+                Caption = #1055#1077#1088#1080#1086#1076#1080#1095#1085#1086#1089#1090#1100
+                Font.Charset = RUSSIAN_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Montserrat SemiBold'
+                Font.Style = [fsBold]
+                ParentFont = False
               end
-              object DBEditFormXmlDate: TDBEdit
-                Left = 100
-                Top = 31
-                Width = 90
-                Height = 26
-                Hint = #1042#1077#1088#1089#1080#1103' xml'
+              object LabelFormSrok: TLabel
+                AlignWithMargins = True
+                Left = 17
+                Top = 165
+                Width = 133
+                Height = 18
+                Caption = #1057#1088#1086#1082' '#1089#1076#1072#1095#1080' '#1092#1086#1088#1084#1099
+                Font.Charset = RUSSIAN_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Montserrat SemiBold'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object DBMemoFormFullName: TDBMemo
+                Left = 217
+                Top = 51
+                Width = 210
+                Height = 62
+                Anchors = [akLeft, akTop, akRight]
                 BevelInner = bvNone
                 BevelOuter = bvNone
                 BorderStyle = bsNone
-                Color = 1973790
+                Color = 2500134
                 DataSource = DataModule1.DataSource1
                 Font.Charset = RUSSIAN_CHARSET
                 Font.Color = clWhite
@@ -533,254 +724,155 @@ object FormMain: TFormMain
                 Font.Name = 'Montserrat Medium'
                 Font.Style = [fsBold]
                 ParentFont = False
-                ParentShowHint = False
                 ReadOnly = True
-                ShowHint = True
                 TabOrder = 0
                 StyleName = 'Windows'
+                ExplicitWidth = 467
               end
-            end
-          end
-          object PanelFormInfo: TPanel
-            Left = 1
-            Top = 170
-            Width = 465
-            Height = 158
-            Align = alClient
-            Padding.Left = 5
-            Padding.Top = 5
-            Padding.Right = 5
-            Padding.Bottom = 5
-            TabOrder = 1
-            DesignSize = (
-              465
-              158)
-            object LabelFormFullName: TLabel
-              AlignWithMargins = True
-              Left = 3
-              Top = 51
-              Width = 190
-              Height = 25
-              Alignment = taRightJustify
-              AutoSize = False
-              Caption = #1055#1086#1083#1085#1086#1077' '#1085#1072#1079#1074#1072#1085#1080#1077' '#1092#1086#1088#1084#1099
-              Font.Charset = RUSSIAN_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -13
-              Font.Name = 'Montserrat SemiBold'
-              Font.Style = [fsBold]
-              ParentFont = False
-            end
-            object LabelFormOKUD: TLabel
-              AlignWithMargins = True
-              Left = 3
-              Top = 127
-              Width = 190
-              Height = 25
-              Alignment = taRightJustify
-              AutoSize = False
-              Caption = #1054#1050#1059#1044
-              Font.Charset = RUSSIAN_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -13
-              Font.Name = 'Montserrat SemiBold'
-              Font.Style = [fsBold]
-              ParentFont = False
-            end
-            object LabelFormPeriod: TLabel
-              AlignWithMargins = True
-              Left = 88
-              Top = 173
-              Width = 114
-              Height = 25
-              Alignment = taRightJustify
-              AutoSize = False
-              Caption = #1055#1077#1088#1080#1086#1076#1080#1095#1085#1086#1089#1090#1100
-              Font.Charset = RUSSIAN_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -13
-              Font.Name = 'Montserrat SemiBold'
-              Font.Style = [fsBold]
-              ParentFont = False
-            end
-            object LabelFormSrok: TLabel
-              AlignWithMargins = True
-              Left = 3
-              Top = 221
-              Width = 190
-              Height = 25
-              Alignment = taRightJustify
-              AutoSize = False
-              Caption = #1057#1088#1086#1082' '#1089#1076#1072#1095#1080' '#1092#1086#1088#1084#1099
-              Font.Charset = RUSSIAN_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -13
-              Font.Name = 'Montserrat SemiBold'
-              Font.Style = [fsBold]
-              ParentFont = False
-            end
-            object DBMemoFormFullName: TDBMemo
-              Left = 217
-              Top = 51
-              Width = 233
-              Height = 62
-              Anchors = [akLeft, akTop, akRight]
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              BorderStyle = bsNone
-              Color = 1973790
-              DataSource = DataModule1.DataSource1
-              Font.Charset = RUSSIAN_CHARSET
-              Font.Color = clWhite
-              Font.Height = -13
-              Font.Name = 'Montserrat Medium'
-              Font.Style = [fsBold]
-              ParentFont = False
-              ReadOnly = True
-              TabOrder = 0
-              StyleName = 'Windows'
-            end
-            object DBEditFormPeriod: TDBEdit
-              Left = 217
-              Top = 173
-              Width = 233
-              Height = 26
-              Anchors = [akLeft, akTop, akRight]
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              BorderStyle = bsNone
-              Color = 1973790
-              DataSource = DataModule1.DataSource1
-              Font.Charset = RUSSIAN_CHARSET
-              Font.Color = clWhite
-              Font.Height = -13
-              Font.Name = 'Montserrat Medium'
-              Font.Style = [fsBold]
-              ParentFont = False
-              ReadOnly = True
-              TabOrder = 1
-              StyleName = 'Windows'
-            end
-            object DBEditFormOKUD: TDBEdit
-              Left = 217
-              Top = 127
-              Width = 233
-              Height = 26
-              Anchors = [akLeft, akTop, akRight]
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              BorderStyle = bsNone
-              Color = 1973790
-              DataSource = DataModule1.DataSource1
-              Font.Charset = RUSSIAN_CHARSET
-              Font.Color = clWhite
-              Font.Height = -13
-              Font.Name = 'Montserrat Medium'
-              Font.Style = [fsBold]
-              ParentFont = False
-              ReadOnly = True
-              TabOrder = 2
-              StyleName = 'Windows'
-            end
-            object DBMemoFormSrok: TDBMemo
-              Left = 217
-              Top = 221
-              Width = 233
-              Height = 53
-              Anchors = [akLeft, akTop, akRight]
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              BorderStyle = bsNone
-              Color = 1973790
-              DataSource = DataModule1.DataSource1
-              Font.Charset = RUSSIAN_CHARSET
-              Font.Color = clWhite
-              Font.Height = -13
-              Font.Name = 'Montserrat Medium'
-              Font.Style = [fsBold]
-              ParentFont = False
-              ReadOnly = True
-              TabOrder = 3
-              StyleName = 'Windows'
-            end
-            object DBEditFormXmlLink: TDBEdit
-              Left = 4
-              Top = 195
-              Width = 53
-              Height = 26
-              DataSource = DataModule1.DataSource1
-              ReadOnly = True
-              TabOrder = 4
-              Visible = False
-              OnChange = DBEditFormXmlLinkChange
-            end
-            object DBEditFormDocLink: TDBEdit
-              Left = 72
-              Top = 195
-              Width = 49
-              Height = 26
-              DataSource = DataModule1.DataSource1
-              ReadOnly = True
-              TabOrder = 5
-              Visible = False
-              OnChange = DBEditFormDocLinkChange
-            end
-            object DBEditFormPdfLink: TDBEdit
-              Left = 136
-              Top = 195
-              Width = 49
-              Height = 26
-              DataSource = DataModule1.DataSource1
-              ReadOnly = True
-              TabOrder = 6
-              Visible = False
-              OnChange = DBEditFormPdfLinkChange
-            end
-            object PanelFormName: TPanel
-              Left = 6
-              Top = 6
-              Width = 453
-              Height = 39
-              Align = alTop
-              Padding.Left = 5
-              Padding.Top = 5
-              Padding.Right = 5
-              Padding.Bottom = 5
-              TabOrder = 7
-              object DBTextFormName: TDBText
-                Left = 6
-                Top = 6
-                Width = 155
-                Height = 27
-                Align = alLeft
-                AutoSize = True
+              object DBEditFormPeriod: TDBEdit
+                Left = 497
+                Top = 127
+                Width = 0
+                Height = 26
+                Anchors = [akLeft, akTop, akRight]
+                BevelInner = bvNone
+                BevelOuter = bvNone
+                BorderStyle = bsNone
+                Color = 2500134
                 DataSource = DataModule1.DataSource1
                 Font.Charset = RUSSIAN_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -16
-                Font.Name = 'Montserrat'
+                Font.Color = clWhite
+                Font.Height = -13
+                Font.Name = 'Montserrat Medium'
                 Font.Style = [fsBold]
                 ParentFont = False
-                ExplicitHeight = 22
+                ReadOnly = True
+                TabOrder = 1
+                StyleName = 'Windows'
+                ExplicitWidth = 168
               end
-              object Bevel1: TBevel
-                Left = 161
-                Top = 6
-                Width = 26
-                Height = 27
-                Align = alLeft
-                Shape = bsSpacer
-                Style = bsRaised
+              object DBEditFormOKUD: TDBEdit
+                Left = 217
+                Top = 127
+                Width = 136
+                Height = 26
+                BevelInner = bvNone
+                BevelOuter = bvNone
+                BorderStyle = bsNone
+                Color = 2500134
+                DataSource = DataModule1.DataSource1
+                Font.Charset = RUSSIAN_CHARSET
+                Font.Color = clWhite
+                Font.Height = -13
+                Font.Name = 'Montserrat Medium'
+                Font.Style = [fsBold]
+                ParentFont = False
+                ReadOnly = True
+                TabOrder = 2
+                StyleName = 'Windows'
               end
-              object ButtonFormPreview: TButton
-                Left = 187
+              object DBMemoFormSrok: TDBMemo
+                Left = 217
+                Top = 167
+                Width = 210
+                Height = 53
+                Anchors = [akLeft, akTop, akRight]
+                BevelInner = bvNone
+                BevelOuter = bvNone
+                BorderStyle = bsNone
+                Color = 2500134
+                DataSource = DataModule1.DataSource1
+                Font.Charset = RUSSIAN_CHARSET
+                Font.Color = clWhite
+                Font.Height = -13
+                Font.Name = 'Montserrat Medium'
+                Font.Style = [fsBold]
+                ParentFont = False
+                ReadOnly = True
+                TabOrder = 3
+                StyleName = 'Windows'
+                ExplicitWidth = 448
+              end
+              object DBEditFormXmlLink: TDBEdit
+                Left = 396
+                Top = 0
+                Width = 53
+                Height = 26
+                DataSource = DataModule1.DataSource1
+                ReadOnly = True
+                TabOrder = 4
+                Visible = False
+                OnChange = DBEditFormXmlLinkChange
+              end
+              object DBEditFormDocLink: TDBEdit
+                Left = 392
                 Top = 6
-                Width = 169
-                Height = 27
-                Align = alLeft
-                Caption = #1055#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088' '#1092#1086#1088#1084#1099
-                TabOrder = 0
-                OnClick = ButtonFormPreviewClick
+                Width = 49
+                Height = 26
+                DataSource = DataModule1.DataSource1
+                ReadOnly = True
+                TabOrder = 5
+                Visible = False
+                OnChange = DBEditFormDocLinkChange
+              end
+              object DBEditFormPdfLink: TDBEdit
+                Left = 400
+                Top = 19
+                Width = 49
+                Height = 26
+                DataSource = DataModule1.DataSource1
+                ReadOnly = True
+                TabOrder = 6
+                Visible = False
+                OnChange = DBEditFormPdfLinkChange
+              end
+              object PanelFormName: TPanel
+                Left = 6
+                Top = 6
+                Width = 430
+                Height = 39
+                Align = alTop
+                Padding.Left = 5
+                Padding.Top = 5
+                Padding.Right = 5
+                Padding.Bottom = 5
+                TabOrder = 7
+                ExplicitWidth = 687
+                object DBTextFormName: TDBText
+                  Left = 6
+                  Top = 6
+                  Width = 155
+                  Height = 27
+                  Align = alLeft
+                  AutoSize = True
+                  DataSource = DataModule1.DataSource1
+                  Font.Charset = RUSSIAN_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -16
+                  Font.Name = 'Montserrat'
+                  Font.Style = [fsBold]
+                  ParentFont = False
+                  ExplicitHeight = 22
+                end
+                object Bevel1: TBevel
+                  Left = 161
+                  Top = 6
+                  Width = 26
+                  Height = 27
+                  Align = alLeft
+                  Shape = bsSpacer
+                  Style = bsRaised
+                end
+                object ButtonFormPreview: TButton
+                  Left = 187
+                  Top = 6
+                  Width = 169
+                  Height = 27
+                  Align = alLeft
+                  Caption = #1055#1088#1077#1076#1087#1088#1086#1089#1084#1086#1090#1088' '#1092#1086#1088#1084#1099
+                  TabOrder = 0
+                  OnClick = ButtonFormPreviewClick
+                end
               end
             end
           end
@@ -793,7 +885,7 @@ object FormMain: TFormMain
       object PanelOrgFind: TPanel
         Left = 0
         Top = 0
-        Width = 1092
+        Width = 1069
         Height = 33
         Align = alTop
         BevelOuter = bvNone
@@ -801,6 +893,7 @@ object FormMain: TFormMain
         Padding.Top = 3
         Padding.Bottom = 3
         TabOrder = 0
+        ExplicitWidth = 1092
         object LabelFindOrgMsg: TLabel
           Left = 176
           Top = 3
@@ -825,8 +918,8 @@ object FormMain: TFormMain
       object PanelCheckOrg: TPanel
         Left = 0
         Top = 33
-        Width = 1092
-        Height = 753
+        Width = 1069
+        Height = 631
         Align = alClient
         DockSite = True
         Padding.Left = 3
@@ -835,6 +928,8 @@ object FormMain: TFormMain
         Padding.Bottom = 3
         TabOrder = 1
         StyleName = 'Glossy'
+        ExplicitWidth = 1092
+        ExplicitHeight = 753
       end
     end
     object TabSheetDirectory: TTabSheet
